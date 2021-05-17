@@ -1,0 +1,51 @@
+﻿<h5>Milestones</h5>
+@foreach (var card in cards)
+{
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">@card.Name</h5>
+             <Progress >
+                <ProgressBar Value="@card.Percentage" Animated="true"  />
+            </Progress>
+            <p>@card.Progression / @card.Total</p>
+        </div>
+    </div>
+}
+
+
+@code {
+    public class MilestoneCard
+    {
+        public string Name { get; }
+        public int Progression { get; }
+        public int Total { get; }
+        public int Percentage { get; }
+
+
+        public MilestoneCard(string name, int progression, int total)
+        {
+            Name = name;
+            Progression = progression;
+            Total = total;
+            Percentage = CalculatePercentage(progression, total);
+        }
+
+        private int CalculatePercentage(int progression, int total)
+        {
+
+            int percentage = (100 * progression) / total;
+            Console.WriteLine(percentage);
+            return percentage;
+        }
+    }
+
+    public List<MilestoneCard> cards = new List<MilestoneCard>()
+{
+        new MilestoneCard("10x gevuld", 4, 10),
+        new MilestoneCard("4 uur instructies geschreven", 3, 4),
+        new MilestoneCard("5 Collegas gesteund", 1, 5),
+    };
+
+
+}
+

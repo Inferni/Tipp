@@ -1,0 +1,216 @@
+﻿@inject NavigationManager NavigationManager
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            @*<Button Clicked="@(async () => await HandleRedraw())">Redraw</Button>*@
+
+            <LineChart @ref="lineChart" TItem="double" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary float-right" @onclick="ShowModal"><Icon Name="IconName.Play" /></button>
+        </div>
+
+    </div>
+</div>
+
+@*<Button Clicked="@ShowModal">Show Modal</Button>*@
+
+<Modal @ref="modalRef">
+    <ModalContent Centered="true">
+        <ModalHeader>
+            <ModalTitle>Kies een activiteit</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <Button Color="Color.Primary" Clicked="@NavigateToTimer">Applicatie Vullen</Button>
+            </Field>
+            <Field>
+                <Button Color="Color.Primary" Clicked="@NavigateToTimer">Applicatie Testen</Button>
+            </Field>
+            <Field>
+                <Button Color="Color.Primary" Clicked="@NavigateToTimer">Instructies schrijven</Button>
+            </Field>
+            <Field>
+                <Button Color="Color.Primary" Clicked="@NavigateToTimer">Training geven</Button>
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            @*<Button class="close" Color="Color.Secondary" Clicked="@HideModal" aria-label="Close"></Button>*@
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+@code {
+
+    // reference to the modal component
+    private Modal modalRef;
+
+    private void ShowModal()
+    {
+        modalRef.Show();
+    }
+
+    private void HideModal()
+    {
+        modalRef.Hide();
+    }
+
+    private void NavigateToTimer()
+    {
+        NavigationManager.NavigateTo("timer");
+    }
+
+    //https://blazorise.com/docs/extensions/chart/
+
+    LineChart<double> lineChart;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await HandleRedraw();
+        }
+    }
+
+    //Loop through all colleagues
+    //For each colleague, add a dataset
+    // -Each colleague should have a dataset
+
+    // Each colleauge should have a different colour
+    // - Library with all colours, depending on how many colleagues there are
+
+    //Each Colleague should be dashed
+    // - FIGURE THIS OUT
+
+    // Labels should be made depending how many weeks the project has been gone on for
+    // Figure this out later
+
+    public class User
+    {
+        public string Name { get; }
+        public List<double> LineData { get; set; }
+
+        public User(string name, List<double> lineData)
+        {
+            this.Name = name;
+            this.LineData = lineData;
+        }
+    }
+
+    public class Colleauge
+    {
+        public ColleagueMilestones.ColleagueCard Card { get; }
+        public List<double> LineData { get; set; }
+
+        public Colleauge(ColleagueMilestones.ColleagueCard card, List<double> lineData)
+        {
+            this.Card = card;
+            this.LineData = lineData;
+        }
+    }
+
+    //TODO Create list of colleagues and the current user (steal from other page?)
+    User user = new User("John Doe", null);
+    List<Colleauge> colleagues = new List<Colleauge>()
+{
+        new Colleauge(new ColleagueMilestones.ColleagueCard ("Baseline"), null),
+        new Colleauge(new ColleagueMilestones.ColleagueCard ("Jane Doe"), null),
+        new Colleauge(new ColleagueMilestones.ColleagueCard ("Richard Doe"), null),
+    };
+
+    //TODO Give all a dataset
+    public void SetData()
+    {
+        user.LineData = new List<double> { 0, 8, 9, 8, 7, 10 };
+
+        foreach (var colleague in colleagues)
+        {
+            colleague.LineData = RandomizeData();
+        }
+    }
+
+
+    //TODO loop through colleagues in HandleRedraw
+    //TODO AddDataSet for each colleague
+
+    async Task HandleRedraw()
+    {
+        SetData();
+
+        await lineChart.Clear();
+
+        await lineChart.AddLabels(Labels);
+
+        foreach (var colleague in colleagues)
+        {
+            await lineChart.AddDataSet(GetLineChartDataset(colleague.Card.Name, colleague.LineData, false));
+        }
+
+        await lineChart.AddDataSet(GetLineChartDataset(user.Name, user.LineData, true));
+    }
+
+    LineChartDataset<double> GetLineChartDataset(string name, List<double> lineData, bool user)
+    {
+        if (user)
+        {
+            return new LineChartDataset<double>
+            {
+                Label = name,
+                Data = lineData,
+                //BackgroundColor = new List<string> { ChartColor.FromRgba(255, 99, 132, 0.2f) },
+                BorderColor = new List<string> { ChartColor.FromRgba(20, 99, 255, 1f) }, //Color of the Line
+                Fill = false,
+                PointRadius = 5,
+                BorderDash = new List<int> { }
+
+            };
+
+        }
+        else
+        {
+            if (name == "Baseline")
+            {
+                return new LineChartDataset<double>
+                {
+                    Label="Baseline",
+                    BackgroundColor = new List<string> { ChartColor.FromRgba(255, 255, 255, 0f) },
+
+                    Data = new List<double> { 8, 8,8,8,8,8,},
+                    BorderColor = new List<string> { ChartColor.FromRgba(102, 204, 0, 1f) }, //Color of the Line
+                    Fill = false,
+                    PointRadius = 0,
+                    PointBorderColor = new List<string> { ChartColor.FromRgba(102, 204, 0, 0f) }, //Color of the Line,
+                    BorderDash = new List<int> { 5, 2 }
+                };
+            }
+
+
+        }
+        return new LineChartDataset<double>
+        {
+            Label = name,
+            Data = lineData,
+            //BackgroundColor = new List<string> { ChartColor.FromRgba(255, 99, 132, 0.2f) },
+            BorderColor = new List<string> { ChartColor.FromRgba(153, 204, 255, 1f) }, //Color of the Line
+            Fill = false,
+            PointRadius = 2,
+            BorderDash = new List<int> { 5, 5 }
+        };
+    }
+
+
+
+    string[] Labels = { "Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6" };
+    List<string> backgroundColors = new List<string> { ChartColor.FromRgba(255, 99, 132, 0.2f), ChartColor.FromRgba(54, 162, 235, 0.2f), ChartColor.FromRgba(255, 206, 86, 0.2f), ChartColor.FromRgba(75, 192, 192, 0.2f), ChartColor.FromRgba(153, 102, 255, 0.2f), ChartColor.FromRgba(255, 159, 64, 0.2f) };
+    List<string> borderColors = new List<string> { ChartColor.FromRgba(255, 99, 132, 1f), ChartColor.FromRgba(54, 162, 235, 1f), ChartColor.FromRgba(255, 206, 86, 1f), ChartColor.FromRgba(75, 192, 192, 1f), ChartColor.FromRgba(153, 102, 255, 1f), ChartColor.FromRgba(255, 159, 64, 1f) };
+
+    Random r = new Random(DateTime.Now.Millisecond);
+    List<double> RandomizeData()
+    {
+
+
+        return new List<double> { r.Next(4, 10), r.Next(4, 10), r.Next(4, 10), r.Next(4, 10), r.Next(4, 10), r.Next(4, 10) };
+    }
+}

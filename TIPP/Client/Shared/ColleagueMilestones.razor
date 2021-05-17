@@ -1,0 +1,57 @@
+﻿@foreach (var colleague in cards)
+{
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">@colleague.Name</h5>
+            <p class="card-text">@colleague.Milestone</p>
+            <button class="btn btn-outline-danger" @onclick="@(() => RemoveFromList(colleague))"><Icon Name="IconName.Remove" /></button><button class="btn btn-primary" @onclick="@(() => UpvoteColleague(colleague))"><Icon Name="IconName.ThumbsUp" /></button>
+        </div>
+    </div>
+}
+
+
+@code {
+
+    public class ColleagueCard
+    {
+        public string Name { get; }
+        public string Milestone { get; }
+
+        public ColleagueCard(string name)
+        {
+            Name = name;
+        }
+
+        public ColleagueCard(string name, string milestone)
+        {
+            Name = name;
+            Milestone = milestone;
+        }
+    }
+
+    public List<ColleagueCard> cards = new List<ColleagueCard>()
+    {
+        new ColleagueCard("Jane Doe", "20x gevuld!"),
+        new ColleagueCard("Jane Doe", "8 uur gevuld!"),
+        new ColleagueCard("Richard Roe", "4x instructies geschreven!"),
+        new ColleagueCard("Jane Doe", "20x gevuld!"),
+    };
+
+    private void UpvoteColleague(ColleagueCard card)
+    {
+        //UPVOTE HERE
+        RemoveFromList(card);
+    }
+
+    private void RemoveFromList(ColleagueCard card)
+    {
+        cards.Remove(card);
+        Console.WriteLine(cards.Count);
+    }
+
+    // Generate colleagues
+    // Add to colleague list
+    // Link to card
+    // Loop card to display all colleagues
+
+}

@@ -1,0 +1,110 @@
+﻿@using System.Timers
+
+@page "/timer"
+<h3>Timer</h3>
+
+<div class="container">
+    <div class="row justify-content-around">
+        <div class="col">
+            <DoughnutChart @ref="lineChart" TItem="double" Animation="false" />
+        </div>
+    </div>
+    <div class="row justify-content-around">
+        <div class="col">
+            @if (isRunning)
+            {
+                //STopTimer
+                <button class="btn btn-outline-danger float-right" @onclick="PauseTimer"><Icon Name="IconName.Pause" /></button>
+            }
+            else
+            {
+                <button class="btn btn-primary float-right" @onclick="StartTimer"><Icon Name="IconName.Play" /></button>
+
+            }
+
+        </div>
+    </div>
+</div>
+
+@code {
+
+    // Compelte time
+    // Part time which counts up with a timer, start/pause with a button
+    // Update chart every second until time left is 0
+
+    private static System.Timers.Timer aTimer;
+    private int elapsedTime = 0;
+    private int timeLeft = 10;
+    private bool isRunning = false;
+    public void StartTimer()
+    {
+
+        isRunning = !isRunning;
+        aTimer = new System.Timers.Timer(1000);
+        aTimer.Elapsed += RunTimer;
+        aTimer.Enabled = true;
+    }
+
+    public void RunTimer(Object source, ElapsedEventArgs e)
+    {
+        elapsedTime++;
+        if(timeLeft > 0)
+        {
+            timeLeft--;
+        }
+
+        Console.WriteLine(elapsedTime);
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void PauseTimer()
+    {
+        isRunning = !isRunning;
+        aTimer.Enabled = false;
+    }
+
+    // Specify what you want to happen when the Elapsed event is raised.
+    private static void OnTimedEvent(object source, ElapsedEventArgs e)
+    {
+        Console.WriteLine("Hello World!");
+    }
+
+    DoughnutChart<double> lineChart;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await HandleRedraw();
+        }
+    }
+
+    async Task HandleRedraw()
+    {
+        await lineChart.Clear();
+
+        await lineChart.AddLabelsDatasetsAndUpdate(Labels, GetLineChartDataset());
+    }
+
+    DoughnutChartDataset<double> GetLineChartDataset()
+    {
+        return new DoughnutChartDataset<double>
+        {
+            Label = "# of randoms",
+            Data = new List<double> {elapsedTime, timeLeft },
+            BackgroundColor = backgroundColors,
+            BorderColor = borderColors,
+        };
+    }
+
+    string[] Labels = { "Tijd gewerkt", "Tijd tot volgende milestone"  };
+    List<string> backgroundColors = new List<string> { ChartColor.FromRgba(255, 99, 132, 0.2f), ChartColor.FromRgba(54, 162, 235, 0.2f), ChartColor.FromRgba(255, 206, 86, 0.2f), ChartColor.FromRgba(75, 192, 192, 0.2f), ChartColor.FromRgba(153, 102, 255, 0.2f), ChartColor.FromRgba(255, 159, 64, 0.2f) };
+    List<string> borderColors = new List<string> { ChartColor.FromRgba(255, 99, 132, 1f), ChartColor.FromRgba(54, 162, 235, 1f), ChartColor.FromRgba(255, 206, 86, 1f), ChartColor.FromRgba(75, 192, 192, 1f), ChartColor.FromRgba(153, 102, 255, 1f), ChartColor.FromRgba(255, 159, 64, 1f) };
+
+    List<double> RandomizeData()
+    {
+        var r = new Random(DateTime.Now.Millisecond);
+
+        return new List<double> { r.Next(3, 50) * r.NextDouble(), r.Next(3, 50) * r.NextDouble()};
+    }
+}

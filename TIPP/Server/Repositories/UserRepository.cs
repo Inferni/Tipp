@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using TIPP.Server.Domain;
 using TIPP.Server.Domain.DTOs;
 using TIPP.Server.Services.SQLServices;
+using TIPP.Shared.Test;
 
 namespace TIPP.Server.Repositories
 {
     public class UserRepository : IUserRepository
     {
+        
         private static UserRepository self;
         private IUserService service;
 

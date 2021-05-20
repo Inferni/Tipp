@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TIPP.Shared
 {
-    class Project
+    public class Project
     {
         
 

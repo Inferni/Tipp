@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TIPP.Shared
 {
-    class UserDTO
+    public class UserDTO
     {
         public int Id { get; }
         public string Username { get; }

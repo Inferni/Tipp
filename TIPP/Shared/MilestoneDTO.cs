@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TIPP.Shared
 {
-    class MilestoneDTO
+    public class MilestoneDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }

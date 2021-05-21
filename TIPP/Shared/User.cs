@@ -13,6 +13,9 @@ namespace TIPP.Shared
         public string Password { get; set; }
         public string Role { get; set; }
 
+        public User()
+        {
+        }
 
         public User(UserDTO dto)
         {

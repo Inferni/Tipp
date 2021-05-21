@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TIPP.Server.Domain;
-using TIPP.Server.Domain.DTOs;
-using TIPP.Server.Services.SQLServices;
+﻿using TIPP.Server.Services.SQLServices;
 using TIPP.Shared;
 
 namespace TIPP.Server.Repositories

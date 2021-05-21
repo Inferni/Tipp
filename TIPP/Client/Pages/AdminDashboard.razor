@@ -1,0 +1,37 @@
+﻿@using TIPP.Shared
+@using Blazorise.DataGrid
+@page "/admin"
+<h3>AdminDashboard</h3>
+
+<DataGrid TItem="User"
+          Data="@userList"
+          ReadData="@ReadUsers"
+          @bind-SelectedRow="@userSelected"
+          Sortable="true"
+          SortMode="DataGridSortMode.Single">
+    <DataGridColumn TItem="User" Field="@nameof(User.Id)" Caption="#" Sortable="true"></DataGridColumn>
+    <DataGridColumn TItem="User" Field="@nameof(User.Username)" Caption="Username" Sortable="true" Editable="true" />
+    <DataGridColumn TItem="User" Field="@nameof(User.Role)" Caption="Role" Sortable="true" Editable="true" />
+</DataGrid>
+
+@code {
+
+    List<User> userList;
+    User userSelected;
+    int totalUsers;
+
+    async Task ReadUsers(DataGridReadDataEventArgs<User> e)
+    {
+        User testuser = new User(0, "test", "test", "admin");
+        User testuser2 = new User(1, "test1", "test1", "user");
+        userList = new List<User>();
+        userList.Add(testuser);
+        userList.Add(testuser2);
+
+
+
+        totalUsers = userList.Count();
+        StateHasChanged();
+    }
+
+}

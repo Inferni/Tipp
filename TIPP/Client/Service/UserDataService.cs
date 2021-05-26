@@ -1,27 +1,44 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using TIPP.Client.Models;
 using TIPP.Shared;
 
 namespace TIPP.Client.Service
 {
-    public class UserDataService : IUserDataService
+    public class UserDataService : IUserDataService, IUserDataServiceLogin
     {
-        private readonly HttpClient httpClient;
+        private IHttpService _httpService;
+        private NavigationManager _navigationManager;
+        private ILocalStorageService _localStorageService;
+        private string _userKey = "user";
 
-        public UserDataService(HttpClient httpClient)
+        public Models.User User { get; private set; }
+
+        public UserDataService(
+            IHttpService httpService,
+            NavigationManager navigationManager,
+            ILocalStorageService localStorageService
+        )
         {
-            this.httpClient = httpClient;
+            _httpService = httpService;
+            _navigationManager = navigationManager;
+            _localStorageService = localStorageService;
         }
-        
+
+        public async Task Initialize()
+        {
+            User = await _localStorageService.GetItem<Models.User>(_userKey);
+        }
+
         public async Task<ObjectResult> CreateUser(UserDTO dto)
         {
             object result;
-            result = httpClient.GetStreamAsync("api/usercontroller");
             throw new NotImplementedException();
         }
 
@@ -38,6 +55,13 @@ namespace TIPP.Client.Service
         public Task<string> GetUser(UserDTO dto)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Models.User> Login(Login model)
+        {
+            User = await _httpService.Post<Models.User>("/users/authenticate", model);
+            await _localStorageService.SetItem(_userKey, User);
+            return User;
         }
 
         public Task<ObjectResult> UpdateUser(UserDTO dto)

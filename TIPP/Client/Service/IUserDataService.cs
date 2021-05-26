@@ -10,6 +10,7 @@ namespace TIPP.Client.Service
     interface IUserDataService
     {
         Task<object> GetAllUsers();
+        Task Initialize();
         Task<string> GetUser(UserDTO dto);
         Task<ObjectResult> CreateUser(UserDTO dto);
         Task<ObjectResult> UpdateUser(UserDTO dto);

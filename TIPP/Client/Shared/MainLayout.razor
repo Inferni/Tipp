@@ -1,8 +1,10 @@
 ﻿@inherits LayoutComponentBase
 
+@inject Service.IUserDataService userDataService
+
 <div class="page">
     <!--<div class="sidebar">-->
-        @*<NavMenu />*@
+    @*<NavMenu />*@
     <!--</div>-->
 
     <div class="main">
@@ -11,8 +13,16 @@
             <a class="ml-md-auto">NAME</a>
         </div>
 
-        <div class="content px-4">
+        <div class="content px-4 @(LoggedIn() ? "bg-light" : "")">
             @Body
         </div>
     </div>
 </div>
+
+@code {
+    public bool LoggedIn()
+    {
+        Console.WriteLine(userDataService.User != null);
+        return userDataService.User != null;
+    }
+}

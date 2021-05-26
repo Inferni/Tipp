@@ -7,8 +7,9 @@ using TIPP.Shared;
 
 namespace TIPP.Client.Service
 {
-    interface IUserDataService
+    public interface IUserDataService
     {
+        Models.User User { get; }
         Task<object> GetAllUsers();
         Task Initialize();
         Task<string> GetUser(UserDTO dto);

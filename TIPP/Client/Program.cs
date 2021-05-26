@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
+using TIPP.Client.Service;
 
 namespace TIPP.Client
 {
@@ -22,6 +23,10 @@ namespace TIPP.Client
             builder.RootComponents.Add<App>("#app");
 
             builder.Services
+                .AddScoped<IUserDataService, UserDataService>()
+                .AddScoped<IUserDataServiceLogin, UserDataService>()
+                .AddScoped<IHttpService, HttpService>()
+                .AddScoped<ILocalStorageService, LocalStorageService>()
               .AddBlazorise(options =>
               {
                   options.ChangeTextOnKeyPress = true;
@@ -32,9 +37,12 @@ namespace TIPP.Client
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-            
 
-            await builder.Build().RunAsync();
+
+            var host = builder.Build();
+            var userDataService = host.Services.GetRequiredService<IUserDataService>();
+            await userDataService.Initialize();
+            await host.RunAsync();
         }
     }
 }

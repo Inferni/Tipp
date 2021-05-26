@@ -3,28 +3,28 @@
 @page "/admin"
 <h3>AdminDashboard</h3>
 
-<DataGrid TItem="User"
+<DataGrid TItem="TIPP.Shared.User"
           Data="@userList"
           ReadData="@ReadUsers"
           @bind-SelectedRow="@userSelected"
           Sortable="true"
           SortMode="DataGridSortMode.Single">
-    <DataGridColumn TItem="User" Field="@nameof(User.Id)" Caption="#" Sortable="true"></DataGridColumn>
-    <DataGridColumn TItem="User" Field="@nameof(User.Username)" Caption="Username" Sortable="true" Editable="true" />
-    <DataGridColumn TItem="User" Field="@nameof(User.Role)" Caption="Role" Sortable="true" Editable="true" />
+    <DataGridColumn TItem="TIPP.Shared.User" Field="@nameof(TIPP.Shared.User.Id)" Caption="#" Sortable="true"></DataGridColumn>
+    <DataGridColumn TItem="TIPP.Shared.User" Field="@nameof(TIPP.Shared.User.Username)" Caption="Username" Sortable="true" Editable="true" />
+    <DataGridColumn TItem="TIPP.Shared.User" Field="@nameof(TIPP.Shared.User.Role)" Caption="Role" Sortable="true" Editable="true" />
 </DataGrid>
 
 @code {
 
-    List<User> userList;
-    User userSelected;
+    List<TIPP.Shared.User> userList;
+    TIPP.Shared.User userSelected;
     int totalUsers;
 
-    async Task ReadUsers(DataGridReadDataEventArgs<User> e)
+    async Task ReadUsers(DataGridReadDataEventArgs<TIPP.Shared.User> e)
     {
-        User testuser = new User(0, "test", "test", "admin");
-        User testuser2 = new User(1, "test1", "test1", "user");
-        userList = new List<User>();
+        TIPP.Shared.User testuser = new TIPP.Shared.User(0, "test", "test", "admin");
+        TIPP.Shared.User testuser2 = new TIPP.Shared.User(1, "test1", "test1", "user");
+        userList = new List<TIPP.Shared.User>();
         userList.Add(testuser);
         userList.Add(testuser2);
 

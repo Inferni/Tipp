@@ -1,16 +1,11 @@
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 using TIPP.Client.Service;
 
 namespace TIPP.Client
@@ -39,6 +34,7 @@ namespace TIPP.Client
 
 
 
+            //await builder.Build().RunAsync();
             var host = builder.Build();
             var userDataService = host.Services.GetRequiredService<IUserDataService>();
             await userDataService.Initialize();

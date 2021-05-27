@@ -17,6 +17,7 @@ namespace TIPP.Server.Services.SQLServices
 
         public object GetUsers()
         {
+            Console.WriteLine("Getting Users");
             return new { Items = context.Users };
         }
 

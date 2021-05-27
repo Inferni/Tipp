@@ -11,19 +11,19 @@ using TIPP.Shared;
 
 namespace TIPP.Server.Controllers
 {
-    [Route("api/[activitycontroller]")]
+    [Route("api/[[activity]]")]
     [ApiController]
     public class ActivityController : ControllerBase
     {
         private IActivityRepository repository = ActivityRepository.GetActivityRepository();
-        // GET: api/<ActivityController>
+        // GET: api/<activity>
         [HttpGet]
         public object GetAll()
         {
             return JsonConvert.SerializeObject(repository.GetActivities());
         }
 
-        // GET api/<ActivityController>/5
+        // GET api/<activity>/5
         [HttpGet("{id}")]
         public string Get([FromBody] string value)
         {
@@ -40,7 +40,7 @@ namespace TIPP.Server.Controllers
             }
         }
 
-        // POST api/<ActivityController>
+        // POST api/<activity>
         [HttpPost]
         public ObjectResult Post([FromBody] string value)
         {
@@ -64,7 +64,7 @@ namespace TIPP.Server.Controllers
 
         }
 
-        // PUT api/<ActivityController>/5
+        // PUT api/<activity>/5
         [HttpPut("{id}")]
         public ObjectResult Put(int id, [FromBody] string value)
         {
@@ -88,7 +88,7 @@ namespace TIPP.Server.Controllers
             }
         }
 
-        // DELETE api/<ActivityController>/5
+        // DELETE api/<activity>/5
         [HttpDelete("{id}")]
         public ObjectResult Delete([FromBody] string value)
         {

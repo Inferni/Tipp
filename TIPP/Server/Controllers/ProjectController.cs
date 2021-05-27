@@ -11,20 +11,20 @@ using TIPP.Shared;
 
 namespace TIPP.Server.Controllers
 {
-    [Route("api/[projectcontroller]")]
+    [Route("api/[[project]]")]
     [ApiController]
     public class ProjectController : ControllerBase
     {
         private IProjectRepository repository = ProjectRepository.GetProjectRepository();
 
-        // GET: api/<ProjectController>
+        // GET: api/<project>
         [HttpGet]
         public object GetAll()
         {
             return JsonConvert.SerializeObject(repository.GetProjects());
         }
 
-        // GET api/<ProjectController>/5
+        // GET api/<project>/5
         [HttpGet("{id}")]
         public string Get([FromBody]string value)
         {
@@ -42,7 +42,7 @@ namespace TIPP.Server.Controllers
             
         }
 
-        // POST api/<ProjectController>
+        // POST api/<project>
         [HttpPost]
         public ObjectResult Post([FromBody] string value)
         {
@@ -67,7 +67,7 @@ namespace TIPP.Server.Controllers
             }
         }
 
-        // PUT api/<ProjectController>/5
+        // PUT api/<project>/5
         [HttpPut("{id}")]
         public ObjectResult Put(int id, [FromBody] string value)
         {
@@ -91,7 +91,7 @@ namespace TIPP.Server.Controllers
             }
         }
 
-        // DELETE api/<ProjectController>/5
+        // DELETE api/<project>/5
         [HttpDelete("{id}")]
         public ObjectResult Delete([FromBody]string value)
         {

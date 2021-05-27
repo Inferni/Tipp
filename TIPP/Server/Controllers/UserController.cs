@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
+using System.Threading.Tasks;
 using TIPP.Server.Repositories;
 using TIPP.Shared;
 
@@ -8,7 +9,7 @@ using TIPP.Shared;
 
 namespace TIPP.Server.Controllers
 {
-    [Route("api/[usercontroller]")]
+    [Route("api/user")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -16,9 +17,11 @@ namespace TIPP.Server.Controllers
 
         // GET: api/<UserController>
         [HttpGet]
-        public string GetAll()
+        public async Task<IActionResult> Get()
         {
-            return JsonConvert.SerializeObject(repository.GetUsers());
+            Console.WriteLine("Getting from API");
+            var result = JsonConvert.SerializeObject(repository.GetUsers());
+            return Ok(result);
         }
 
         // GET api/<UserController>/5

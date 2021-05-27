@@ -11,19 +11,19 @@ using TIPP.Shared;
 
 namespace TIPP.Server.Controllers
 {
-    [Route("api/[milestonecontroller]")]
+    [Route("api/[[milestone]]")]
     [ApiController]
     public class MilestoneController : ControllerBase
     {
         private IMilestoneRepository repository = MilestoneRepository.GetMilestoneRepository();
-        // GET: api/<MilestoneController>
+        // GET: api/<milestone>
         [HttpGet]
         public string GetAll()
         {
             return JsonConvert.SerializeObject(repository.GetMilestones());
         }
 
-        // GET api/<MilestoneController>/5
+        // GET api/<milestone>/5
         [HttpGet("{id}")]
         public string Get([FromBody]string value)
         {
@@ -40,7 +40,7 @@ namespace TIPP.Server.Controllers
             
         }
 
-        // POST api/<MilestoneController>
+        // POST api/<milestone>
         [HttpPost]
         public ObjectResult Post([FromBody] string value)
         {
@@ -63,7 +63,7 @@ namespace TIPP.Server.Controllers
             }
         }
 
-        // PUT api/<MilestoneController>/5
+        // PUT api/<milestone>/5
         [HttpPut("{id}")]
         public ObjectResult Put(int id, [FromBody] string value)
         {
@@ -86,7 +86,7 @@ namespace TIPP.Server.Controllers
             }
         }
 
-        // DELETE api/<MilestoneController>/5
+        // DELETE api/<milestone>/5
         [HttpDelete("{id}")]
         public ObjectResult Delete([FromBody]string value)
         {

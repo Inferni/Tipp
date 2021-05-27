@@ -9,14 +9,18 @@ namespace TIPP.Shared
     public class UserDTO
     {
         public int Id { get; }
-        public string Username { get; }
-        public string Password { get; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string Role { get; set; }
+        public UserDTO()
+        {
+        }
 
         public UserDTO(User user)
         {
             Id = user.Id;
             Username = user.Username;
-            Password = user.Password;
+            Role = user.Role;
         }
     }
 }

@@ -19,7 +19,11 @@ namespace TIPP.Shared
 
         public User(UserDTO dto)
         {
-            Id = dto.Id;
+            if(dto.Id!=null)
+            {
+                Id = dto.Id;
+
+            }
             Username = dto.Username;
             Password = dto.Password;
         }

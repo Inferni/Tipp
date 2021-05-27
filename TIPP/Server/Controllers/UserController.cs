@@ -49,6 +49,33 @@ namespace TIPP.Server.Controllers
             
         }
 
+        [HttpPost("authenticate")]
+        // POST api/<user>/authenticate
+        public async Task<IActionResult> Login([FromBody]UserDTO value)
+        {
+            Console.WriteLine(value.Username);
+            UserDTO authenticatedUser;
+            try
+            {
+                authenticatedUser = repository.Authenticate(value);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+            if(authenticatedUser==null)
+            {
+                return new BadRequestObjectResult("Username or Password incorrect");
+            }
+            else
+            {
+                var json = JsonConvert.SerializeObject(authenticatedUser);
+                return Ok(json);
+            }
+        }
+
         // POST api/<UserController>
         [HttpPost]
         public ObjectResult Post([FromBody] string value)

@@ -1,4 +1,5 @@
-﻿using TIPP.Server.Domain;
+﻿using System;
+using TIPP.Server.Domain;
 using TIPP.Server.Services.SQLServices;
 using TIPP.Shared;
 
@@ -7,7 +8,6 @@ namespace TIPP.Server.Repositories
     public class UserRepository : IUserRepository
     {
         
-        private static UserRepository self;
         private IUserService service;
 
 
@@ -17,22 +17,23 @@ namespace TIPP.Server.Repositories
             service = new UserSQLService(context);
         }
 
-        public static UserRepository GetRepository(tipp_DBContext context)
-        {
-            if(self != null)
-            {
-                return self;
-            }
-            else
-            {
-                self = new UserRepository(context);
-                return self;
-            }
-        }
-
         public object GetUsers()
         {
             return service.GetUsers();
+        }
+        public UserDTO Authenticate(UserDTO dto)
+        {
+            User userToAuthenticate = new User(dto);
+            Console.WriteLine(userToAuthenticate.Username);
+            User authenticatedUser = service.Authenticate(userToAuthenticate);
+            if(authenticatedUser == null)
+            {
+                return null;
+            }
+            else
+            {
+                return new UserDTO(authenticatedUser);
+            }
         }
 
         public bool CreateUser(UserDTO dto)

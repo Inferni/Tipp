@@ -9,12 +9,10 @@ namespace TIPP.Server.Services.SQLServices
     {
         private readonly tipp_DBContext context;
 
-        public MilestoneSQLService()
+        public MilestoneSQLService(tipp_DBContext context)
         {
-            this.context = new tipp_DBContext();
+            this.context = context;
         }
-
-
 
         public bool CreateMilestone(Milestone milestone)
         {

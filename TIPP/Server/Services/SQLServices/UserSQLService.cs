@@ -10,15 +10,15 @@ namespace TIPP.Server.Services.SQLServices
     {
         private tipp_DBContext context;
 
-        public UserSQLService()
+        public UserSQLService(tipp_DBContext context)
         {
-            this.context = new tipp_DBContext() ;
+            this.context = context;
         }
 
         public object GetUsers()
         {
             Console.WriteLine("Getting Users");
-            return new { Items = context.Users };
+            return context.Users;
         }
 
         public bool CreateUser(User user)

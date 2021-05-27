@@ -1,29 +1,17 @@
-﻿using TIPP.Server.Services.SQLServices;
+﻿using TIPP.Server.Domain;
+using TIPP.Server.Services.SQLServices;
 using TIPP.Shared;
 
 namespace TIPP.Server.Repositories
 {
     public class MilestoneRepository : IMilestoneRepository
     {
-        private static MilestoneRepository self;
         private IMileStoneService service;
-        private MilestoneRepository()
+        public MilestoneRepository(tipp_DBContext context)
         {
-            service = new MilestoneSQLService();
+            service = new MilestoneSQLService(context);
         }
 
-        public static MilestoneRepository GetMilestoneRepository()
-        {
-            if(self !=null)
-            {
-                return self;
-            }
-            else
-            {
-                self = new MilestoneRepository();
-                return self;
-            }
-        }
 
         public bool CreateMilestone(MilestoneDTO dto)
         {

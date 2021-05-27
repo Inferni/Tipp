@@ -1,4 +1,5 @@
-﻿using TIPP.Server.Services.SQLServices;
+﻿using TIPP.Server.Domain;
+using TIPP.Server.Services.SQLServices;
 using TIPP.Shared;
 
 namespace TIPP.Server.Repositories
@@ -9,13 +10,14 @@ namespace TIPP.Server.Repositories
         private static UserRepository self;
         private IUserService service;
 
-        private UserRepository()
+
+        public UserRepository(tipp_DBContext context)
         {
             
-            service = new UserSQLService();
+            service = new UserSQLService(context);
         }
 
-        public static UserRepository GetRepository()
+        public static UserRepository GetRepository(tipp_DBContext context)
         {
             if(self != null)
             {
@@ -23,7 +25,7 @@ namespace TIPP.Server.Repositories
             }
             else
             {
-                self = new UserRepository();
+                self = new UserRepository(context);
                 return self;
             }
         }

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
+using TIPP.Server.Domain;
 using TIPP.Server.Repositories;
 using TIPP.Shared;
 
@@ -13,7 +14,12 @@ namespace TIPP.Server.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private IUserRepository repository = UserRepository.GetRepository();
+        private IUserRepository repository;
+        public UserController(tipp_DBContext context)
+        {
+            this.repository = new UserRepository(context);
+
+        }
 
         // GET: api/<UserController>
         [HttpGet]
@@ -21,6 +27,7 @@ namespace TIPP.Server.Controllers
         {
             Console.WriteLine("Getting from API");
             var result = JsonConvert.SerializeObject(repository.GetUsers());
+
             return Ok(result);
         }
 

@@ -15,6 +15,7 @@ using TIPP.Server.Repositories;
 using TIPP.Server.Services.SQLServices;
 using TIPP.Server.Domain;
 using Microsoft.EntityFrameworkCore;
+using TIPP.Server.Controllers;
 
 namespace TIPP.Server
 {
@@ -51,8 +52,11 @@ namespace TIPP.Server
             services.AddRazorPages();
             services.AddControllers();
             services.AddScoped<HttpClient>();
+            services.AddScoped<tipp_DBContext>();
+            services.AddScoped<UserSQLService>();
             services.AddDbContext<tipp_DBContext>(option =>
                 option.UseSqlServer(Configuration.GetConnectionString("TippDatabase")));
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

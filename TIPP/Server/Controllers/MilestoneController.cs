@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TIPP.Server.Domain;
 using TIPP.Server.Repositories;
 using TIPP.Shared;
 
@@ -15,7 +16,15 @@ namespace TIPP.Server.Controllers
     [ApiController]
     public class MilestoneController : ControllerBase
     {
-        private IMilestoneRepository repository = MilestoneRepository.GetMilestoneRepository();
+        private readonly IMilestoneRepository repository;
+
+        public MilestoneController(tipp_DBContext context)
+        {
+            repository =  new MilestoneRepository(context);
+        }
+
+
+
         // GET: api/<milestone>
         [HttpGet]
         public string GetAll()

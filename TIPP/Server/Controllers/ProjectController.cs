@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TIPP.Server.Domain;
 using TIPP.Server.Repositories;
 using TIPP.Shared;
 
@@ -15,7 +16,13 @@ namespace TIPP.Server.Controllers
     [ApiController]
     public class ProjectController : ControllerBase
     {
-        private IProjectRepository repository = ProjectRepository.GetProjectRepository();
+
+        private IProjectRepository repository;
+
+        public ProjectController(tipp_DBContext context)
+        {
+            repository = new ProjectRepository(context);
+        }
 
         // GET: api/<project>
         [HttpGet]

@@ -1,29 +1,16 @@
-﻿using TIPP.Server.Services.SQLServices;
+﻿using TIPP.Server.Domain;
+using TIPP.Server.Services.SQLServices;
 using TIPP.Shared;
 
 namespace TIPP.Server.Repositories
 {
     public class ProjectRepository : IProjectRepository
     {
-        private static ProjectRepository self;
         private IProjectService service;
 
-        private ProjectRepository()
+        public ProjectRepository(tipp_DBContext context)
         {
-            service = new ProjectSQLService();
-        }
-
-        public static ProjectRepository GetProjectRepository()
-        {
-            if(self !=null)
-            {
-                return self;
-            }
-            else
-            {
-                self = new ProjectRepository();
-                return self;
-            }
+            service = new ProjectSQLService(context);
         }
 
         public bool CreateProject(ProjectDTO dto)

@@ -9,9 +9,9 @@ namespace TIPP.Server.Services.SQLServices
     {
         private readonly tipp_DBContext context;
 
-        public ActivitySQLService()
+        public ActivitySQLService(tipp_DBContext context)
         {
-            context = new tipp_DBContext();
+            this.context = context;
         }
 
         public bool CreateActivity(Activity activity)

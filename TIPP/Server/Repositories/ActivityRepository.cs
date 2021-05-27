@@ -1,30 +1,18 @@
-﻿using TIPP.Server.Services.SQLServices;
+﻿using TIPP.Server.Domain;
+using TIPP.Server.Services.SQLServices;
 using TIPP.Shared;
 
 namespace TIPP.Server.Repositories
 {
     public class ActivityRepository:IActivityRepository
     {
-        private static ActivityRepository self;
         private IActivityService service;
 
-        private ActivityRepository()
+        public ActivityRepository(tipp_DBContext context)
         {
-            service = new ActivitySQLService();
+            service = new ActivitySQLService(context);
         }
 
-        public static ActivityRepository GetActivityRepository()
-        {
-            if(self!=null)
-            {
-                return self;
-            }
-            else
-            {
-                self = new ActivityRepository();
-                return self;
-            }
-        }
 
         public bool CreateActivity(ActivityDTO dto)
         {

@@ -10,9 +10,9 @@ namespace TIPP.Server.Domain
 {
     public partial class tipp_DBContext : DbContext
     {
-        public tipp_DBContext()
-        {
-        }
+        //public tipp_DBContext()
+        //{
+        //}
 
         public tipp_DBContext(DbContextOptions<tipp_DBContext> options)
             : base(options)

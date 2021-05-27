@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TIPP.Server.Domain;
 using TIPP.Server.Repositories;
 using TIPP.Shared;
 
@@ -15,7 +16,14 @@ namespace TIPP.Server.Controllers
     [ApiController]
     public class ActivityController : ControllerBase
     {
-        private IActivityRepository repository = ActivityRepository.GetActivityRepository();
+        private readonly IActivityRepository repository;
+
+        public ActivityController(tipp_DBContext context)
+        {
+            repository = new ActivityRepository(context);
+        }
+
+
         // GET: api/<activity>
         [HttpGet]
         public object GetAll()

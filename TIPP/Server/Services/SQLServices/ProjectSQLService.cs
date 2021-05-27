@@ -9,10 +9,11 @@ namespace TIPP.Server.Services.SQLServices
     {
         private readonly tipp_DBContext context;
 
-        public ProjectSQLService()
+        public ProjectSQLService(tipp_DBContext context)
         {
-            context = new tipp_DBContext();
+            this.context = context;
         }
+
 
         public bool CreateProject(Project project)
         {

@@ -1,0 +1,15 @@
+﻿@page "/user/logout"
+@layout MainLayout
+@inject Service.IUserDataServiceLogin userDataService
+@inject NavigationManager navigationManager;
+
+@code {
+    protected override async void OnInitialized()
+    {
+        Console.WriteLine("Starting logout");
+        await userDataService.Logout();
+        Console.WriteLine("Logged out");
+        navigationManager.NavigateTo("/");
+        StateHasChanged();
+    }
+}

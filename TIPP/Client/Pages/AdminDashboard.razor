@@ -1,6 +1,7 @@
 ﻿@using TIPP.Shared
 @using Blazorise.DataGrid
 @page "/admin"
+@attribute [Authorize]
 <h3>AdminDashboard</h3>
 
 <DataGrid TItem="TIPP.Shared.User"
@@ -22,8 +23,8 @@
 
     async Task ReadUsers(DataGridReadDataEventArgs<TIPP.Shared.User> e)
     {
-        TIPP.Shared.User testuser = new TIPP.Shared.User(0, "test", "test", "admin");
-        TIPP.Shared.User testuser2 = new TIPP.Shared.User(1, "test1", "test1", "user");
+        TIPP.Shared.User testuser = new TIPP.Shared.User(0, "test", "test", Role.Admin);
+        TIPP.Shared.User testuser2 = new TIPP.Shared.User(1, "test1", "test1", Role.User);
         userList = new List<TIPP.Shared.User>();
         userList.Add(testuser);
         userList.Add(testuser2);

@@ -1,4 +1,4 @@
-﻿@page "/account/login"
+﻿@page "/user/login"
 @inject Service.IUserDataServiceLogin UserService
 
 @inject NavigationManager NavigationManager
@@ -39,7 +39,9 @@
         loading = true;
         try
         {
+            Console.WriteLine("Starting login");
             await UserService.Login(model);
+            Console.WriteLine("Login finished");
             NavigationManager.NavigateTo("");
 
         }

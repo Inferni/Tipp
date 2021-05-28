@@ -9,20 +9,40 @@ namespace BlazorApp.Helpers
 {
     public class AppRouteView : RouteView
     {
+        //[Inject]
+        //public NavigationManager NavigationManager { get; set; }
+
+        //[Inject]
+        //public IUserDataService userDataService { get; set; }
+
+        //protected override void Render(RenderTreeBuilder builder)
+        //{
+        //    Console.WriteLine("Authorizing");
+        //    var authorize = Attribute.GetCustomAttribute(RouteData.PageType, typeof(AuthorizeAttribute)) != null;
+        //    if (authorize && userDataService.User == null)
+        //    {
+        //        var returnUrl = WebUtility.UrlEncode(new Uri(NavigationManager.Uri).PathAndQuery);
+        //        Console.WriteLine(returnUrl);
+        //        NavigationManager.NavigateTo($"user/login");
+        //    }
+        //    else
+        //    {
+        //        base.Render(builder);
+        //    }
+        //}
+
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
         [Inject]
-        public IUserDataService userDataService { get; set; }
+        public IUserDataService AccountService { get; set; }
 
         protected override void Render(RenderTreeBuilder builder)
         {
-            Console.WriteLine("RENDERING");
             var authorize = Attribute.GetCustomAttribute(RouteData.PageType, typeof(AuthorizeAttribute)) != null;
-            if (authorize && userDataService.User == null)
+            if (authorize && AccountService.User == null)
             {
                 var returnUrl = WebUtility.UrlEncode(new Uri(NavigationManager.Uri).PathAndQuery);
-                Console.WriteLine("TO LOGIN");
                 NavigationManager.NavigateTo($"user/login?returnUrl={returnUrl}");
             }
             else

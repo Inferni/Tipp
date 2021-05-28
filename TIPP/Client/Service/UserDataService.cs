@@ -29,8 +29,8 @@ namespace TIPP.Client.Service
 
         public async Task Initialize()
         {
-            Console.WriteLine("Getting user");
             User = await _localStorageService.GetItem<Models.User>(_userKey);
+ 
         }
 
 
@@ -55,11 +55,18 @@ namespace TIPP.Client.Service
             throw new NotImplementedException();
         }
 
-        public async Task<Models.User> Login(Login model)
+        public async Task Login(Login model)
         {
+            //User = await _httpService.Post<Models.User>("user/authenticate", model);
+            //Console.WriteLine("User from backend: " + User.Username);
+            //await _localStorageService.SetItem(_userKey, User);
+            //Console.WriteLine("User set: " + _localStorageService.GetItem<Models.User>(_userKey));
+            //await this.Initialize();
+            //return User;
+
             User = await _httpService.Post<Models.User>("user/authenticate", model);
             await _localStorageService.SetItem(_userKey, User);
-            return User;
+
         }
 
         public async Task Logout()

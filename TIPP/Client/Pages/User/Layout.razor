@@ -1,6 +1,27 @@
-﻿@inherits LayoutComponentBase
+﻿@*@inherits LayoutComponentBase
+    @layout MainLayout
+    @inject Service.IUserDataService userService
+    @inject NavigationManager NavigationManager
+
+    <div class="col-md-6 offset-md-3 mt-5">
+        @Body
+    </div>
+
+    @code {
+        protected override void OnInitialized()
+        {
+            // redirect to home if already logged in
+            if (userService.User != null)
+            {
+                //Console.WriteLine("user in service: " + userService.User.Username);
+                NavigationManager.NavigateTo("");
+            }
+        }
+    }*@
+
+@inherits LayoutComponentBase
 @layout MainLayout
-@inject Service.IUserDataService userService 
+@inject Service.IUserDataService AccountService
 @inject NavigationManager NavigationManager
 
 <div class="col-md-6 offset-md-3 mt-5">
@@ -11,9 +32,8 @@
     protected override void OnInitialized()
     {
         // redirect to home if already logged in
-        if (userService.User != null)
+        if (AccountService.User != null)
         {
-
             NavigationManager.NavigateTo("");
         }
     }

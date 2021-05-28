@@ -8,7 +8,16 @@
 @using TIPP.Shared 
 
 
-@switch (userDataService.User.Role)
+<div class="p-4">
+    <div class="container">
+        <h1>Actual index</h1>
+        <h1>Hi @userDataService.User.Username!</h1>
+        <p>You're logged in with Blazor WebAssembly!!</p>
+        <p><NavLink href="users">Manage</NavLink></p>
+    </div>
+</div>
+
+@*@switch (userDataService.User.Role)
 {
     case Role.User:
         <Dashboard></Dashboard>
@@ -18,4 +27,4 @@
         break;
     default:
         break;
-}
+}*@

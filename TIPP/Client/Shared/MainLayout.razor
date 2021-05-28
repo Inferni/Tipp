@@ -8,27 +8,16 @@
     @*<NavMenu />*@
     <!--</div>-->
 
-    @if (LoggedIn)
-    {
-        <div class="main">
-            <div class="top-row px-4">
-                <NavMenu></NavMenu>
-                @if (userDataService.User != null)
-                {
-                    <a class="ml-md-auto">@userDataService.User.Username</a>
-                    <NavLink href="user/logout" class="nav-item nav-link">Logout</NavLink>
-                }
-            </div>
+    <div class="main">
+        <div class="top-row px-4">
+            <NavMenu></NavMenu>
+            <a class="ml-md-auto">NAME</a>
         </div>
-    }
 
-    <div class="app-container @(LoggedIn ? "bg-light" : "")">
-        <Alert />
-        @Body
+        <div class="content px-4 @(LoggedIn() ? "bg-light" : "")">
+            @Body
+        </div>
     </div>
-
-
-
 </div>
 
 @code {

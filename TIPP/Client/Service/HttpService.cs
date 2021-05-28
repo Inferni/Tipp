@@ -23,8 +23,6 @@ namespace TIPP.Client.Service
         private ILocalStorageService _localStorageService;
         private IConfiguration _configuration;
 
-        private readonly string baseUri = "api/";
-
         public HttpService(
             HttpClient httpClient,
             NavigationManager navigationManager,
@@ -46,37 +44,37 @@ namespace TIPP.Client.Service
 
         public async Task Post(string uri, object value)
         {
-            var request = createRequest(HttpMethod.Post,baseUri+uri, value);
+            var request = createRequest(HttpMethod.Post, uri, value);
             await sendRequest(request);
         }
 
         public async Task<T> Post<T>(string uri, object value)
         {
-            var request = createRequest(HttpMethod.Post, baseUri+uri, value);
+            var request = createRequest(HttpMethod.Post, uri, value);
             return await sendRequest<T>(request);
         }
 
         public async Task Put(string uri, object value)
         {
-            var request = createRequest(HttpMethod.Put, baseUri + uri, value);
+            var request = createRequest(HttpMethod.Put, uri, value);
             await sendRequest(request);
         }
 
         public async Task<T> Put<T>(string uri, object value)
         {
-            var request = createRequest(HttpMethod.Put, baseUri + uri, value);
+            var request = createRequest(HttpMethod.Put, uri, value);
             return await sendRequest<T>(request);
         }
 
         public async Task Delete(string uri)
         {
-            var request = createRequest(HttpMethod.Delete, baseUri + uri);
+            var request = createRequest(HttpMethod.Delete, uri);
             await sendRequest(request);
         }
 
         public async Task<T> Delete<T>(string uri)
         {
-            var request = createRequest(HttpMethod.Delete, baseUri+uri);
+            var request = createRequest(HttpMethod.Delete, uri);
             return await sendRequest<T>(request);
         }
 

@@ -1,5 +1,4 @@
 ﻿using Microsoft.JSInterop;
-using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -26,7 +25,6 @@ namespace TIPP.Client.Service
 
         public async Task SetItem<T>(string key, T value)
         {
-            Console.WriteLine("Setting: " + key);
             await _jsRuntime.InvokeVoidAsync("localStorage.setItem", key, JsonSerializer.Serialize(value));
         }
 

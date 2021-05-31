@@ -4,7 +4,7 @@ namespace TIPP.Client.Service
 {
     interface IUserDataServiceLogin
     {
-        Task Login(Models.Login model);
+        Task<Models.User> Login(Models.Login model);
         Task Logout();
     }
 }

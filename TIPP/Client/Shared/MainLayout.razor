@@ -1,39 +1,38 @@
 ﻿@inherits LayoutComponentBase
 
 @inject Service.IUserDataService userDataService
-@inject NavigationManager navigationManager
+@inject NavigationManager 
 
 <div class="page">
     <!--<div class="sidebar">-->
     @*<NavMenu />*@
     <!--</div>-->
 
-    @if (LoggedIn)
-    {
-        <div class="main">
-            <div class="top-row px-4">
-                <NavMenu></NavMenu>
-                @if (userDataService.User != null)
-                {
-                    <a class="ml-md-auto">@userDataService.User.Username</a>
-                    <NavLink href="user/logout" class="nav-item nav-link">Logout</NavLink>
-                }
-            </div>
+    <div class="main">
+        <div class="top-row px-4">
+            <NavMenu></NavMenu>
+            @if (userDataService.User!=null)
+            {
+                <a class="ml-md-auto">@userDataService.User.Username</a>
+                <NavLink href="user/logout" class="nav-item nav-link">Logout</NavLink>
+            }
         </div>
-    }
 
-    <div class="app-container @(LoggedIn ? "bg-light" : "")">
-        <Alert />
-        @Body
+        <div class="content px-4 @(userDataService.User!=null ? "bg-light" : "")">
+            @Body
+        </div>
     </div>
-
-
-
 </div>
 
 @code {
-    public bool LoggedIn
+
+    protected override void OnInitialized()
     {
-        get { return userDataService.User != null; }
+        // redirect to home if already logged in
+        if (userDataService.User != null)
+        {
+
+            NavigationManager.NavigateTo("");
+        }
     }
 }

@@ -100,7 +100,9 @@ namespace TIPP.Server.Domain
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property(e => e.Role).HasColumnType("decimal(18, 0)");
+                entity.Property(e => e.Role)
+                    .IsRequired()
+                    .HasMaxLength(50);
 
                 entity.Property(e => e.Username)
                     .IsRequired()

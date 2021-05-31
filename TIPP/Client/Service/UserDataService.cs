@@ -29,8 +29,8 @@ namespace TIPP.Client.Service
 
         public async Task Initialize()
         {
-            //User = await _localStorageService.GetItem<Models.User>(_userKey);
-            
+            User = await _localStorageService.GetItem<Models.User>(_userKey);
+ 
         }
 
         public async Task<ObjectResult> CreateUser(UserDTO dto)
@@ -63,7 +63,7 @@ namespace TIPP.Client.Service
             //await this.Initialize();
             //return User;
 
-            User = await _httpService.Post<Models.User>("api/user/authenticate", model);
+            User = await _httpService.Post<Models.User>("user/authenticate", model);
             await _localStorageService.SetItem(_userKey, User);
 
         }

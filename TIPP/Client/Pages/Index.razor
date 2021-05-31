@@ -2,11 +2,26 @@
 @attribute [Authorize]
 @inject Service.IUserDataService UserService
 
+
 <div class="p-4">
     <div class="container">
-        @*<h1>Hi @UserService.User.Username!</h1>*@
+        <h1>Hi @UserService.User.Username!</h1>
         <p>You're logged in with Blazor WebAssembly!!</p>
         @*<p><NavLink href="users">Manage Users</NavLink></p>*@
+
+        @switch (UserService.User.Role)
+        {
+            case TIPP.Shared.Role.User:
+
+                break;
+            case TIPP.Shared.Role.Admin:
+                <p><NavLink href="/admin/{UserService.User.Id}">Manage Users</NavLink></p>
+                break;
+            default:
+                break;
+        }
     </div>
 </div>
+
+
 @*<Dashboard></Dashboard>*@

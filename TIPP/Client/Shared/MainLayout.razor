@@ -2,7 +2,7 @@
 @inject Service.IUserDataService AccountService
 @inject NavigationManager NavigationManager
 
-@if (LoggedIn)
+@if (LoggedIn())
 {
     <!-- nav -->
     <nav class="navbar navbar-expand navbar-dark bg-dark">
@@ -14,16 +14,17 @@
     </nav>
 }
 
-<div class="app-container @(LoggedIn ? "bg-light" : "")">
+<div class="app-container @(LoggedIn() ? "bg-light" : "")">
     @*<Alert />*@
     @Body
 </div>
 
 @code {
 
-    public bool LoggedIn
+    public bool LoggedIn()
     {
+        Console.WriteLine(AccountService.User.Role);
 
-        get { return AccountService.User != null; }
+        return AccountService.User != null;
     }
 }

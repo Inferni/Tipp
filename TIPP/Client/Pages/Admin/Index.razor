@@ -1,0 +1,9 @@
+﻿@page "/admin/{Id}"
+@attribute [Authorize]
+<h3>Admin Index</h3>
+
+@code {
+        [Parameter]
+        public string Id { get; set; }
+        
+}

@@ -15,13 +15,15 @@
 }
 
 <div class="app-container @(LoggedIn ? "bg-light" : "")">
-    <Alert />
+    @*<Alert />*@
     @Body
 </div>
 
 @code {
+
     public bool LoggedIn
     {
+
         get { return AccountService.User != null; }
     }
 }

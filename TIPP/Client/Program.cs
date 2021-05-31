@@ -43,7 +43,6 @@ namespace TIPP.Client
             var userDataService = host.Services.GetRequiredService<IUserDataService>();
             await userDataService.Initialize();
             await host.RunAsync();
-            await host.RunAsync();
         }
     }
 }

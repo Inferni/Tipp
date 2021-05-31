@@ -22,6 +22,12 @@ namespace TIPP.Client
             builder.RootComponents.Add<App>("#app");
 
             builder.Services
+                .AddScoped<IUserDataService, UserDataService>()
+                .AddScoped<IUserDataServiceLogin, UserDataService>()
+                .AddScoped<IHttpService, HttpService>()
+                .AddScoped<ILocalStorageService, LocalStorageService>();
+
+            builder.Services
               .AddBlazorise(options =>
               {
                   options.ChangeTextOnKeyPress = true;

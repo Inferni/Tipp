@@ -55,7 +55,7 @@ namespace TIPP.Client.Service
 
         public async Task<Models.User> Login(Login model)
         {
-            User = await _httpService.Post<Models.User>("/users/authenticate", model);
+            User = await _httpService.Post<Models.User>("api/user/authenticate", model);
             await _localStorageService.SetItem(_userKey, User);
             return User;
         }

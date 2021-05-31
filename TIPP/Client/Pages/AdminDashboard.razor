@@ -22,8 +22,8 @@
 
     async Task ReadUsers(DataGridReadDataEventArgs<User> e)
     {
-        User testuser = new User(0, "test", "test", "admin");
-        User testuser2 = new User(1, "test1", "test1", "user");
+        User testuser = new User(0, "test", "test", Role.Admin);
+        User testuser2 = new User(1, "test1", "test1", Role.User);
         userList = new List<User>();
         userList.Add(testuser);
         userList.Add(testuser2);

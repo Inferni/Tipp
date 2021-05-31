@@ -64,5 +64,12 @@ namespace TIPP.Client.Service
         {
             throw new NotImplementedException();
         }
+
+        public async Task Logout()
+        {
+            User = null;
+            await _localStorageService.RemoveItem(_userKey);
+            _navigationManager.NavigateTo("account/login");
+        }
     }
 }

@@ -4,9 +4,8 @@ using TIPP.Shared;
 
 namespace TIPP.Client.Service
 {
-    public interface IUserDataService
+    interface IUserDataService
     {
-        Models.User User { get; }
         Task<object> GetAllUsers();
         Task Initialize();
         Task<string> GetUser(UserDTO dto);

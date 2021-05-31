@@ -22,8 +22,7 @@ namespace BlazorApp.Helpers
             if (authorize && userDataService.User == null)
             {
                 var returnUrl = WebUtility.UrlEncode(new Uri(NavigationManager.Uri).PathAndQuery);
-                Console.WriteLine("TO LOGIN");
-                NavigationManager.NavigateTo($"user/login?returnUrl={returnUrl}");
+                NavigationManager.NavigateTo($"account/login?returnUrl={returnUrl}");
             }
             else
             {

@@ -72,10 +72,5 @@ namespace TIPP.Client.Service
         {
             throw new NotImplementedException();
         }
-
-        public Task Logout()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

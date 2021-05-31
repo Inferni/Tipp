@@ -11,7 +11,7 @@ namespace TIPP.Shared
         public int Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public string Role { get; set; }
+        public Role Role { get; set; }
 
         public User()
         {
@@ -28,7 +28,7 @@ namespace TIPP.Shared
             Password = dto.Password;
         }
 
-        public User(int id, string username, string password, string role)
+        public User(int id, string username, string password, Role role)
         {
             Id = id;
             Username = username;

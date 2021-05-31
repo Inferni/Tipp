@@ -33,6 +33,7 @@ namespace TIPP.Client.Service
  
         }
 
+
         public async Task<ObjectResult> CreateUser(UserDTO dto)
         {
             object result;
@@ -66,6 +67,13 @@ namespace TIPP.Client.Service
             User = await _httpService.Post<Models.User>("user/authenticate", model);
             await _localStorageService.SetItem(_userKey, User);
 
+        }
+
+        public async Task Logout()
+        {
+            User = null;
+            await _localStorageService.RemoveItem(_userKey);
+            _navigationManager.NavigateTo("user/login");
         }
 
         public Task<ObjectResult> UpdateUser(UserDTO dto)

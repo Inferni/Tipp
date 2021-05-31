@@ -1,0 +1,10 @@
+﻿@page "/user/logout"
+@layout MainLayout
+@inject Service.IUserDataServiceLogin userDataService
+
+@code {
+    protected override async void OnInitialized()
+    {
+        await userDataService.Logout();
+    }
+}

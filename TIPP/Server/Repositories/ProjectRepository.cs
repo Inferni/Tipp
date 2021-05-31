@@ -27,7 +27,10 @@ namespace TIPP.Server.Repositories
         {
             return service.GetProjects();
         }
-
+        public object GetProjectsByUserId(UserDTO dto)
+        {
+            return service.GetProjectsByUserId(dto);
+        }
         public ProjectDTO ReadProject(ProjectDTO dto)
         {
             return service.ReadProject(new Project(dto));

@@ -23,8 +23,13 @@
 
     public bool LoggedIn()
     {
-        Console.WriteLine(AccountService.User.Role);
-
-        return AccountService.User != null;
+        if(AccountService.User == null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }

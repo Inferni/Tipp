@@ -54,6 +54,13 @@ namespace TIPP.Server.Services.SQLServices
             return new { Items = context.Projects };
         }
 
+        public object GetProjectsByUserId(UserDTO dto)
+        {
+            object projectIds = context.ProjectUsers.Where(x => x.User == dto.Id);
+            object projects = context.Projects.Where(x => x.Id.Equals( projectIds));
+            return projects;
+        }
+
         public ProjectDTO ReadProject(Project project)
         {
             Project projectRetrieved;

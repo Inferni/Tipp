@@ -6,6 +6,7 @@ using TIPP.Shared;
 
 namespace TIPP.Server.Services.SQLServices
 {
+
     public class UserSQLService : IUserService
     {
         private tipp_DBContext context;
@@ -20,6 +21,8 @@ namespace TIPP.Server.Services.SQLServices
             Console.WriteLine("Getting Users");
             return context.Users;
         }
+
+   
 
         public User Authenticate(User user)
         {
@@ -113,6 +116,14 @@ namespace TIPP.Server.Services.SQLServices
             }
 
             return true;
+        }
+
+        public object GetUsersByProjectId(ProjectDTO dto)
+        {
+            object userIds = context.ProjectUsers.Where(x => x.Project.Equals(dto.Id));
+            object users = context.Users.Where(x => x.Id.Equals(userIds));
+
+            return users;
         }
     }
 }

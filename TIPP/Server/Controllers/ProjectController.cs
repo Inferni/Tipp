@@ -48,7 +48,21 @@ namespace TIPP.Server.Controllers
             }
             
         }
+        [HttpGet("getbyuser/{id}")]
+        public object GetProjectsByUserId(int id)
+        {
+            try
+            {
+                UserDTO dto = new UserDTO(id);
+                return JsonConvert.SerializeObject(repository.GetProjectsByUserId(dto));
+            }
+            catch (Exception ex)
+            {
 
+                throw;
+            }
+
+        }
         // POST api/<project>
         [HttpPost]
         public ObjectResult Post([FromBody] string value)

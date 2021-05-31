@@ -49,6 +49,22 @@ namespace TIPP.Server.Controllers
             
         }
 
+        [HttpGet("/getbyproject/{id}")]
+        public string GetByProjectId(int id)
+        {
+            try
+            {
+                ProjectDTO dto = new ProjectDTO(id);
+                return JsonConvert.SerializeObject(repository.GetUsersByProject(dto));
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex);
+                return null;
+            }
+        }
+
         [HttpPost("authenticate")]
         // POST api/<user>/authenticate
         public async Task<IActionResult> Login([FromBody]UserDTO value)

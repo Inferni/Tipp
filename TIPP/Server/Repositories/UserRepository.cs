@@ -21,6 +21,11 @@ namespace TIPP.Server.Repositories
         {
             return service.GetUsers();
         }
+
+        public object GetUsersByProject(ProjectDTO dto)
+        {
+            return service.GetUsersByProjectId(dto);
+        }
         public UserDTO Authenticate(UserDTO dto)
         {
             User userToAuthenticate = new User(dto);

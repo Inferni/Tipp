@@ -27,6 +27,11 @@ namespace TIPP.Shared
             Activities = project.Activities;
         }
 
+        public ProjectDTO(int id)
+        {
+            Id = id;
+        }
+
         public ProjectDTO(int id, string name, bool completed, ICollection<Activity> activities)
         {
             Id = id;

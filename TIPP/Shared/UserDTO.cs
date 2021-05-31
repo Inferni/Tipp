@@ -16,6 +16,11 @@ namespace TIPP.Shared
         {
         }
 
+        public UserDTO(int id)
+        {
+            Id = id;
+        }
+
         public UserDTO(User user)
         {
             Id = user.Id;

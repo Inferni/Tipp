@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TIPP.Client.Models;
 using TIPP.Shared;
@@ -29,7 +30,16 @@ namespace TIPP.Client.Service
 
         public async Task Initialize()
         {
-            User = await _localStorageService.GetItem<Models.User>(_userKey);
+            try
+            {
+                User = await _localStorageService.GetItem<Models.User>(_userKey);
+
+            }
+            catch (Exception)
+            {
+                User = null;
+                await _localStorageService.RemoveItem(_userKey);
+            }
         }
 
         public async Task<ObjectResult> CreateUser(UserDTO dto)
@@ -70,6 +80,13 @@ namespace TIPP.Client.Service
             User = null;
             await _localStorageService.RemoveItem(_userKey);
             _navigationManager.NavigateTo("account/login");
+        }
+
+        public async Task<IList<Models.User>> GetAllUsersByProjectId(ProjectDTO dto)
+        {
+            IList<Models.User> users = await _httpService.Get<IList<Models.User>>("api/user/getbyproject/{dto.id}");
+            Console.WriteLine(users);
+            return users;
         }
     }
 }

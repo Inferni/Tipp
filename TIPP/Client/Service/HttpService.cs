@@ -109,8 +109,11 @@ namespace TIPP.Client.Service
         {
             await addJwtHeader(request);
 
+            Console.WriteLine("Sending Request");
+
             // send request
             using var response = await _httpClient.SendAsync(request);
+            Console.WriteLine("Respone received");
 
             // auto logout on 401 response
             if (response.StatusCode == HttpStatusCode.Unauthorized)
@@ -129,6 +132,7 @@ namespace TIPP.Client.Service
 
         private async Task addJwtHeader(HttpRequestMessage request)
         {
+            Console.WriteLine("Adding jwt header");
             // add jwt auth header if user is logged in and request is to the api url
             var user = await _localStorageService.GetItem<User>("user");
             var isApiUrl = !request.RequestUri.IsAbsoluteUri;

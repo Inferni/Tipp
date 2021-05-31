@@ -12,7 +12,7 @@ using TIPP.Shared;
 
 namespace TIPP.Server.Controllers
 {
-    [Route("api/[[project]]")]
+    [Route("api/project")]
     [ApiController]
     public class ProjectController : ControllerBase
     {
@@ -51,6 +51,7 @@ namespace TIPP.Server.Controllers
         [HttpGet("getbyuser/{id}")]
         public object GetProjectsByUserId(int id)
         {
+            Console.WriteLine("Getting project by user with id: " + id);
             try
             {
                 UserDTO dto = new UserDTO(id);

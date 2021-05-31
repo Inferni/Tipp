@@ -9,6 +9,7 @@ namespace TIPP.Client.Helpers
     {
         public static NameValueCollection QueryString(this NavigationManager navigationManager)
         {
+
             return HttpUtility.ParseQueryString(new Uri(navigationManager.Uri).Query);
         }
 

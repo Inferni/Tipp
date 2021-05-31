@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TIPP.Server.Domain;
 using TIPP.Shared;
@@ -56,8 +57,21 @@ namespace TIPP.Server.Services.SQLServices
 
         public object GetProjectsByUserId(UserDTO dto)
         {
-            object projectIds = context.ProjectUsers.Where(x => x.User == dto.Id);
-            object projects = context.Projects.Where(x => x.Id.Equals( projectIds));
+            var projectIds = context.ProjectUsers.Where(x => x.User == dto.Id);
+            List<Project> projectsfromdb = context.Projects.ToList();
+            List<Project> projects = new List<Project>();
+            foreach (ProjectUser projectid in projectIds)
+            {
+                Console.WriteLine(projectid.Project);
+                foreach (Project project in projectsfromdb)
+                {
+                    if (projectid.Project.Equals(project.Id))
+                    {
+                        projects.Add(project);
+                    }
+                }
+            }
+            //object projects = context.Projects.Where(x => x.Id.Equals( projectIds));
             return projects;
         }
 

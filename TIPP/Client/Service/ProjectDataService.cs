@@ -38,10 +38,10 @@ namespace TIPP.Client.Service
 
         public async Task<IList<TIPP.Shared.Project>> GetAllProjectsByUserId(UserDTO dto)
         {
-           
-            IList<Project> users = await _httpService.Get<IList<Project>>("api/project/getbyuser/{dto.id}");
-            Console.WriteLine(users);
-            return users;
+            Console.WriteLine("api/project/getbyuser/{dto.id}");
+            IList<Project> projects = await _httpService.Get<IList<Project>>($"api/project/getbyuser/{dto.Id}");
+            Console.WriteLine(projects);
+            return projects;
         }
 
         public Task<string> GetProject(ProjectDTO dto)

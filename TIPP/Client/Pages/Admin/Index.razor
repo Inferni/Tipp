@@ -5,7 +5,7 @@
 @using TIPP.Shared
 @using Blazorise.DataGrid
 <h1>Users</h1>
-<NavLink href="users/add" class="btn btn-sm btn-success mb-2">Add User</NavLink>
+<NavLink href="project/add" class="btn btn-sm btn-success mb-2">Add User</NavLink>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -14,14 +14,14 @@
         </tr>
     </thead>
     <tbody>
-        @if (users != null)
+        @if (projects != null)
         {
-            foreach (var user in users)
+            foreach (var project in projects)
             {
                 <tr>
-                    <td>@user.Username</td>
+                    <td>@project.Name</td>
                     <td style="white-space: nowrap">
-                        <NavLink href="@($"users/edit/{user.Id}")" class="btn btn-sm btn-primary mr-1">Edit</NavLink>
+                        <NavLink href="@($"users/edit/{project.Id}")" class="btn btn-sm btn-primary mr-1">Edit</NavLink>
                         @*<button @onclick="@(() => DeleteUser(user.Id))" disabled="@user.IsDeleting" class="btn btn-sm btn-danger btn-delete-user">
                             @if (user.IsDeleting)
                             {
@@ -53,16 +53,19 @@
     [Parameter]
     public string Id { get; set; }
 
-    List<User> users;
-    User userSelected;
-    int totalUsers;
+    IList<Project> projects;
+
     private bool loading;
 
     protected override async Task OnInitializedAsync()
     {
         loading = true;
         UserDTO dto = new UserDTO(userService.User.Id);
-        Console.WriteLine(await projectService.GetAllProjectsByUserId(dto));
+        projects = await projectService.GetAllProjectsByUserId(dto);
+        foreach (var project in projects)
+        {
+            Console.WriteLine(project.Id);
+        }
         //users = await userService.GetAllUsersByProjectId()
         loading = false;
     }

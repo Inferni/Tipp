@@ -26,7 +26,7 @@ namespace TIPP.Server.Controllers
 
         // GET: api/<project>
         [HttpGet]
-        public object GetAll()
+        public string GetAll()
         {
             return JsonConvert.SerializeObject(repository.GetProjects());
         }
@@ -49,7 +49,7 @@ namespace TIPP.Server.Controllers
             
         }
         [HttpGet("getbyuser/{id}")]
-        public object GetProjectsByUserId(int id)
+        public string GetProjectsByUserId(int id)
         {
             Console.WriteLine("Getting project by user with id: " + id);
             try
@@ -66,14 +66,15 @@ namespace TIPP.Server.Controllers
         }
         // POST api/<project>
         [HttpPost]
-        public ObjectResult Post([FromBody] string value)
+        public ObjectResult Post([FromBody] ProjectDTO value)
         {
             try
             {
-                ProjectDTO dto = JsonConvert.DeserializeObject<ProjectDTO>(value);
+                //ProjectDTO dto = JsonConvert.DeserializeObject<ProjectDTO>(value);
 
-                if(repository.CreateProject(dto))
+                if(repository.CreateProject(value))
                 {
+
                     return new AcceptedResult("Project", value);
                 }
                 else
@@ -115,14 +116,14 @@ namespace TIPP.Server.Controllers
 
         // DELETE api/<project>/5
         [HttpDelete("{id}")]
-        public ObjectResult Delete([FromBody]string value)
+        public ObjectResult Delete(int id)
         {
             try
             {
-                ProjectDTO dto = JsonConvert.DeserializeObject<ProjectDTO>(value);
+                ProjectDTO dto = new ProjectDTO(id);
                 if (repository.DeleteProject(dto))
                 {
-                    return new AcceptedResult("Project", value);
+                    return new AcceptedResult("Project", dto);
                 }
                 else
                 {

@@ -125,5 +125,10 @@ namespace TIPP.Server.Services.SQLServices
 
             return users;
         }
+
+        public User GetUserById(UserDTO dto)
+        {
+            return context.Users.Where(x => x.Id.Equals(dto.Id)).FirstOrDefault();
+        }
     }
 }

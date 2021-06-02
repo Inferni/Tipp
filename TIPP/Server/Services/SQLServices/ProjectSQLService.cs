@@ -50,12 +50,16 @@ namespace TIPP.Server.Services.SQLServices
             return true;
         }
 
-        public object GetProjects()
+        public List<Project> GetProjects()
         {
-            return new { Items = context.Projects };
+            return context.Projects.ToList<Project>();
         }
-
-        public object GetProjectsByUserId(UserDTO dto)
+        public List<ProjectUser> GetProjectsFromProjectUserByAdminId(UserDTO dto)
+        {
+            List<ProjectUser> projects = context.ProjectUsers.Where(x => x.User == dto.Id).ToList();
+            return projects;
+        }
+        public List<Project> GetProjectsByUserId(UserDTO dto)
         {
             var projectIds = context.ProjectUsers.Where(x => x.User == dto.Id);
             List<Project> projectsfromdb = context.Projects.ToList();
@@ -120,6 +124,35 @@ namespace TIPP.Server.Services.SQLServices
                 throw;
             }
             return true;
+        }
+
+        public bool CreateUserProject(ProjectUser projectUser)
+        {
+            try
+            {
+                Console.WriteLine("Creating ProjectUser with ProjectId: "+ projectUser.ProjectNavigation.Id);
+                Console.WriteLine("Creating ProjectUser with UserID: " + projectUser.UserNavigation.Id);
+                projectUser.Project = projectUser.ProjectNavigation.Id;
+                projectUser.User = projectUser.UserNavigation.Id;
+                var response = context.ProjectUsers.Add(projectUser);
+                context.SaveChanges();
+
+                Console.WriteLine("Response: " + response);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+                throw;
+            }
+
+
+        }
+
+        public Project GetProjectById(int id)
+        {
+            return context.Projects.Where(x => x.Id .Equals(id)).FirstOrDefault();
         }
     }
 }

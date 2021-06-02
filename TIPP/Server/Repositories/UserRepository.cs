@@ -5,7 +5,7 @@ using TIPP.Shared;
 
 namespace TIPP.Server.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : IUserRepository, IUserRepositoryProjectRepository
     {
         
         private IUserService service;
@@ -65,6 +65,11 @@ namespace TIPP.Server.Repositories
         {
             User user = new User(dto);
             return service.DeleteUser(user);
+        }
+
+        public User GetUserById(UserDTO dto)
+        {
+            return service.GetUserById(dto);
         }
     }
 }

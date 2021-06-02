@@ -12,6 +12,8 @@ namespace TIPP.Shared
         public string Name { get; set; }
         public bool Completed { get; set; }
 
+        public int AdminID { get; set; }
+
         public virtual ICollection<Activity> Activities { get; set; }
 
         public ProjectDTO()

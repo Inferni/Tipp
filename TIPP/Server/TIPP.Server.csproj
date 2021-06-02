@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="Domain\DTOs\" />
-    <Folder Include="Helpers\" />
   </ItemGroup>
 
 

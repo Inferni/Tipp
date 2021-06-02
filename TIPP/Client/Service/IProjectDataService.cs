@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TIPP.Client.Models;
 using TIPP.Shared;
 
 namespace TIPP.Client.Service
@@ -14,7 +15,7 @@ namespace TIPP.Client.Service
         Task<IList<TIPP.Shared.Project>> GetAllProjectsByUserId(UserDTO dto);
         Task Initialize();
         Task<string> GetProject(ProjectDTO dto);
-        Task<ObjectResult> CreateProject(ProjectDTO dto);
+        Task CreateProject(AddProject dto);
         Task<ObjectResult> UpdateProject(ProjectDTO dto);
         Task<ObjectResult> DeleteProject(ProjectDTO dto);
     }

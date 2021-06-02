@@ -102,7 +102,7 @@ namespace TIPP.Client.Service
                 return;
             }
 
-            await handleErrors(response);
+            //await handleErrors(response);
         }
 
         private async Task<T> sendRequest<T>(HttpRequestMessage request)
@@ -122,7 +122,7 @@ namespace TIPP.Client.Service
                 return default;
             }
 
-            await handleErrors(response);
+            //await handleErrors(response);
 
             var options = new JsonSerializerOptions();
             options.PropertyNameCaseInsensitive = true;
@@ -140,14 +140,14 @@ namespace TIPP.Client.Service
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", user.Token);
         }
 
-        private async Task handleErrors(HttpResponseMessage response)
-        {
-            // throw exception on error response
-            if (!response.IsSuccessStatusCode)
-            {
-                var error = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
-                throw new Exception(error["message"]);
-            }
-        }
+        //private async Task handleErrors(HttpResponseMessage response)
+        //{
+        //    // throw exception on error response
+        //    if (!response.IsSuccessStatusCode)
+        //    {
+        //        var error = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
+        //        throw new Exception(error["message"]);
+        //    }
+        //}
     }
 }

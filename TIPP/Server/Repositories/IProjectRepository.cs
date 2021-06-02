@@ -1,11 +1,12 @@
-﻿using TIPP.Shared;
+﻿using System.Collections.Generic;
+using TIPP.Shared;
 
 namespace TIPP.Server.Repositories
 {
     interface IProjectRepository
     {
-        object GetProjects();
-        object GetProjectsByUserId(UserDTO dto);
+        List<Project> GetProjects();
+        List<Project> GetProjectsByUserId(UserDTO dto);
         bool CreateProject(ProjectDTO dto);
         ProjectDTO ReadProject(ProjectDTO dto);
         bool UpdateProject(ProjectDTO dto);

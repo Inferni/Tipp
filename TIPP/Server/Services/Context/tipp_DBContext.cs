@@ -75,21 +75,20 @@ namespace TIPP.Server.Domain
 
             modelBuilder.Entity<ProjectUser>(entity =>
             {
-                entity.HasNoKey();
 
                 entity.ToTable("ProjectUser");
 
                 entity.HasOne(d => d.ProjectNavigation)
                     .WithMany()
                     .HasForeignKey(d => d.Project)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProjectUser_Project");
+                    .OnDelete(DeleteBehavior.NoAction);
+                    //.HasConstraintName("FK_ProjectUser_Project");
 
                 entity.HasOne(d => d.UserNavigation)
                     .WithMany()
                     .HasForeignKey(d => d.User)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProjectUser_User");
+                    .OnDelete(DeleteBehavior.NoAction);
+                    //.HasConstraintName("FK_ProjectUser_User");
             });
 
             modelBuilder.Entity<User>(entity =>

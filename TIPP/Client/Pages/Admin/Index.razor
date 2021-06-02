@@ -5,7 +5,7 @@
 @using TIPP.Shared
 @using Blazorise.DataGrid
 <h1>Users</h1>
-<NavLink href="project/add" class="btn btn-sm btn-success mb-2">Add User</NavLink>
+<NavLink href="project/add" class="btn btn-sm btn-success mb-2">Add Project</NavLink>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -21,7 +21,8 @@
                 <tr>
                     <td>@project.Name</td>
                     <td style="white-space: nowrap">
-                        <NavLink href="@($"users/edit/{project.Id}")" class="btn btn-sm btn-primary mr-1">Edit</NavLink>
+                        <NavLink href="@($"project/edit/{project.Id}")" class="btn btn-sm btn-primary mr-1">Edit</NavLink>
+                        <NavLink href="@($"project/delete/{project.Id}")" class ="btn-danger mr-1 btn btn-sm">Delete</NavLink>
                         @*<button @onclick="@(() => DeleteUser(user.Id))" disabled="@user.IsDeleting" class="btn btn-sm btn-danger btn-delete-user">
                             @if (user.IsDeleting)
                             {

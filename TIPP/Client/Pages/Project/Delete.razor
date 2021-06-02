@@ -1,0 +1,19 @@
+﻿@page "/project/delete/{id}"
+@attribute [Authorize]
+@inject IProjectDataService projectDataService
+@inject IUserDataService userDataService
+@inject NavigationManager NavigationManager
+
+@code{
+    [Parameter]
+    public string Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        ProjectDTO dto = new ProjectDTO(Int32.Parse(Id));
+
+        await projectDataService.DeleteProject(dto);
+
+        NavigationManager.NavigateTo($"admin/{userDataService.User.Id}");
+    }
+}

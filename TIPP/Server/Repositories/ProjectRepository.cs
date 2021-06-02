@@ -1,4 +1,7 @@
-﻿using TIPP.Server.Domain;
+﻿using System;
+using System.Collections.Generic;
+using TIPP.Server.Domain;
+using TIPP.Server.Helpers;
 using TIPP.Server.Services.SQLServices;
 using TIPP.Shared;
 
@@ -7,15 +10,27 @@ namespace TIPP.Server.Repositories
     public class ProjectRepository : IProjectRepository
     {
         private IProjectService service;
+        private ProjectRepositoryHelper helper;
 
         public ProjectRepository(tipp_DBContext context)
         {
             service = new ProjectSQLService(context);
+            helper = new ProjectRepositoryHelper(context);
         }
 
         public bool CreateProject(ProjectDTO dto)
         {
-            return service.CreateProject(new Project(dto));
+            Console.WriteLine("Creating Project");
+            if(service.CreateProject(new Project(dto)))
+            {
+                helper.AddProjectUserAfterProjectCreation(dto);             
+            }
+            else
+            {
+                return false;
+            }
+
+            return false;
         }
 
         public bool DeleteProject(ProjectDTO dto)
@@ -23,11 +38,11 @@ namespace TIPP.Server.Repositories
             return service.DeleteProject(new Project(dto));
         }
 
-        public object GetProjects()
+        public List<Project> GetProjects()
         {
             return service.GetProjects();
         }
-        public object GetProjectsByUserId(UserDTO dto)
+        public List<Project> GetProjectsByUserId(UserDTO dto)
         {
             return service.GetProjectsByUserId(dto);
         }

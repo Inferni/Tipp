@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using TIPP.Shared;
 
@@ -8,6 +9,8 @@ namespace TIPP.Server.Domain
 {
     public partial class ProjectUser
     {
+        public int Id { get; set; }
+
         public int Project { get; set; }
         public int User { get; set; }
 

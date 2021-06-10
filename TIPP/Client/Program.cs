@@ -25,6 +25,8 @@ namespace TIPP.Client
                 .AddScoped<IUserDataService, UserDataService>()
                 .AddScoped<IUserDataServiceLogin, UserDataService>()
                 .AddScoped<IProjectDataService, ProjectDataService>()
+                .AddScoped<IActivityDataService, ActivityDataService>()
+                .AddScoped<IMilestoneDataService, MilestoneDataService>()
                 .AddScoped<IHttpService, HttpService>()
                 .AddScoped<ILocalStorageService, LocalStorageService>();
 

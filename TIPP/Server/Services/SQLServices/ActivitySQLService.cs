@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TIPP.Server.Domain;
 using TIPP.Shared;
@@ -19,6 +20,8 @@ namespace TIPP.Server.Services.SQLServices
             try
             {
                 context.Activities.Add(activity);
+                Console.WriteLine("Adding activity");
+
                 context.SaveChanges();
             }
             catch (Exception ex)
@@ -27,6 +30,7 @@ namespace TIPP.Server.Services.SQLServices
                 return false;
                 
             }
+            Console.WriteLine("Returning true");
 
             return true;
             
@@ -38,6 +42,9 @@ namespace TIPP.Server.Services.SQLServices
             try
             {
                 activityToDelete = context.Activities.Where(x => x.Id.Equals(activity.Id)).FirstOrDefault();
+                context.Remove(activityToDelete);
+                context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
@@ -47,13 +54,27 @@ namespace TIPP.Server.Services.SQLServices
 
             }
 
-            context.Activities.Remove(activityToDelete);
             return true;
         }
 
         public object GetActivities()
         {
             return new { Items = context.Activities };
+        }
+
+        public List<Activity> GetActivitiesByProjectId(int id)
+        {
+            List<Activity> activites;
+            try
+            {
+                activites = context.Activities.Where(x => x.ProjectId.Equals(id)).ToList();
+                return activites;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
         public ActivityDTO ReadActivity(Activity activity)

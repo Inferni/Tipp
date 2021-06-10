@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="TIPP.Server.Controllers.ActivityController">
+    <Position X="5.5" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAABAAAAAAAAACAEAAAAAAgAIAAAAAAg=</HashCode>
+      <FileName>Controllers\ActivityController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TIPP.Server.Controllers.MilestoneController">
+    <Position X="0.5" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAABAAAAAAAAACAEAAAgAAgAAAAAAAAg=</HashCode>
+      <FileName>Controllers\MilestoneController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TIPP.Server.Controllers.ProjectController">
+    <Position X="13.25" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAABgAAAAAAAACAUAAAAAAgAAAAAAAAg=</HashCode>
+      <FileName>Controllers\ProjectController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TIPP.Server.Controllers.UserController">
+    <Position X="23" Y="0.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAJAAAAAAAAACAEAAAAAAIAYAAAAAAg=</HashCode>
+      <FileName>Controllers\UserController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TIPP.Server.Repositories.ActivityRepository" BaseTypeListCollapsed="true">
+    <Position X="5.5" Y="7.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAABAAAEAAAAAIAAEAABAAAAAAEAAAIAAAAA=</HashCode>
+      <FileName>Repositories\ActivityRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TIPP.Server.Repositories.MilestoneRepository" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="7.75" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAQAAAIAAAAAAAAAAAAAAAEAAGAAAAgAAAA=</HashCode>
+      <FileName>Repositories\MilestoneRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TIPP.Server.Repositories.ProjectRepository" BaseTypeListCollapsed="true">
+    <Position X="13.25" Y="7.75" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAABAAAgAAAAAgAAAAwAAAAAQEAIAAAACAA=</HashCode>
+      <FileName>Repositories\ProjectRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TIPP.Server.Repositories.UserRepository" BaseTypeListCollapsed="true">
+    <Position X="23" Y="7.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAIAQAABAAEAAAAQIIAAQAAAAAAAMAAAAAAAAA=</HashCode>
+      <FileName>Repositories\UserRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TIPP.Server.Helpers.ProjectRepositoryHelper">
+    <Position X="18.25" Y="7.75" Width="4" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Helpers\ProjectRepositoryHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TIPP.Server.Domain.tipp_DBContext">
+    <Position X="0.5" Y="17.25" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAQAQAAAAAAAABAAAEAAAAAAAAAAAAIAAgQA=</HashCode>
+      <FileName>Services\Context\tipp_DBContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TIPP.Server.Services.SQLServices.ActivitySQLService" BaseTypeListCollapsed="true">
+    <Position X="5.25" Y="13.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAGAAAAAABAAAEAAAAAIAAAAABAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Services\SQLServices\ActivitySQLService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TIPP.Server.Services.SQLServices.MilestoneSQLService" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="13.75" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AgACAAAAAAQAAAIAAAAAAAAAAAAAAAAAACABAAgAAAA=</HashCode>
+      <FileName>Services\SQLServices\MilestoneSQLService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TIPP.Server.Services.SQLServices.ProjectSQLService" BaseTypeListCollapsed="true">
+    <Position X="13" Y="14.5" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAABAAAoAAAAAgAAAAwAAAAAQAAIAAAACEA=</HashCode>
+      <FileName>Services\SQLServices\ProjectSQLService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TIPP.Server.Services.SQLServices.UserSQLService" BaseTypeListCollapsed="true">
+    <Position X="23" Y="14.75" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>IAACAAAIAQAAAAAEAAAAQIIAAQQAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Services\SQLServices\UserSQLService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="TIPP.Server.Repositories.IActivityRepository">
+    <Position X="5.5" Y="4.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAABAAAEAAAAAIAAAAABAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Repositories\IActivityRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TIPP.Server.Repositories.IMilestoneRepository">
+    <Position X="0.5" Y="4.5" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAQAAAIAAAAAAAAAAAAAAAEAACAAAAgAAAA=</HashCode>
+      <FileName>Repositories\IMilestoneRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TIPP.Server.Repositories.IProjectRepository">
+    <Position X="13.25" Y="4.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAgAAAAAgAAAAwAAAAAAAAIAAAACAA=</HashCode>
+      <FileName>Repositories\IProjectRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TIPP.Server.Repositories.IProjectRepositoryActivityRepository">
+    <Position X="9.75" Y="4.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\IProjectRepositoryActivityRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TIPP.Server.Repositories.IUserRepository">
+    <Position X="23" Y="4.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAQAABAAEAAAAQIIAAQAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Repositories\IUserRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TIPP.Server.Repositories.IUserRepositoryProjectRepository">
+    <Position X="18.25" Y="4.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\IUserRepositoryProjectRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TIPP.Server.Services.SQLServices.IActivityService">
+    <Position X="5.25" Y="11.25" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAABAAAEAAAAAIAAAAABAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Services\SQLServices\IActivityService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TIPP.Server.Services.SQLServices.IMileStoneService">
+    <Position X="0.5" Y="11.25" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAQAAAIAAAAAAAAAAAAAAAAAACABAAgAAAA=</HashCode>
+      <FileName>Services\SQLServices\IMileStoneService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TIPP.Server.Services.SQLServices.IProjectService">
+    <Position X="13" Y="11.25" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAoAAAAAgAAAAwAAAAAQAAIAAAACEA=</HashCode>
+      <FileName>Services\SQLServices\IProjectService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TIPP.Server.Services.SQLServices.IUserService">
+    <Position X="23" Y="11.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAIAQAAAAAEAAAAQIIAAQQAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Services\SQLServices\IUserService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -28,9 +28,9 @@ namespace TIPP.Client.Service
 
         }
 
-        public Task<ObjectResult> DeleteProject(ProjectDTO dto)
+        public async Task DeleteProject(ProjectDTO dto)
         {
-            throw new NotImplementedException();
+            await _httpService.Delete($"api/project/{dto.Id}");
         }
 
         public Task<object> GetAllProjects()
@@ -45,9 +45,14 @@ namespace TIPP.Client.Service
             return projects;
         }
 
-        public Task<string> GetProject(ProjectDTO dto)
+        public async Task<IList<TIPP.Shared.User>> GetUsersByProjectId(ProjectDTO dto)
         {
-            throw new NotImplementedException();
+            return await _httpService.Get<IList<TIPP.Shared.User>>($"api/project/getusersbyprojectid/{dto.Id}");
+        }
+
+        public async Task<Project> GetProject(ProjectDTO dto)
+        {
+            return await _httpService.Get<Project>($"api/project/{dto.Id}");
         }
 
         public Task Initialize()
@@ -55,9 +60,9 @@ namespace TIPP.Client.Service
             throw new NotImplementedException();
         }
 
-        public Task<ObjectResult> UpdateProject(ProjectDTO dto)
+        public async Task UpdateProject(ProjectDTO dto)
         {
-            throw new NotImplementedException();
+            await _httpService.Put($"api/project/{dto.Id}", dto);
         }
     }
 }

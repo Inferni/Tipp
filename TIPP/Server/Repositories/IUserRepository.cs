@@ -9,9 +9,12 @@ namespace TIPP.Server.Repositories
 
         UserDTO Authenticate(UserDTO dto);
         bool CreateUser(UserDTO dto);
+        bool AddUserToProject(UserDTO userDTO);
         UserDTO ReadUser(UserDTO dto);
         bool UpdateUser(UserDTO dto);
         bool DeleteUser(UserDTO dto);
+        bool RemoveFromProject(UserDTO dto);
+
 
     }
 }

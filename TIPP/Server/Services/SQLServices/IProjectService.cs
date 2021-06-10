@@ -10,6 +10,7 @@ namespace TIPP.Server.Services.SQLServices
         Project GetProjectById(int id);
         List<Project> GetProjectsByUserId(UserDTO dto);
         List<ProjectUser> GetProjectsFromProjectUserByAdminId(UserDTO dto);
+        List<User> GetUsersByProjectId(ProjectDTO dto);
         bool CreateProject(Project project);
 
         bool CreateUserProject(ProjectUser projectUser);

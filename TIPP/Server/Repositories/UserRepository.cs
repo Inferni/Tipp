@@ -7,13 +7,13 @@ namespace TIPP.Server.Repositories
 {
     public class UserRepository : IUserRepository, IUserRepositoryProjectRepository
     {
-        
+
         private IUserService service;
 
 
         public UserRepository(tipp_DBContext context)
         {
-            
+
             service = new UserSQLService(context);
         }
 
@@ -31,7 +31,7 @@ namespace TIPP.Server.Repositories
             User userToAuthenticate = new User(dto);
             Console.WriteLine(userToAuthenticate.Username);
             User authenticatedUser = service.Authenticate(userToAuthenticate);
-            if(authenticatedUser == null)
+            if (authenticatedUser == null)
             {
                 return null;
             }
@@ -47,13 +47,26 @@ namespace TIPP.Server.Repositories
             return service.CreateUser(user);
         }
 
+        public bool AddUserToProject(UserDTO dto)
+        {
+            if (!dto.ProjectID.Equals(null))
+            {
+                User user = new User(dto);
+                return service.AddUserToProject(user, dto.ProjectID);
+            }
+            else
+            {
+                return false;
+            }
+
+        }
         public UserDTO ReadUser(UserDTO dto)
         {
             User user = new User(dto);
             UserDTO retrievedUser = service.ReadUser(user);
             return retrievedUser;
         }
-       
+
 
         public bool UpdateUser(UserDTO dto)
         {
@@ -66,6 +79,19 @@ namespace TIPP.Server.Repositories
             User user = new User(dto);
             return service.DeleteUser(user);
         }
+
+        public bool RemoveFromProject(UserDTO dto)
+        {
+            if(!dto.ProjectID.Equals(null)&& !dto.Id.Equals(null))
+            {
+                return service.RemoveFromProject(dto);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
         public User GetUserById(UserDTO dto)
         {

@@ -7,6 +7,7 @@ namespace TIPP.Server.Repositories
     {
         List<Project> GetProjects();
         List<Project> GetProjectsByUserId(UserDTO dto);
+        List<User> GetUsersByProjectId(ProjectDTO dto);
         bool CreateProject(ProjectDTO dto);
         ProjectDTO ReadProject(ProjectDTO dto);
         bool UpdateProject(ProjectDTO dto);

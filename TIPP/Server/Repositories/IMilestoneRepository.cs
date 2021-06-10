@@ -1,10 +1,12 @@
-﻿using TIPP.Shared;
+﻿using System.Collections.Generic;
+using TIPP.Shared;
 
 namespace TIPP.Server.Repositories
 {
     interface IMilestoneRepository
     {
         object GetMilestones();
+        List<MilestoneDTO> GetMilestonesByActivityId(MilestoneDTO dto);
         bool CreateMilestone(MilestoneDTO dto);
         MilestoneDTO ReadMilestone(MilestoneDTO dto);
         bool UpdateMilestone(MilestoneDTO dto);

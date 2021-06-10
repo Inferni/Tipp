@@ -64,6 +64,21 @@ namespace TIPP.Server.Controllers
             }
 
         }
+
+        [HttpGet("getusersbyprojectid/{id}")]
+        public string GetUsersByProjectId(int id)
+        {
+            try
+            {
+                ProjectDTO dto = new ProjectDTO(id);
+                return JsonConvert.SerializeObject(repository.GetUsersByProjectId(dto));
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
         // POST api/<project>
         [HttpPost]
         public ObjectResult Post([FromBody] ProjectDTO value)
@@ -92,14 +107,14 @@ namespace TIPP.Server.Controllers
 
         // PUT api/<project>/5
         [HttpPut("{id}")]
-        public ObjectResult Put(int id, [FromBody] string value)
+        public ObjectResult Put(int id, [FromBody] ProjectDTO dto)
         {
             try
             {
-                ProjectDTO dto = JsonConvert.DeserializeObject<ProjectDTO>(value);
+                //ProjectDTO dto = JsonConvert.DeserializeObject<ProjectDTO>(value);
                 if(repository.UpdateProject(dto))
                 {
-                    return new AcceptedResult("Project", value);
+                    return new AcceptedResult("Project", dto);
                 }
                 else
                 {
@@ -118,6 +133,7 @@ namespace TIPP.Server.Controllers
         [HttpDelete("{id}")]
         public ObjectResult Delete(int id)
         {
+            Console.WriteLine("Deleting: " + id);
             try
             {
                 ProjectDTO dto = new ProjectDTO(id);

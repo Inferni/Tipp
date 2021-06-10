@@ -7,7 +7,7 @@ using TIPP.Shared;
 
 namespace TIPP.Server.Repositories
 {
-    public class ProjectRepository : IProjectRepository
+    public class ProjectRepository : IProjectRepository, IProjectRepositoryActivityRepository
     {
         private IProjectService service;
         private ProjectRepositoryHelper helper;
@@ -23,7 +23,7 @@ namespace TIPP.Server.Repositories
             Console.WriteLine("Creating Project");
             if(service.CreateProject(new Project(dto)))
             {
-                helper.AddProjectUserAfterProjectCreation(dto);             
+                return helper.AddProjectUserAfterProjectCreation(dto);             
             }
             else
             {
@@ -38,6 +38,11 @@ namespace TIPP.Server.Repositories
             return service.DeleteProject(new Project(dto));
         }
 
+        public Project GetProjectById(int id)
+        {
+            return service.GetProjectById(id);
+        }
+
         public List<Project> GetProjects()
         {
             return service.GetProjects();
@@ -45,6 +50,11 @@ namespace TIPP.Server.Repositories
         public List<Project> GetProjectsByUserId(UserDTO dto)
         {
             return service.GetProjectsByUserId(dto);
+        }
+
+        public List<User> GetUsersByProjectId(ProjectDTO dto)
+        {
+            return service.GetUsersByProjectId(dto);
         }
         public ProjectDTO ReadProject(ProjectDTO dto)
         {

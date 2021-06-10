@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="TIPP.Server.Controllers.ActivityController">
+    <Position X="6.75" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAABAAAAAAAAACAEAAAAAAgAIAAAAAAg=</HashCode>
+      <FileName>Controllers\ActivityController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TIPP.Server.Controllers.MilestoneController">
+    <Position X="0.5" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAABAAAAAAAAACAEAAAgAAgAAAAAAAAg=</HashCode>
+      <FileName>Controllers\MilestoneController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TIPP.Server.Repositories.ActivityRepository" BaseTypeListCollapsed="true">
+    <Position X="6.75" Y="7.25" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAABAAAEAAAAAIAAEAABAAAAAAEAAAIAAAAA=</HashCode>
+      <FileName>Repositories\ActivityRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TIPP.Server.Repositories.MilestoneRepository" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="7.25" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAQAAAIAAAAAAAAAAAAAAAEAAGAAAAgAAAA=</HashCode>
+      <FileName>Repositories\MilestoneRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="TIPP.Server.Repositories.IActivityRepository">
+    <Position X="6.75" Y="4.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAABAAAEAAAAAIAAAAABAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Repositories\IActivityRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TIPP.Server.Repositories.IMilestoneRepository">
+    <Position X="0.5" Y="4.5" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAQAAAIAAAAAAAAAAAAAAAEAACAAAAgAAAA=</HashCode>
+      <FileName>Repositories\IMilestoneRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

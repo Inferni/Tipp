@@ -65,6 +65,22 @@ namespace TIPP.Server.Controllers
             }
         }
 
+        [HttpPost("addtoproject")]
+        public string AddToProject([FromBody]UserDTO dto)
+        {
+            Console.WriteLine("Adding user to project");
+            try
+            {
+                return JsonConvert.SerializeObject(repository.AddUserToProject(dto));
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+
         [HttpPost("authenticate")]
         // POST api/<user>/authenticate
         public async Task<IActionResult> Login([FromBody]UserDTO value)
@@ -145,14 +161,14 @@ namespace TIPP.Server.Controllers
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
-        public ObjectResult Delete([FromBody] string value)
+        public ObjectResult Delete(int id)
         {
             try
             {
-                UserDTO dto = JsonConvert.DeserializeObject<UserDTO>(value);
+                UserDTO dto = new UserDTO(id);
                 if(repository.DeleteUser(dto))
                 {
-                    return new AcceptedAtActionResult("Delete", "UserController", dto.Id, value);
+                    return new AcceptedAtActionResult("Delete", "UserController", dto.Id, id);
                 }
                 else
                 {
@@ -164,6 +180,25 @@ namespace TIPP.Server.Controllers
 
                 Console.WriteLine(ex);
                 return new BadRequestObjectResult(false);
+            }
+        }
+
+        [HttpDelete("removefromproject")]
+        public ObjectResult RemoveFromProject([FromBody]UserDTO dto)
+        {
+            try
+            {
+                if (repository.RemoveFromProject(dto))
+                {
+                    return new AcceptedResult();
+                }
+                else
+                    return new BadRequestObjectResult(false);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using TIPP.Server.Domain;
+﻿using System.Collections.Generic;
+using TIPP.Server.Domain;
 using TIPP.Server.Services.SQLServices;
 using TIPP.Shared;
 
@@ -28,6 +29,19 @@ namespace TIPP.Server.Repositories
         public object GetMilestones()
         {
             return service.GetMilestones();
+        }
+
+        public List<MilestoneDTO> GetMilestonesByActivityId(MilestoneDTO dto)
+        {
+            List<Milestone> milestones = service.GetMilestonesByActivityID(dto);
+            List<MilestoneDTO> dtos = new List<MilestoneDTO>();
+
+            foreach (Milestone milestone in milestones)
+            {
+                MilestoneDTO milestoneDTO = new MilestoneDTO(milestone);
+                dtos.Add(milestoneDTO);
+            }
+            return dtos;
         }
 
         public MilestoneDTO ReadMilestone(MilestoneDTO dto)

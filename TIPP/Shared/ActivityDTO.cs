@@ -14,6 +14,10 @@ namespace TIPP.Shared
 
         public virtual Project Project { get; set; }
 
+        public ActivityDTO()
+        {
+        }
+
         public ActivityDTO(Activity activity)
         {
             Id = activity.Id;

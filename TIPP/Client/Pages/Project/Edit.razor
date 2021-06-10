@@ -1,0 +1,418 @@
+﻿@page "/project/edit/{id}"
+@attribute [Authorize]
+@inject IProjectDataService projectDataService
+@inject IUserDataService userDataService
+@inject IActivityDataService activityDataService
+@inject IMilestoneDataService milestoneDataService 
+@inject NavigationManager NavigationManager
+@if (modelProject != null)
+{
+    <h1>Edit Project: @modelProject.Name</h1>
+
+    <EditForm Model="@modelProject" OnValidSubmit="OnValidSubmitProjectNameChanged">
+        <DataAnnotationsValidator />
+        <div class="form-row">
+            <div class="form-group col">
+                <label>Project Name</label>
+                <InputText @bind-Value="modelProject.Name" class="form-control" />
+                <em>(Leave blank to keep the same name)</em>
+                <ValidationMessage For="@(() => modelProject.Name)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <button disabled="@loading" class="btn btn-primary">
+                @if (loading)
+                {
+                    <span class="spinner-border spinner-border-sm mr-1"></span>
+                }
+                Save
+            </button>
+            <NavLink href=@($"admin/{userDataService.User.Id}") class="btn btn-link">Cancel</NavLink>
+        </div>
+    </EditForm>
+
+    //USERS
+    <div class="form-row">
+        <div class="form-group col">
+            <h1>Users</h1>
+        </div>
+        <div class="form-group col">
+            <button class="btn btn-primary" @onclick="AddingUser">Add new Users</button>
+            <EditForm Model="@modelUser" OnValidSubmit="OnValidSubmitAddUser">
+                <DataAnnotationsValidator />
+
+                @if (addingUser)
+                {
+
+                    <div class="form-group col">
+                        <label>UserName</label>
+                        <InputText @bind-Value="modelUser.Username" class="form-control" />
+                        <ValidationMessage For="@(() => modelUser.Username)" />
+                    </div>
+                    <div class="form-group">
+                        <button disabled="@loading" class="btn btn-primary">
+                            @if (loading)
+                            {
+                                <span class="spinner-border spinner-border-sm mr-1"></span>
+                            }
+                            Save
+                        </button>
+                        <NavLink class="btn btn-link" @onclick="AddingUser">Cancel</NavLink>
+                    </div>
+
+                }
+            </EditForm>
+        </div>
+    </div>
+
+    @foreach (TIPP.Shared.User user in UsersInProject)
+    {
+        <div class="form-row">
+            <div class="form-group col">
+                <label>@user.Username</label>
+            </div>
+            <div class="form-group col">
+                <button class="btn btn-primary" disabled="true">Edit</button>
+                <button class="btn btn-danger" @onclick="()=>RemoveUser(user)">Remove from project</button>
+            </div>
+        </div>
+    }
+
+
+    //ACTIVITIES
+    <div class="form-row">
+        <div class="form-group col">
+            <h1>Activites</h1>
+        </div>
+        <div class="form-group col">
+            <button class="btn btn-primary" @onclick="AddingActivity">Add new Activity</button>
+            <EditForm Model="@modelActivity" OnValidSubmit="OnValidSubmitAddActivity">
+                <DataAnnotationsValidator />
+
+                @if (addingActivity)
+                {
+
+                    <div class="form-group col">
+                        <label>Activity Name</label>
+                        <InputText @bind-Value="modelActivity.Name" class="form-control" />
+                        <ValidationMessage For="@(() => modelActivity.Name)" />
+                    </div>
+                    <div class="form-group">
+                        <button disabled="@loading" class="btn btn-primary">
+                            @if (loading)
+                            {
+                                <span class="spinner-border spinner-border-sm mr-1"></span>
+                            }
+                            Save
+                        </button>
+                        <NavLink class="btn btn-link" @onclick="AddingActivity">Cancel</NavLink>
+                    </div>
+
+                }
+            </EditForm>
+        </div>
+    </div>
+
+    @foreach (TIPP.Shared.Activity activity in Activities)
+    {
+        <div class="form-row">
+            <div class="form-group col">
+                <label>@activity.Name</label>
+            </div>
+            <div class="form-group col">
+                <button class="btn btn-primary" @onclick="()=>EditMilestones(activity)">Edit Milestones</button>
+                <button class="btn btn-danger" @onclick="()=>RemoveActivity(activity)">Remove from project</button>
+            </div>
+        </div>
+    }
+
+    //MILESTONES
+    if (activityToEdit != null)
+    {
+        <div class="form-row">
+            <div class="form-group col">
+                <h1>Milestones of @activityToEdit.Name</h1>
+            </div>
+            <div class="form-group col">
+                <button class="btn btn-primary" @onclick="AddingMilestone">Add new Activity</button>
+                <EditForm Model="@modelMilestone" OnValidSubmit="OnValidSubmitAddMilestone">
+                    <DataAnnotationsValidator />
+
+                    @if (addingMilestone)
+                    {
+
+                        <div class="form-group col">
+                            <label>Milestone Name</label>
+                            <InputText @bind-Value="modelMilestone.Name" class="form-control" />
+                            <ValidationMessage For="@(() => modelMilestone.Name)" />
+                        </div>
+                        <div class="form-group col"> @*FIGURE OUT HOW TO TURN THIS INTO NAME*@
+                            <label>User</label>
+                            <select class="form-control" id="UserId" name="UserId" asp-for="Id" asp-items="@UsersInProject"></select>
+                        </div>
+                        <div class="form-group">
+                            <button disabled="@loading" class="btn btn-primary">
+                                @if (loading)
+                                {
+                                    <span class="spinner-border spinner-border-sm mr-1"></span>
+                                }
+                                Save
+                            </button>
+                            <NavLink class="btn btn-link" @onclick="AddingMilestone">Cancel</NavLink>
+                        </div>
+
+                    }
+                </EditForm>
+            </div>
+        </div>
+
+        @foreach (TIPP.Shared.Milestone milestone in Milestones)
+        {
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>@milestone.Name</label>
+                </div>
+                <div class="form-group col">
+                    <label>@milestone.UserId</label> @*CHANGE INTO USERNAME*@
+                </div>
+                <div class="form-group col">
+                    <button class="btn btn-primary" disabled="true">Edit</button>
+                    <button class="btn btn-danger" @onclick="()=>RemoveMilestone(milestone)">Remove from project</button>
+                </div>
+            </div>
+        }
+
+    }
+
+
+
+
+}
+else
+{
+    <div class="text-center p-3">
+        <span class="spinner-border spinner-border-lg align-center"></span>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    private bool loading;
+    private bool addingUser = false;
+    private bool addingActivity = false;
+    private bool addingMilestone = false;
+
+    private ProjectDTO projectDTO;
+    private Project project;
+    private EditProject modelProject;
+
+    private UserDTO userDTO;
+    private TIPP.Client.Models.User modelUser;
+    private IList<TIPP.Shared.User> UsersInProject;
+
+    private ActivityDTO activityDTO;
+    private Models.Activity modelActivity;
+    private IList<TIPP.Shared.Activity> Activities;
+
+    private TIPP.Shared.Activity activityToEdit;
+    private MilestoneDTO milestoneDTO;
+    private Models.Milestone modelMilestone;
+    private IList<TIPP.Shared.Milestone> Milestones;
+
+    protected override async Task OnInitializedAsync()
+    {
+        loading = true;
+
+        projectDTO = new ProjectDTO(Int32.Parse(Id));
+        project = await projectDataService.GetProject(projectDTO);
+        projectDTO.Name = project.Name;
+
+        UsersInProject = await projectDataService.GetUsersByProjectId(projectDTO);
+
+        activityDTO = new ActivityDTO();
+        activityDTO.ProjectId = Int32.Parse(Id);
+        Activities = await activityDataService.GetActivitiesByProjectId(activityDTO);
+
+        milestoneDTO = new MilestoneDTO();
+
+        modelProject = new EditProject();
+        modelProject.Name = project.Name;
+        modelUser = new Models.User();
+        modelActivity = new Models.Activity();
+        modelMilestone = new Models.Milestone();
+
+        loading = false;
+    }
+
+    private void AddingUser()
+    {
+        addingUser = !addingUser;
+    }
+
+    private void AddingActivity()
+    {
+        addingActivity = !addingActivity;
+    }
+
+    private void AddingMilestone()
+    {
+        addingMilestone = !addingMilestone;
+    }
+
+    private async void OnValidSubmitProjectNameChanged()
+    {
+        loading = true;
+        try
+        {
+            projectDTO.Name = modelProject.Name;
+            projectDTO.Id = Int32.Parse(Id);
+            await projectDataService.UpdateProject(projectDTO);
+
+
+            //AlertService.Success("Update successful", keepAfterRouteChange: true);
+            NavigationManager.NavigateTo($"admin/{userDataService.User.Id}");
+        }
+        catch (Exception ex)
+        {
+            //AlertService.Error(ex.Message);
+            loading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async void OnValidSubmitAddUser()
+    {
+        Console.WriteLine("DDING USER");
+        loading = true;
+        try
+        {
+            userDTO = new UserDTO();
+            userDTO.Username = modelUser.Username;
+            userDTO.ProjectID = Int32.Parse(Id);
+            await userDataService.AddUserToProject(userDTO);
+            UsersInProject = await projectDataService.GetUsersByProjectId(projectDTO);
+
+            //AlertService.Success("Update successful", keepAfterRouteChange: true);
+            loading = false;
+            AddingUser();
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            //AlertService.Error(ex.Message);
+            Console.WriteLine(ex);
+            loading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async void OnValidSubmitAddActivity()
+    {
+        loading = true;
+
+        try
+        {
+            activityDTO.Name = modelActivity.Name;
+            activityDTO.ProjectId = Int32.Parse(Id);
+            await activityDataService.CreateActivity(activityDTO);
+            Activities = await activityDataService.GetActivitiesByProjectId(activityDTO);
+            loading = false;
+            AddingActivity();
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine(ex);
+            loading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async void OnValidSubmitAddMilestone()
+    {
+        loading = true;
+        try
+        {
+            milestoneDTO = new MilestoneDTO();
+            milestoneDTO.Name = modelMilestone.Name;
+
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
+    }
+
+    private async void RemoveUser(TIPP.Shared.User user)
+    {
+        Console.WriteLine("Removing user: " + user.Username + " " + user.Id + " " + "From project: " + Id);
+
+        UserDTO userToDelete = new UserDTO(user);
+        userToDelete.ProjectID = Int32.Parse(Id);
+        await userDataService.RemoveUserFromProject(userToDelete);
+        UsersInProject = await projectDataService.GetUsersByProjectId(projectDTO);
+
+        //AlertService.Success("Update successful", keepAfterRouteChange: true);
+        loading = false;
+        if (addingUser = true)
+        {
+            AddingUser();
+        }
+
+        StateHasChanged();
+    }
+
+    private async void RemoveActivity(TIPP.Shared.Activity activity)
+    {
+        loading = true;
+        ActivityDTO dto = new ActivityDTO(activity);
+        dto.ProjectId = Int32.Parse(Id);
+        await activityDataService.DeleteActivity(dto);
+        Activities = await activityDataService.GetActivitiesByProjectId(dto);
+        loading = false;
+        StateHasChanged();
+    }
+
+    private async void RemoveMilestone(TIPP.Shared.Milestone milestone)
+    {
+        loading = true;
+        milestoneDTO = new MilestoneDTO();
+        milestoneDTO.Id = milestone.Id;
+        await milestoneDataService.DeleteMilestone(milestoneDTO);
+        milestoneDTO.ActivityId = activityToEdit.Id;
+        Milestones = await milestoneDataService.GetMilestonesByActivityId(milestoneDTO);
+
+        loading = false;
+        StateHasChanged();
+    }
+
+    private async void EditMilestones(TIPP.Shared.Activity activity)
+    {
+        loading = true;
+        milestoneDTO = new MilestoneDTO();
+        milestoneDTO.ActivityId = activity.Id;
+        Milestones = await milestoneDataService.GetMilestonesByActivityId(milestoneDTO);
+        activityToEdit = activity;
+
+
+
+        //TODO: FOUND OUT WHICH USER HAS WHICH MILESTONE AND FIGURE OUT HOW TO DISPALY THEIR NAME ALONG SIDE THE RIGHT MILESTONE
+
+        loading = false;
+        StateHasChanged();
+    }
+
+    private void StopEditMilestones()
+    {
+        loading = true;
+        activityToEdit = null;
+        Milestones = null;
+
+        loading = false;
+        StateHasChanged();
+    }
+}

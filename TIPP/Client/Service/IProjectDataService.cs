@@ -13,10 +13,11 @@ namespace TIPP.Client.Service
         TIPP.Shared.Project Project { get; }
         Task<object> GetAllProjects();
         Task<IList<TIPP.Shared.Project>> GetAllProjectsByUserId(UserDTO dto);
+        Task<IList<TIPP.Shared.User>> GetUsersByProjectId(ProjectDTO dto);
         Task Initialize();
-        Task<string> GetProject(ProjectDTO dto);
+        Task<Project> GetProject(ProjectDTO dto);
         Task CreateProject(AddProject dto);
-        Task<ObjectResult> UpdateProject(ProjectDTO dto);
-        Task<ObjectResult> DeleteProject(ProjectDTO dto);
+        Task UpdateProject(ProjectDTO dto);
+        Task DeleteProject(ProjectDTO dto);
     }
 }

@@ -33,6 +33,7 @@ namespace TIPP.Server.Services.SQLServices
 
         public bool CreateUser(User user)
         {
+            Console.WriteLine("Creating user: " + user.Username);
             try
             {
                 context.Users.Add(user);
@@ -47,6 +48,42 @@ namespace TIPP.Server.Services.SQLServices
 
             return true;
         }
+
+        public bool AddUserToProject(User user, int projectId)
+        {
+            try
+            {
+                User userInDB;
+                ProjectUser projectUser = new ProjectUser();
+                Console.WriteLine("Searching for user");
+                if (context.Users.Where(x => x.Username == user.Username).Any())
+                {
+                    userInDB = context.Users.Where(x => x.Username == user.Username).FirstOrDefault();
+                    Console.WriteLine("User found: " + userInDB.Username);
+                }
+                else
+                {
+                    user.Password = "test";
+                    user.Role = Role.User;
+                    CreateUser(user);
+                    userInDB = context.Users.Where(x => x.Username == user.Username).FirstOrDefault();
+                }
+
+                projectUser.User = userInDB.Id;
+                projectUser.UserNavigation = userInDB;
+                projectUser.Project = projectId;
+                context.ProjectUsers.Add(projectUser);
+                context.SaveChanges();
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+        }
+
 
         public bool DeleteUser(User user)
         {
@@ -66,6 +103,24 @@ namespace TIPP.Server.Services.SQLServices
             context.Users.Remove(userToDelete);
             return true;
         }
+
+        public bool RemoveFromProject(UserDTO dto)
+        {
+
+            try
+            {
+                ProjectUser projectUser = context.ProjectUsers.Where(x => x.User.Equals(dto.Id) && x.Project.Equals(dto.ProjectID)).FirstOrDefault();
+                context.ProjectUsers.Remove(projectUser);
+                context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
 
         public UserDTO ReadUser(User user)
         {

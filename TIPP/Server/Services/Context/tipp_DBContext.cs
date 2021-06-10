@@ -40,7 +40,7 @@ namespace TIPP.Server.Domain
 
             modelBuilder.Entity<Activity>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                //entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -93,6 +93,8 @@ namespace TIPP.Server.Domain
 
             modelBuilder.Entity<User>(entity =>
             {
+                
+
                 entity.ToTable("User");
 
                 entity.Property(e => e.Password)
@@ -101,9 +103,12 @@ namespace TIPP.Server.Domain
 
                 entity.Property(e => e.Role).HasColumnType("decimal(18, 0)");
 
-                entity.Property(e => e.Username)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                entity.HasIndex(e => e.Username)
+                .IsUnique();
+
+                //entity.Property(e => e.Username)
+                //    .IsRequired()
+                //    .HasMaxLength(50);
             });
 
             OnModelCreatingPartial(modelBuilder);

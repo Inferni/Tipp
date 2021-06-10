@@ -48,9 +48,20 @@ namespace TIPP.Client.Service
             throw new NotImplementedException();
         }
 
-        public Task<ObjectResult> DeleteUser(UserDTO dto)
+        public async Task AddUserToProject(UserDTO dto)
         {
-            throw new NotImplementedException();
+            await _httpService.Post("api/user/addtoproject", dto);
+        }
+
+        public async Task DeleteUser(UserDTO dto)
+        {
+            await _httpService.Delete($"api/user/{dto.Id}");
+        }
+
+        public async Task RemoveUserFromProject(UserDTO dto)
+        {
+            await _httpService.DeleteItem($"api/user/removefromproject", dto);
+
         }
 
         public Task<object> GetAllUsers()

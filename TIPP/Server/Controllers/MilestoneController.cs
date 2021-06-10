@@ -12,7 +12,7 @@ using TIPP.Shared;
 
 namespace TIPP.Server.Controllers
 {
-    [Route("api/[[milestone]]")]
+    [Route("api/milestone")]
     [ApiController]
     public class MilestoneController : ControllerBase
     {
@@ -30,6 +30,16 @@ namespace TIPP.Server.Controllers
         public string GetAll()
         {
             return JsonConvert.SerializeObject(repository.GetMilestones());
+        }
+
+        [HttpGet("getbyactivityid/{id}")]
+        public string GetByActivityId(int id)
+        {
+            MilestoneDTO dto = new MilestoneDTO();
+            dto.ActivityId = id;
+            string result = JsonConvert.SerializeObject(repository.GetMilestonesByActivityId(dto));
+            Console.WriteLine(result);
+            return result;
         }
 
         // GET api/<milestone>/5

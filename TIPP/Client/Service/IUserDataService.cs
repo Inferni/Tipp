@@ -13,7 +13,9 @@ namespace TIPP.Client.Service
         Task Initialize();
         Task<string> GetUser(UserDTO dto);
         Task<ObjectResult> CreateUser(UserDTO dto);
+        Task AddUserToProject(UserDTO dto);
         Task<ObjectResult> UpdateUser(UserDTO dto);
-        Task<ObjectResult> DeleteUser(UserDTO dto);
+        Task DeleteUser(UserDTO dto);
+        Task RemoveUserFromProject(UserDTO dto);
     }
 }

@@ -72,6 +72,12 @@ namespace TIPP.Client.Service
             await sendRequest(request);
         }
 
+        public async Task DeleteItem(string uri, object value)
+        {
+            var request = createRequest(HttpMethod.Delete, uri, value);
+            await sendRequest(request);
+        }
+
         public async Task<T> Delete<T>(string uri)
         {
             var request = createRequest(HttpMethod.Delete, uri);
@@ -90,7 +96,8 @@ namespace TIPP.Client.Service
 
         private async Task sendRequest(HttpRequestMessage request)
         {
-            await addJwtHeader(request);
+            //await addJwtHeader(request);
+            Console.WriteLine("Sending Request");
 
             // send request
             using var response = await _httpClient.SendAsync(request);
@@ -107,14 +114,13 @@ namespace TIPP.Client.Service
 
         private async Task<T> sendRequest<T>(HttpRequestMessage request)
         {
-            await addJwtHeader(request);
+            //await addJwtHeader(request);
 
-            Console.WriteLine("Sending Request");
+            Console.WriteLine("Sending Request: " + request.ToString());
 
             // send request
             using var response = await _httpClient.SendAsync(request);
-            Console.WriteLine("Respone received");
-
+            Console.WriteLine("Respone received: "+  response.StatusCode);
             // auto logout on 401 response
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TIPP.Server.Domain;
 using TIPP.Shared;
@@ -37,7 +38,9 @@ namespace TIPP.Server.Services.SQLServices
             try
             {
                 milestoneToDelete = context.Milestones.Where(x => x.Id.Equals(milestone.Id)).FirstOrDefault();
-
+                context.Remove(milestoneToDelete);
+                context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
@@ -46,13 +49,27 @@ namespace TIPP.Server.Services.SQLServices
                 return false;
             }
 
-            context.Milestones.Remove(milestoneToDelete);
             return true;
         }
 
         public object GetMilestones()
         {
             return new { Items = context.Milestones };
+        }
+
+        public List<Milestone> GetMilestonesByActivityID(MilestoneDTO dto)
+        {
+            List<Milestone> milestones;
+            try
+            {
+                milestones = context.Milestones.Where(x => x.ActivityId.Equals(dto.ActivityId)).ToList();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return milestones;
         }
 
         public MilestoneDTO ReadMilestone(Milestone milestone)

@@ -12,7 +12,7 @@ using TIPP.Shared;
 
 namespace TIPP.Server.Controllers
 {
-    [Route("api/[[activity]]")]
+    [Route("api/activity")]
     [ApiController]
     public class ActivityController : ControllerBase
     {
@@ -47,17 +47,34 @@ namespace TIPP.Server.Controllers
                 
             }
         }
-
-        // POST api/<activity>
-        [HttpPost]
-        public ObjectResult Post([FromBody] string value)
+        [HttpGet("getbyprojectid/{id}")]
+        public string GetByProjectId(int id)
         {
             try
             {
-                ActivityDTO dto = JsonConvert.DeserializeObject<ActivityDTO>(value);
-                if(repository.CreateActivity(dto))
+                return JsonConvert.SerializeObject(repository.GetActivitiesByProjectId(id));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return null;
+
+            }
+        }
+       
+
+        // POST api/<activity>
+        [HttpPost]
+        public ObjectResult Post([FromBody] ActivityDTO value)
+        {
+            Console.WriteLine("Posting activity");
+            try
+            {
+                if(repository.CreateActivity(value))
                 {
-                    return new AcceptedResult("Activity", value);
+                    Console.WriteLine("Returning activity");
+
+                    return new AcceptedResult("Activity", value.Name);
                 }    
                 else
                 {
@@ -98,14 +115,15 @@ namespace TIPP.Server.Controllers
 
         // DELETE api/<activity>/5
         [HttpDelete("{id}")]
-        public ObjectResult Delete([FromBody] string value)
+        public ObjectResult Delete(int id)
         {
+            ActivityDTO dto = new ActivityDTO();
+            dto.Id = id;
             try
             {
-                ActivityDTO dto = JsonConvert.DeserializeObject<ActivityDTO>(value);
                 if (repository.DeleteActivity(dto))
                 {
-                    return new AcceptedResult("Activity", value);
+                    return new AcceptedResult("Activity", true);
                 }
                 else
                 {

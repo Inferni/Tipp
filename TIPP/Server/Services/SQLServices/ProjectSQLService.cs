@@ -46,7 +46,19 @@ namespace TIPP.Server.Services.SQLServices
                 return false;
                 
             }
-            context.Projects.Remove(projectToDelete);
+            if(projectToDelete !=null)
+            {
+                context.Projects.Remove(projectToDelete);
+                List<ProjectUser> projectsInProjectUser = context.ProjectUsers.Where(x => x.Project.Equals(projectToDelete.Id)).ToList();
+                Console.WriteLine("Deleting: " + projectToDelete.Name);
+                
+                foreach (var projectuser in projectsInProjectUser)
+                {
+                    context.ProjectUsers.Remove(projectuser);
+                }
+            }
+            
+            context.SaveChanges();
             return true;
         }
 
@@ -77,6 +89,26 @@ namespace TIPP.Server.Services.SQLServices
             }
             //object projects = context.Projects.Where(x => x.Id.Equals( projectIds));
             return projects;
+        }
+
+        public List<User>GetUsersByProjectId(ProjectDTO dto)
+        {
+            var userIds = context.ProjectUsers.Where(x => x.Project == dto.Id);
+            List<User> usersInDb = context.Users.ToList();
+            List<User> usersInProject = new List<User>();
+
+            foreach(var userid  in userIds)
+            {
+                foreach (var user in usersInDb)
+                {
+                    if(userid.User.Equals(user.Id))
+                    {
+                        usersInProject.Add(user);
+                    }
+                }
+            }
+
+            return usersInProject;
         }
 
         public ProjectDTO ReadProject(Project project)
@@ -116,6 +148,8 @@ namespace TIPP.Server.Services.SQLServices
                 projectToUpdate.Name = project.Name;
                 projectToUpdate.Completed = project.Completed;
                 projectToUpdate.Activities = project.Activities;
+                context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
@@ -123,7 +157,7 @@ namespace TIPP.Server.Services.SQLServices
                 return false;
                 throw;
             }
-            return true;
+            return false;
         }
 
         public bool CreateUserProject(ProjectUser projectUser)

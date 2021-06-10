@@ -15,7 +15,7 @@ namespace TIPP.Client.Service
         private ILocalStorageService _localStorageService;
         private string _userKey = "user";
 
-        public Models.User User { get; private set; }
+        public TIPP.Shared.User User { get; private set; }
 
         public UserDataService(
             IHttpService httpService,
@@ -32,7 +32,7 @@ namespace TIPP.Client.Service
         {
             try
             {
-                User = await _localStorageService.GetItem<Models.User>(_userKey);
+                User = await _localStorageService.GetItem<TIPP.Shared.User>(_userKey);
 
             }
             catch (Exception)
@@ -74,9 +74,11 @@ namespace TIPP.Client.Service
             throw new NotImplementedException();
         }
 
-        public async Task<Models.User> Login(Login model)
+        public async Task<TIPP.Shared.User> Login(Login model)
         {
-            User = await _httpService.Post<Models.User>("api/user/authenticate", model);
+            User = await _httpService.Post<TIPP.Shared.User>("api/user/authenticate", model);
+            Console.WriteLine($"Role: {User.Role}");
+            User.Password = null;
             await _localStorageService.SetItem(_userKey, User);
             return User;
         }

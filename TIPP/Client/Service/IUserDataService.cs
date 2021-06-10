@@ -7,7 +7,7 @@ namespace TIPP.Client.Service
 {
     public interface IUserDataService
     {
-        Models.User User { get; }
+        TIPP.Shared.User User { get; }
         Task<object> GetAllUsers();
         Task<IList<Models.User>> GetAllUsersByProjectId(ProjectDTO dto);
         Task Initialize();

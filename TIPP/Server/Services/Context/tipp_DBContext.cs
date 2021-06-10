@@ -59,9 +59,21 @@ namespace TIPP.Server.Domain
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property(e => e.TimeSpent).HasColumnType("decimal(18, 0)");
+                entity.Property(e => e.Completed).HasColumnType("bit");
 
                 entity.Property(e => e.Value).HasColumnType("decimal(18, 0)");
+                entity.Property(e => e.Type).HasColumnType("int");
+            });
+
+            modelBuilder.Entity<MilestoneProgression>(entity =>
+            {
+                entity.Property(e => e.MilestoneId)
+                .IsRequired()
+                .HasColumnType("int");
+
+                entity.Property(e => e.Value).HasColumnType("decimal(18, 0)");
+                entity.Property(e => e.Week).HasColumnType("nchar(10)");
+
             });
 
             modelBuilder.Entity<Project>(entity =>

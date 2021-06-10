@@ -88,6 +88,7 @@ namespace TIPP.Client.Service
 
         private HttpRequestMessage createRequest(HttpMethod method, string uri, object value = null)
         {
+            Console.WriteLine(uri);
             var request = new HttpRequestMessage(method, uri);
             if (value != null)
                 request.Content = new StringContent(JsonSerializer.Serialize(value), Encoding.UTF8, "application/json");

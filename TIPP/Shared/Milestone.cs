@@ -13,7 +13,10 @@ namespace TIPP.Shared
         public int ActivityId { get; set; }
         public int UserId { get; set; }
         public decimal? Value { get; set; }
-        public decimal? TimeSpent { get; set; }
+        public bool? Completed { get; set; }
+
+        public MilestoneType Type { get; set; }
+
 
         public Milestone()
         {
@@ -26,17 +29,18 @@ namespace TIPP.Shared
             ActivityId = dto.ActivityId;
             UserId = dto.UserId;
             Value = dto.Value;
-            TimeSpent = dto.TimeSpent;
+            Completed = dto.Completed;
+            Type = dto.Type;
         }
 
-        public Milestone(int id, string name, int activityId, int userId, decimal? value, decimal? timeSpent)
+        public Milestone(int id, string name, int activityId, int userId, decimal? value, decimal? timeSpent, bool? completed)
         {
             Id = id;
             Name = name;
             ActivityId = activityId;
             UserId = userId;
             Value = value;
-            TimeSpent = timeSpent;
+            Completed = completed;
         }
     }
 }

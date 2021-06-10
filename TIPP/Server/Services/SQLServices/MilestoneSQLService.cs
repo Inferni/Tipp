@@ -111,7 +111,7 @@ namespace TIPP.Server.Services.SQLServices
                 milestoneToUpdate.ActivityId = milestone.ActivityId;
                 milestoneToUpdate.UserId = milestone.UserId;
                 milestoneToUpdate.Value = milestone.Value;
-                milestoneToUpdate.TimeSpent = milestone.TimeSpent;
+                milestoneToUpdate.Completed = milestone.Completed;
                 context.SaveChanges();
             }
             catch (Exception ex)

@@ -12,7 +12,7 @@
         @switch (UserService.User.Role)
         {
             case TIPP.Shared.Role.User:
-
+                <p><NavLink href="/user/{UserService.User.Id}">Your projects</NavLink></p>
                 break;
             case TIPP.Shared.Role.Admin:
                 <p><NavLink href="/admin/{UserService.User.Id}">Manage Your Projects</NavLink></p>

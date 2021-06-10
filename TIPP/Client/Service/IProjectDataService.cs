@@ -10,7 +10,7 @@ namespace TIPP.Client.Service
 {
     public interface IProjectDataService
     {
-        TIPP.Shared.Project Project { get; }
+        TIPP.Shared.Project Project { get; set; }
         Task<object> GetAllProjects();
         Task<IList<TIPP.Shared.Project>> GetAllProjectsByUserId(UserDTO dto);
         Task<IList<TIPP.Shared.User>> GetUsersByProjectId(ProjectDTO dto);

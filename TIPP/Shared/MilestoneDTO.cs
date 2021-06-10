@@ -13,7 +13,8 @@ namespace TIPP.Shared
         public int ActivityId { get; set; }
         public int UserId { get; set; }
         public decimal? Value { get; set; }
-        public decimal? TimeSpent { get; set; }
+        public bool? Completed { get; set; }
+        public MilestoneType Type { get; set; }
 
         public MilestoneDTO()
         {
@@ -27,7 +28,8 @@ namespace TIPP.Shared
             ActivityId = milestone.ActivityId;
             UserId = milestone.UserId;
             Value = milestone.Value;
-            TimeSpent = milestone.TimeSpent;
+            Completed = milestone.Completed;
+            Type = milestone.Type;
         }
     }
 }

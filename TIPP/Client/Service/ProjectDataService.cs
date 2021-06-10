@@ -20,7 +20,7 @@ namespace TIPP.Client.Service
             _navigationManager = navigationManager;
         }
 
-        public Project Project { get; private set; }
+        public Project Project { get; set; }
 
         public async Task CreateProject(AddProject dto)
         {

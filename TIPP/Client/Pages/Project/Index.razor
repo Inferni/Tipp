@@ -1,0 +1,60 @@
+﻿@page "/project/{Id}"
+@attribute [Authorize]
+@inject Service.IUserDataService userService
+@inject Service.IProjectDataService projectService
+@using TIPP.Shared
+@using Blazorise.DataGrid
+@if (loading == false)
+{
+    if (project != null)
+    {
+        <h1>@project.Name</h1>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <ColleagueMilestones></ColleagueMilestones>
+                </div>
+                <div class="col-md-6">
+                    <PerformanceGraph></PerformanceGraph>
+                </div>
+                <div class="col-md-3">
+                    <MilestoneTracker></MilestoneTracker>
+                </div>
+            </div>
+
+        </div>
+    }
+
+}
+else
+{
+    <div class="text-center p-3">
+        <span class="spinner-border spinner-border-lg align-center"></span>
+    </div>
+}
+
+
+
+@code
+{
+    [Parameter]
+    public string Id { get; set; }
+    private bool loading;
+
+    private ProjectDTO projectDTO;
+    private Project project;
+
+    protected override async Task OnInitializedAsync()
+    {
+        loading = true;
+
+        projectDTO = new ProjectDTO(Int32.Parse(Id));
+        project = await projectService.GetProject(projectDTO);
+        projectDTO.Name = project.Name;
+
+        projectService.Project = project;
+
+        loading = false;
+    }
+}

@@ -18,6 +18,11 @@ namespace TIPP.Shared
         {
         }
 
+        public ActivityDTO(int projectId)
+        {
+            ProjectId = projectId;
+        }
+
         public ActivityDTO(Activity activity)
         {
             Id = activity.Id;

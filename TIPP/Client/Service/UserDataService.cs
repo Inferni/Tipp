@@ -76,6 +76,7 @@ namespace TIPP.Client.Service
 
         public async Task<TIPP.Shared.User> Login(Login model)
         {
+            Console.WriteLine("Authenticating");
             User = await _httpService.Post<TIPP.Shared.User>("api/user/authenticate", model);
             Console.WriteLine($"Role: {User.Role}");
             User.Password = null;

@@ -8,27 +8,24 @@ using TIPP.Server.Domain;
 using TIPP.Server.Repositories;
 using TIPP.Shared;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace TIPP.Server.Controllers
 {
-    [Route("api/project")]
+    [Route("api/milestone/progression")]
     [ApiController]
-    public class ProjectController : ControllerBase
+    public class MilestoneProgressionController
     {
+        IMilestoneProgressionRepository repository;
 
-        private IProjectRepository repository;
-
-        public ProjectController(tipp_DBContext context)
+        public MilestoneProgressionController(tipp_DBContext context)
         {
-            repository = new ProjectRepository(context);
+            repository = new MilestoneProgressionRepository(context);
         }
 
         // GET: api/<project>
         [HttpGet]
         public string GetAll()
         {
-            return JsonConvert.SerializeObject(repository.GetProjects());
+            return JsonConvert.SerializeObject(repository.GetMilestoneProgession());
         }
 
         // GET api/<project>/5
@@ -37,61 +34,31 @@ namespace TIPP.Server.Controllers
         {
             try
             {
-                ProjectDTO dto = new ProjectDTO();
+                MilestoneProgressionDTO dto = new MilestoneProgressionDTO();
                 dto.Id = id;
-                return JsonConvert.SerializeObject(repository.ReadProject(dto));
+                return JsonConvert.SerializeObject(repository.ReadMilestoneProgression(dto));
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 return null;
-                
-            }
-            
-        }
-        [HttpGet("getbyuser/{id}")]
-        public string GetProjectsByUserId(int id)
-        {
-            Console.WriteLine("Getting project by user with id: " + id);
-            try
-            {
-                UserDTO dto = new UserDTO(id);
-                return JsonConvert.SerializeObject(repository.GetProjectsByUserId(dto));
-            }
-            catch (Exception ex)
-            {
 
-                throw;
             }
 
         }
 
-        [HttpGet("getusersbyprojectid/{id}")]
-        public string GetUsersByProjectId(int id)
-        {
-            try
-            {
-                ProjectDTO dto = new ProjectDTO(id);
-                return JsonConvert.SerializeObject(repository.GetUsersByProjectId(dto));
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
         // POST api/<project>
         [HttpPost]
-        public ObjectResult Post([FromBody] ProjectDTO value)
+        public ObjectResult Post([FromBody] MilestoneProgressionDTO value)
         {
             try
             {
                 //ProjectDTO dto = JsonConvert.DeserializeObject<ProjectDTO>(value);
 
-                if(repository.CreateProject(value))
+                if (repository.CreateMilestoneProgession(value))
                 {
 
-                    return new AcceptedResult("Project", value);
+                    return new AcceptedResult("MilestoneProgession", value);
                 }
                 else
                 {
@@ -108,12 +75,12 @@ namespace TIPP.Server.Controllers
 
         // PUT api/<project>/5
         [HttpPut("{id}")]
-        public ObjectResult Put(int id, [FromBody] ProjectDTO dto)
+        public ObjectResult Put(int id, [FromBody] MilestoneProgressionDTO dto)
         {
             try
             {
                 //ProjectDTO dto = JsonConvert.DeserializeObject<ProjectDTO>(value);
-                if(repository.UpdateProject(dto))
+                if (repository.UpdateMilestoneProgression(dto))
                 {
                     return new AcceptedResult("Project", dto);
                 }
@@ -137,10 +104,10 @@ namespace TIPP.Server.Controllers
             Console.WriteLine("Deleting: " + id);
             try
             {
-                ProjectDTO dto = new ProjectDTO(id);
-                if (repository.DeleteProject(dto))
+                MilestoneProgressionDTO dto = new MilestoneProgressionDTO(id);
+                if (repository.DeleteMilestoneProgression(dto))
                 {
-                    return new AcceptedResult("Project", dto);
+                    return new AcceptedResult("Milestoneprogression delete", dto);
                 }
                 else
                 {

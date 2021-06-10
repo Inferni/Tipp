@@ -1,4 +1,9 @@
 ﻿@inject NavigationManager NavigationManager
+@attribute [Authorize]
+@inject Service.IUserDataService userService
+@inject Service.IProjectDataService projectDataService
+@inject Service.IMilestoneProgressionService milestoneProgressionService
+@inject Service.IActivityDataService activityDataService
 
 <div class="container">
     <div class="row">
@@ -16,35 +21,49 @@
     </div>
 </div>
 
-@*<Button Clicked="@ShowModal">Show Modal</Button>*@
 
-<Modal @ref="modalRef">
-    <ModalContent Centered="true">
-        <ModalHeader>
-            <ModalTitle>Kies een activiteit</ModalTitle>
-            <CloseButton />
-        </ModalHeader>
-        <ModalBody>
-            <Field>
-                <Button Color="Color.Primary" Clicked="@NavigateToTimer">Applicatie Vullen</Button>
-            </Field>
-            <Field>
-                <Button Color="Color.Primary" Clicked="@NavigateToTimer">Applicatie Testen</Button>
-            </Field>
-            <Field>
-                <Button Color="Color.Primary" Clicked="@NavigateToTimer">Instructies schrijven</Button>
-            </Field>
-            <Field>
-                <Button Color="Color.Primary" Clicked="@NavigateToTimer">Training geven</Button>
-            </Field>
-        </ModalBody>
-        <ModalFooter>
-            @*<Button class="close" Color="Color.Secondary" Clicked="@HideModal" aria-label="Close"></Button>*@
-        </ModalFooter>
-    </ModalContent>
-</Modal>
+@if (loading == false)
+{
+
+
+    @*<Button Clicked="@ShowModal">Show Modal</Button>*@
+
+    <Modal @ref="modalRef">
+        <ModalContent Centered="true">
+            <ModalHeader>
+                <ModalTitle>Kies een activiteit</ModalTitle>
+                <CloseButton />
+            </ModalHeader>
+            <ModalBody>
+                @if (activities != null)
+                {
+                    @foreach (var activity in activities)
+                    {
+                        <Field>
+                            <Button Color="Color.Primary" Clicked="() => SetActivity(activity)">@activity.Name</Button>
+                        </Field>
+                    }
+                }
+
+
+
+            </ModalBody>
+            <ModalFooter>
+                @*<Button class="close" Color="Color.Secondary" Clicked="@HideModal" aria-label="Close"></Button>*@
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+}
+else
+{
+    <div class="text-center p-3">
+        <span class="spinner-border spinner-border-lg align-center"></span>
+    </div>
+}
+
 @code {
 
+    private bool loading;
     // reference to the modal component
     private Modal modalRef;
 
@@ -58,11 +77,6 @@
         modalRef.Hide();
     }
 
-    private void NavigateToTimer()
-    {
-        NavigationManager.NavigateTo("timer");
-    }
-
     //https://blazorise.com/docs/extensions/chart/
 
     LineChart<double> lineChart;
@@ -72,6 +86,29 @@
         {
             await HandleRedraw();
         }
+    }
+
+
+    private IList<TIPP.Shared.Activity> activities;
+    private TIPP.Shared.Activity chosenActivity;
+
+    protected override async Task OnInitializedAsync()
+    {
+        loading = true;
+
+        int projectid = projectDataService.Project.Id;
+        activities = await activityDataService.GetActivitiesByProjectId(new ActivityDTO(projectid));
+
+        loading = false;
+
+    }
+
+    private void SetActivity(TIPP.Shared.Activity activity)
+    {
+        chosenActivity = activity;
+        HideModal();
+        //SHOWFIELD FOR PROGRESSION
+        Console.WriteLine(activity);
     }
 
     //Loop through all colleagues
@@ -174,10 +211,10 @@
             {
                 return new LineChartDataset<double>
                 {
-                    Label="Baseline",
+                    Label = "Baseline",
                     BackgroundColor = new List<string> { ChartColor.FromRgba(255, 255, 255, 0f) },
 
-                    Data = new List<double> { 8, 8,8,8,8,8,},
+                    Data = new List<double> { 8, 8, 8, 8, 8, 8, },
                     BorderColor = new List<string> { ChartColor.FromRgba(102, 204, 0, 1f) }, //Color of the Line
                     Fill = false,
                     PointRadius = 0,

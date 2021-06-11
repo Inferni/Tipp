@@ -121,5 +121,23 @@ namespace TIPP.Server.Controllers
                 return new BadRequestObjectResult(false);
             }
         }
+
+        [HttpGet("getprogressionwithuser/{id}/{projectid}")]
+        public string GetProjectProgressionWithUserId(int id, int projectid)
+        {
+            Console.WriteLine("getprogressionwithuser");
+            UserDTO dto = new UserDTO();
+            dto.Id = id;
+            dto.ProjectID = projectid;
+            try
+            {
+                return JsonConvert.SerializeObject(repository.GetProjectProgressionWithUserId(dto));
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
     }
 }

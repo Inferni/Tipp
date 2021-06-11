@@ -47,5 +47,10 @@ namespace TIPP.Client.Service
         {
             throw new NotImplementedException();
         }
+
+        public async Task<IList<MilestoneProgression>> GetProgressionWithUser(UserDTO dto)
+        {
+            return await _httpService.Get<IList<MilestoneProgression>>($"GetProgressionWithUser/{dto.Id}");
+        }
     }
 }

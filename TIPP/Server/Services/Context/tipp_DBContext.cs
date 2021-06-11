@@ -21,6 +21,7 @@ namespace TIPP.Server.Domain
 
         public virtual DbSet<Activity> Activities { get; set; }
         public virtual DbSet<Milestone> Milestones { get; set; }
+        public virtual DbSet<MilestoneProgression> MilestoneProgressions { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<ProjectUser> ProjectUsers { get; set; }
         public virtual DbSet<User> Users { get; set; }
@@ -62,7 +63,7 @@ namespace TIPP.Server.Domain
                 entity.Property(e => e.Completed).HasColumnType("bit");
 
                 entity.Property(e => e.Value).HasColumnType("decimal(18, 0)");
-                entity.Property(e => e.Type).HasColumnType("int");
+                entity.Property(e => e.Type).HasColumnType("int").HasColumnName("Milestonetype");
             });
 
             modelBuilder.Entity<MilestoneProgression>(entity =>

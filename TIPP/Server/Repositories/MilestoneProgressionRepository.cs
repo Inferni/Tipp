@@ -41,5 +41,10 @@ namespace TIPP.Server.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public List<MilestoneProgression> GetProjectProgressionWithUserId(UserDTO dto)
+        {
+            return service.GetProjectProgressionWithUserId(dto);
+        }
     }
 }

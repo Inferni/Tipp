@@ -13,5 +13,6 @@ namespace TIPP.Server.Repositories
         MilestoneProgressionDTO ReadMilestoneProgression(MilestoneProgressionDTO milestone);
         bool UpdateMilestoneProgression(MilestoneProgressionDTO milestone);
         bool DeleteMilestoneProgression(MilestoneProgressionDTO milestone);
+        List<MilestoneProgression> GetProjectProgressionWithUserId(UserDTO dto);
     }
 }

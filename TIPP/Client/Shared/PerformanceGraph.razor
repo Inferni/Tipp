@@ -99,9 +99,16 @@ else
         int projectid = projectDataService.Project.Id;
         activities = await activityDataService.GetActivitiesByProjectId(new ActivityDTO(projectid));
 
+        GetMilestoneProgression();
+
         loading = false;
 
     }
+
+    private void GetMilestoneProgression()
+        {
+
+        }
 
     private void SetActivity(TIPP.Shared.Activity activity)
     {

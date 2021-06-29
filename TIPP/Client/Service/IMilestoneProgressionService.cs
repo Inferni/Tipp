@@ -17,5 +17,6 @@ namespace TIPP.Client.Service
         Task DeleteMilestoneProgression(MilestoneProgressionDTO dto);
 
         Task<IList<MilestoneProgression>> GetProgressionWithUser(UserDTO dto);
+        Task<IList<MilestoneProgression>> GetProgressionWithMilestoneId(int milestoneid);
     }
 }

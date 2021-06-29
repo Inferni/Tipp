@@ -32,11 +32,12 @@ namespace TIPP.Server.Controllers
             return JsonConvert.SerializeObject(repository.GetMilestones());
         }
 
-        [HttpGet("getbyactivityid/{id}")]
-        public string GetByActivityId(int id)
+        [HttpGet("getbyactivityid/{userid}/{id}")]
+        public string GetByActivityId(int userid, int id)
         {
             MilestoneDTO dto = new MilestoneDTO();
             dto.ActivityId = id;
+            dto.UserId = userid;
             string result = JsonConvert.SerializeObject(repository.GetMilestonesByActivityId(dto));
             Console.WriteLine(result);
             return result;
@@ -66,9 +67,9 @@ namespace TIPP.Server.Controllers
             try
             {
                 MilestoneDTO dto = JsonConvert.DeserializeObject<MilestoneDTO>(value);
-                if(repository.CreateMilestone(dto))
+                if(repository.CreateMilestone(dto)!=null)
                 {
-                    return new AcceptedResult("Milestone", value);
+                    return new AcceptedResult("Milestone", dto.Name);
                 }
                 else
                 {
@@ -127,6 +128,24 @@ namespace TIPP.Server.Controllers
 
                 Console.WriteLine(ex);
                 return new BadRequestObjectResult(false);
+            }
+        }
+        [HttpPut("updatemilestonewithactivity/{userid}/{activityId}")]
+        public ObjectResult UpdateMilestoneWithActivityId(int userid, int activityId, [FromBody]MilestoneProgressionDTO progressionDTO)
+        {
+            Console.WriteLine("Updating milstone with activity");
+            MilestoneDTO dto = new MilestoneDTO();
+            dto.ActivityId = activityId;
+            dto.UserId = userid;
+            try
+            {
+                repository.UpdateMilestoneWithActivityId(dto, progressionDTO);
+                return new AcceptedResult("Milestone progression updated", progressionDTO.Value);
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
     }

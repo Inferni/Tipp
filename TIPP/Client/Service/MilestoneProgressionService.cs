@@ -50,7 +50,13 @@ namespace TIPP.Client.Service
 
         public async Task<IList<MilestoneProgression>> GetProgressionWithUser(UserDTO dto)
         {
-            return await _httpService.Get<IList<MilestoneProgression>>($"GetProgressionWithUser/{dto.Id}");
+            Console.WriteLine($"d{dto.Id} {dto.ProjectID}");
+            return await _httpService.Get<IList<MilestoneProgression>>($"api/milestone/progression/getprogressionwithuser/{dto.Id}/{dto.ProjectID}");
+        }
+
+        public async Task<IList<MilestoneProgression>> GetProgressionWithMilestoneId(int milestoneid)
+        {
+            return await _httpService.Get<IList<MilestoneProgression>>($"api/milestone/progression/GetByMilestoneId/{milestoneid}");
         }
     }
 }

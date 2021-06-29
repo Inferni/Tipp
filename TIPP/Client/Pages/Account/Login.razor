@@ -1,6 +1,7 @@
 ﻿@page "/account/login"
 @using TIPP.Shared
 @inject Service.IUserDataServiceLogin UserService
+@inject Service.IUserDataService UserDataService 
 
 @inject NavigationManager NavigationManager
 
@@ -40,7 +41,13 @@
         loading = true;
         try
         {
-            await UserService.Login(model);
+            TIPP.Shared.User user = await UserService.Login(model);
+            if(user!=null)
+            {
+                StateHasChanged();
+                await UserDataService.Initialize();
+
+            }
             NavigationManager.NavigateTo("");
 
         }

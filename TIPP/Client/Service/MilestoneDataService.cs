@@ -43,7 +43,7 @@ namespace TIPP.Client.Service
             Console.WriteLine(dto.ActivityId);
             try
             {
-                return await _httpService.Get<List<Milestone>>($"api/milestone/getbyactivityid/{dto.ActivityId}");
+                return await _httpService.Get<List<Milestone>>($"api/milestone/getbyactivityid/{dto.UserId}/{dto.ActivityId}");
 
             }
             catch (Exception ex)

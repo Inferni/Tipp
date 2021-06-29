@@ -18,7 +18,19 @@ namespace TIPP.Server.Services.SQLServices
 
         public bool CreateMilestone(MilestoneProgression milestone)
         {
-            throw new NotImplementedException();
+            try
+            {
+                context.MilestoneProgressions.Add(milestone);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex);
+                return false;
+            }
+
+            return true; 
         }
 
         public bool DeleteMilestoneProgression(MilestoneProgression milestone)
@@ -38,26 +50,54 @@ namespace TIPP.Server.Services.SQLServices
 
         public bool UpdateMilestoneProgression(MilestoneProgression milestone)
         {
-            throw new NotImplementedException();
+            MilestoneProgression milestoneToUpdate;
+            try
+            {
+                milestoneToUpdate = context.MilestoneProgressions.Where(x => x.MilestoneId.Equals(milestone.MilestoneId) && x.Week.Equals(milestone.Week)).FirstOrDefault();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+                throw;
+            }
+
+            Console.WriteLine(milestoneToUpdate.Value);
+            if(milestoneToUpdate != null)
+            {
+                try
+                {
+                    milestoneToUpdate.MilestoneId = milestone.MilestoneId;
+                    milestoneToUpdate.Value += milestone.Value;
+                    milestoneToUpdate.Week = milestone.Week;
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                    Console.WriteLine(ex);
+                    return false;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Creating milestones");
+                CreateMilestone(milestone);
+            }
+           
+
+            return true;
         }
-
-
-        // GET ACTIVITIES FROM PROJECT
-        // GET MILESTONES FROM THAT ACTIVITY THAT ARE OF THE USER
-        // GET MILESTONES WITH ONLY THE 'TIJD' TYPE
-        // GET THE PROGRESSION FROM THOSE MILESTONES
-        // SEND TO FRONTEND AND SORT IT THERE
 
         public List<MilestoneProgression> GetProjectProgressionWithUserId(UserDTO dto)
         {
-            Console.WriteLine("Getting activities");
             List<Activity> activities = context.Activities.Where(x => x.ProjectId.Equals(dto.ProjectID)).ToList();
             List<Milestone> milestones = new List<Milestone>();
-
-            Console.WriteLine("Getting milestones from activities");
+            
             foreach (Activity activity in activities)
             {
-                List<Milestone> activityMilestones = context.Milestones.Where(x => x.ActivityId.Equals(activity.Id)&&x.UserId.Equals(dto.Id)&&x.Type.Equals(MilestoneType.Tijd)).ToList();
+                List<Milestone> activityMilestones = context.Milestones.Where(x => x.ActivityId.Equals(activity.Id)&&x.UserId.Equals(dto.Id)&&x.Type.Equals(MilestoneType.Time)).ToList();
 
                 milestones.AddRange(activityMilestones);
             }
@@ -66,7 +106,6 @@ namespace TIPP.Server.Services.SQLServices
                 Console.WriteLine($"{milestone.Id} {milestone.Name}");
             }
 
-            Console.WriteLine("Getting progression from milestones");
             List<MilestoneProgression> milestoneProgressions = new List<MilestoneProgression>();
             List<MilestoneProgression> all = context.MilestoneProgressions.ToList();
             foreach(MilestoneProgression progression in all)
@@ -88,6 +127,22 @@ namespace TIPP.Server.Services.SQLServices
             }
 
             return milestoneProgressions;
+        }
+
+        public List<MilestoneProgression> GetProgressionWithMilestoneId(MilestoneProgressionDTO dto)
+        {
+            Milestone milestone = context.Milestones.Where(x => x.Id.Equals(dto.MilestoneId)).FirstOrDefault();
+            if(milestone.Completed == false)
+            {
+                List<MilestoneProgression> progressions = context.MilestoneProgressions.Where(x => x.MilestoneId.Equals(milestone.Id)).ToList();
+                return progressions;
+            }
+            else
+            {
+                return null;
+            }
+
+
         }
     }
 }

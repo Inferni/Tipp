@@ -8,7 +8,7 @@ namespace TIPP.Shared
 {
     public enum MilestoneType
     {
-        Tijd,
-        Aantal
+        Time,
+        Amount
     }
 }

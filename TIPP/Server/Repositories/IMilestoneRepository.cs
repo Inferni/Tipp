@@ -7,7 +7,8 @@ namespace TIPP.Server.Repositories
     {
         object GetMilestones();
         List<MilestoneDTO> GetMilestonesByActivityId(MilestoneDTO dto);
-        bool CreateMilestone(MilestoneDTO dto);
+        void UpdateMilestoneWithActivityId(MilestoneDTO dto, MilestoneProgressionDTO progressionDTO);
+        MilestoneDTO CreateMilestone(MilestoneDTO dto);
         MilestoneDTO ReadMilestone(MilestoneDTO dto);
         bool UpdateMilestone(MilestoneDTO dto);
         bool DeleteMilestone(MilestoneDTO dto);

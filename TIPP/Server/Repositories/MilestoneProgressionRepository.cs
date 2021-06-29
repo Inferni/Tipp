@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TIPP.Server.Domain;
+using TIPP.Server.Helpers;
 using TIPP.Server.Services.SQLServices;
 using TIPP.Shared;
 
@@ -11,15 +12,18 @@ namespace TIPP.Server.Repositories
     public class MilestoneProgressionRepository : IMilestoneProgressionRepository
     {
         private IMilestoneProgressionService service;
+        private MilestoneCompletionHelper completionHelper;
 
         public MilestoneProgressionRepository(tipp_DBContext context)
         {
             this.service = new MilestoneProgressionSQLService(context);
+            completionHelper = new MilestoneCompletionHelper(context);
         }
 
         public bool CreateMilestoneProgession(MilestoneProgressionDTO milestone)
         {
-            throw new NotImplementedException();
+            MilestoneProgression progression = new MilestoneProgression(milestone);
+            return service.CreateMilestone(progression);
         }
 
         public bool DeleteMilestoneProgression(MilestoneProgressionDTO milestone)
@@ -39,12 +43,41 @@ namespace TIPP.Server.Repositories
 
         public bool UpdateMilestoneProgression(MilestoneProgressionDTO milestone)
         {
-            throw new NotImplementedException();
+            try
+            {
+                service.UpdateMilestoneProgression(new MilestoneProgression(milestone));
+                completionHelper.IsMilestoneComplete(milestone.MilestoneId);
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+            
         }
 
         public List<MilestoneProgression> GetProjectProgressionWithUserId(UserDTO dto)
         {
             return service.GetProjectProgressionWithUserId(dto);
+        }
+
+        public List<MilestoneProgressionDTO> GetProgressionWithMilestoneId(MilestoneProgressionDTO dto)
+        {
+            Console.WriteLine(dto.MilestoneId);
+            completionHelper.IsMilestoneComplete(dto.MilestoneId);
+            List<MilestoneProgression> progressions = service.GetProgressionWithMilestoneId(dto);
+            List<MilestoneProgressionDTO> dtos = new List<MilestoneProgressionDTO>();
+
+            if(progressions!=null)
+            {
+                foreach (var progression in progressions)
+                {
+                    MilestoneProgressionDTO progressiondto = new MilestoneProgressionDTO(progression);
+                    dtos.Add(progressiondto);
+                }
+            }
+            return dtos;
         }
     }
 }

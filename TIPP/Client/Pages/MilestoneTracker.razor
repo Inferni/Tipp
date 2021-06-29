@@ -1,23 +1,97 @@
-﻿<h5>Milestones</h5>
-@foreach (var card in cards)
+﻿@inject Service.IUserDataService userDataService
+@inject Service.IProjectDataService projectDataService
+@inject Service.IActivityDataService activityDataService
+@inject Service.IMilestoneDataService milestoneDataService
+@inject Service.IMilestoneProgressionService milestoneProgressionDataService 
+@attribute [Authorize]
+<h5>Milestones</h5>
+@if (loading==false)
 {
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">@card.Name</h5>
-             <Progress >
-                <ProgressBar Value="@card.Percentage" Animated="true"  />
-            </Progress>
-            <p>@card.Progression / @card.Total</p>
+    @foreach (var card in sortedCards)
+    {
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">@card.Name</h5>
+                <Progress>
+                    <ProgressBar Value="@card.Percentage" Animated="true" />
+                </Progress>
+                <p>@card.Progression / @card.Total</p>
+            </div>
         </div>
+    }
+}
+else
+{
+    <div class="text-center p-3">
+        <span class="spinner-border spinner-border-lg align-center"></span>
     </div>
 }
 
 
+
+
 @code {
+
+    private IList<TIPP.Shared.Activity> activities;
+    private IList<TIPP.Shared.Milestone> milestones;
+
+    private List<MilestoneCard> cards;
+    private List<MilestoneCard> sortedCards;
+
+    private bool loading;
+
+
+    protected override async void OnInitialized()
+    {
+        // RETRIEVE MILESTONES
+        // CREATE CARDS WITH CODE BELOW
+        //MilestoneService.GetMilestonesByActivityId();
+
+        loading = true;
+
+        int projectid = projectDataService.Project.Id;
+        activities = await activityDataService.GetActivitiesByProjectId(new ActivityDTO(projectid));
+
+        cards = new List<MilestoneCard>();
+
+        foreach (var activity in activities)
+        {
+            MilestoneDTO dto = new MilestoneDTO();
+            dto.ActivityId = activity.Id;
+            dto.UserId = userDataService.User.Id;
+            IList<TIPP.Shared.Milestone> milestonesinactivity = await milestoneDataService.GetMilestonesByActivityId(dto);
+
+            if (milestones == null)
+            {
+                milestones = milestonesinactivity;
+            }
+            else
+            {
+                ((List<TIPP.Shared.Milestone>)milestones).AddRange(milestonesinactivity);
+            }
+        }
+
+        foreach (TIPP.Shared.Milestone milestone in milestones)
+        {
+            IList<MilestoneProgression> progressions = await milestoneProgressionDataService.GetProgressionWithMilestoneId(milestone.Id);
+            int progressionTotal = 0;
+            foreach(var progression in progressions)
+            {
+                progressionTotal += Convert.ToInt32(progression.Value);
+            }
+            MilestoneCard milestoneCard = new MilestoneCard(milestone.Name, progressionTotal, Convert.ToInt32(milestone.Value));
+            cards.Add(milestoneCard);
+        }
+
+        sortedCards = cards.OrderByDescending(o => o.Percentage).ToList();
+        loading = false;
+        StateHasChanged();
+    }
+
     public class MilestoneCard
     {
         public string Name { get; }
-        public int Progression { get; }
+        public int Progression { get; set; }
         public int Total { get; }
         public int Percentage { get; }
 
@@ -32,19 +106,21 @@
 
         private int CalculatePercentage(int progression, int total)
         {
+            if(!total.Equals(0))
+            {
+                int percentage = (100 * progression) / total;
+                return percentage;
+            }
+            else
+            {
+                int percentage = 0;
+                return percentage;
+            }
 
-            int percentage = (100 * progression) / total;
-            Console.WriteLine(percentage);
-            return percentage;
         }
     }
 
-    public List<MilestoneCard> cards = new List<MilestoneCard>()
-{
-        new MilestoneCard("10x gevuld", 4, 10),
-        new MilestoneCard("4 uur instructies geschreven", 3, 4),
-        new MilestoneCard("5 Collegas gesteund", 1, 5),
-    };
+
 
 
 }

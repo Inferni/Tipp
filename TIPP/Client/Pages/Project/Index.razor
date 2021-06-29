@@ -53,6 +53,7 @@ else
         project = await projectService.GetProject(projectDTO);
         projectDTO.Name = project.Name;
 
+        Console.WriteLine($"Number of activities: {project.Activities.Count()}");
         projectService.Project = project;
 
         loading = false;

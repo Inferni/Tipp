@@ -139,5 +139,14 @@ namespace TIPP.Server.Controllers
                 throw;
             }
         }
+
+        [HttpGet("GetByMilestoneId/{milestoneid}")]
+        public string GetProgressionWithMilestoneId(int milestoneid)
+        {
+            MilestoneProgressionDTO dto = new MilestoneProgressionDTO();
+            dto.MilestoneId = milestoneid;
+            return JsonConvert.SerializeObject(repository.GetProgressionWithMilestoneId(dto));
+
+        }
     }
 }

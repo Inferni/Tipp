@@ -1,16 +1,41 @@
-﻿@foreach (var colleague in cards)
+﻿@attribute [Authorize]
+@if (!loading)
 {
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">@colleague.Name</h5>
-            <p class="card-text">@colleague.Milestone</p>
-            <button class="btn btn-outline-danger" @onclick="@(() => RemoveFromList(colleague))"><Icon Name="IconName.Remove" /></button><button class="btn btn-primary" @onclick="@(() => UpvoteColleague(colleague))"><Icon Name="IconName.ThumbsUp" /></button>
+    @foreach (var colleague in cards)
+    {
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">@colleague.Name</h5>
+                <p class="card-text">@colleague.Milestone</p>
+                <button class="btn btn-outline-danger" @onclick="@(() => RemoveFromList(colleague))"><Icon Name="IconName.Remove" /></button><button class="btn btn-primary" @onclick="@(() => UpvoteColleague(colleague))"><Icon Name="IconName.ThumbsUp" /></button>
+            </div>
         </div>
+    }
+}
+else
+{
+    <div class="text-center p-3">
+        <span class="spinner-border spinner-border-lg align-center"></span>
     </div>
 }
 
 
+
 @code {
+    //Retreive milestone from project (projectid) that are not of the user (need userid) and are completed
+    //For each milestone, get the name from it and find the approriate username, and the milestoneid
+    //Create the cards out of the results
+
+    private bool loading;
+    protected override async Task OnInitializedAsync()
+    {
+        loading = true;
+
+
+
+        loading = false;
+
+    }
 
     public class ColleagueCard
     {
@@ -30,7 +55,7 @@
     }
 
     public List<ColleagueCard> cards = new List<ColleagueCard>()
-    {
+{
         new ColleagueCard("Jane Doe", "20x gevuld!"),
         new ColleagueCard("Jane Doe", "8 uur gevuld!"),
         new ColleagueCard("Richard Roe", "4x instructies geschreven!"),

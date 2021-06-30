@@ -43,6 +43,15 @@ namespace TIPP.Server.Controllers
             return result;
         }
 
+        [HttpGet("getcolleaguemilestones/{userid}/{projectid}")]
+        public string GetColleagueMilestonesByProjectID(int userid, int projectid)
+        {
+            ProjectDTO dto = new ProjectDTO();
+            dto.Id = projectid;
+            string result = JsonConvert.SerializeObject(repository.GetColleagueMilestonesByProjectID(userid, dto));
+            return result;
+        }
+
         // GET api/<milestone>/5
         [HttpGet("{id}")]
         public string Get([FromBody]string value)

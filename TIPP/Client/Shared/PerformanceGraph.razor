@@ -63,9 +63,10 @@
             <ModalBody>
                @*FILLABLE FORM DING HIER*@
                 <Field>
-                    
+                    <TextEdit Placeholder="Gewerkte tijd in uren" type="number" TextChanged="@OnNameChanged"/>
+                    <Button Color="Color.Primary">Ok</Button>
                 </Field>
-                
+                @*MORGEN REST CALL MAKEN HIUER*@
 
             </ModalBody>
             <ModalFooter>
@@ -83,6 +84,14 @@ else
 }
 
 @code {
+
+    private double workAmount;
+
+    void OnNameChanged(string value)
+    {
+        workAmount = Convert.ToDouble(value);
+        Console.WriteLine(workAmount);
+    }
 
     private bool loading;
     // reference to the modal component

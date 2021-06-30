@@ -11,6 +11,7 @@ namespace TIPP.Client.Service
         Task<object> GetAllMilstones();
         Task<Milestone> GetMilestone(MilestoneDTO dto);
         Task<IList<Milestone>> GetMilestonesByActivityId(MilestoneDTO dto);
+        Task<IList<ColleagueMilestoneDTO>> GetColleagueMilestonesByProjectID(int userid, int projectid);
         Task CreateMilestone(MilestoneDTO dto);
         Task UpdateMilestone(MilestoneDTO dto);
         Task DeleteMilestone(MilestoneDTO dto);

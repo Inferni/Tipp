@@ -1,12 +1,15 @@
 ﻿@attribute [Authorize]
+@inject IMilestoneDataService milestoneDataService;
+@inject IUserDataService userDataService;
+@inject IProjectDataService projectDataService; 
 @if (!loading)
 {
-    @foreach (var colleague in cards)
+    @foreach (var colleague in dtos)
     {
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">@colleague.Name</h5>
-                <p class="card-text">@colleague.Milestone</p>
+                <h5 class="card-title">@colleague.UserName</h5>
+                <p class="card-text">@colleague.MilestoneName</p>
                 <button class="btn btn-outline-danger" @onclick="@(() => RemoveFromList(colleague))"><Icon Name="IconName.Remove" /></button><button class="btn btn-primary" @onclick="@(() => UpvoteColleague(colleague))"><Icon Name="IconName.ThumbsUp" /></button>
             </div>
         </div>
@@ -27,11 +30,13 @@ else
     //Create the cards out of the results
 
     private bool loading;
+    private IList<ColleagueMilestoneDTO> dtos;
     protected override async Task OnInitializedAsync()
     {
         loading = true;
-
-
+        int userid = userDataService.User.Id;
+        int projectid = projectDataService.Project.Id;
+        dtos = await milestoneDataService.GetColleagueMilestonesByProjectID(userid, projectid);
 
         loading = false;
 
@@ -62,16 +67,16 @@ else
         new ColleagueCard("Jane Doe", "20x gevuld!"),
     };
 
-    private void UpvoteColleague(ColleagueCard card)
+    private void UpvoteColleague(ColleagueMilestoneDTO card)
     {
         //UPVOTE HERE
         RemoveFromList(card);
     }
 
-    private void RemoveFromList(ColleagueCard card)
+    private void RemoveFromList(ColleagueMilestoneDTO card)
     {
-        cards.Remove(card);
-        Console.WriteLine(cards.Count);
+        dtos.Remove(card);
+        Console.WriteLine(dtos.Count);
     }
 
     // Generate colleagues

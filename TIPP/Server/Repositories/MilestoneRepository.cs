@@ -32,6 +32,11 @@ namespace TIPP.Server.Repositories
             return service.DeleteMilestone(milestone);
         }
 
+        public List<ColleagueMilestoneDTO> GetColleagueMilestonesByProjectID(int UserId, ProjectDTO dto)
+        {
+            return service.GetColleagueMilestonesByProjectID(UserId, dto);
+        }
+
         public object GetMilestones()
         {
             return service.GetMilestones();

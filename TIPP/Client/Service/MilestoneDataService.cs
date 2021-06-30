@@ -33,6 +33,11 @@ namespace TIPP.Client.Service
             throw new NotImplementedException();
         }
 
+        public async Task<IList<ColleagueMilestoneDTO>> GetColleagueMilestonesByProjectID(int userid, int projectid)
+        {
+            return await _httpService.Get<List<ColleagueMilestoneDTO>>($"api/milestone/getcolleaguemilestones/{userid}/{projectid}");
+        }
+
         public Task<Milestone> GetMilestone(MilestoneDTO dto)
         {
             throw new NotImplementedException();

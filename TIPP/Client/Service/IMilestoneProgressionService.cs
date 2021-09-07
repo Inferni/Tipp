@@ -13,10 +13,11 @@ namespace TIPP.Client.Service
 
         Task<MilestoneProgression> GetMilestoneProgression(MilestoneProgressionDTO dto);
         Task CreateMilestoneProgression(MilestoneProgressionDTO dto);
-        Task UpdateMilestoneProgression(MilestoneProgressionDTO dto);
+        Task<object> UpdateMilestoneProgression(MilestoneProgressionDTO dto, int userId, int activityId);
         Task DeleteMilestoneProgression(MilestoneProgressionDTO dto);
 
         Task<IList<MilestoneProgression>> GetProgressionWithUser(UserDTO dto);
+        Task<IList<ColleagueProgressionsDTO>> GetColleagueProgressionWithUser(UserDTO dto);
         Task<IList<MilestoneProgression>> GetProgressionWithMilestoneId(int milestoneid);
     }
 }

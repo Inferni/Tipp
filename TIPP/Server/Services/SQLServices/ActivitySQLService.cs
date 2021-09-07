@@ -30,7 +30,6 @@ namespace TIPP.Server.Services.SQLServices
                 return false;
                 
             }
-            Console.WriteLine("Returning true");
 
             return true;
             

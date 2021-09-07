@@ -25,6 +25,7 @@ namespace TIPP.Server.Domain
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<ProjectUser> ProjectUsers { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<ThumbsUp> ThumbsUp { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -75,6 +76,29 @@ namespace TIPP.Server.Domain
                 entity.Property(e => e.Value).HasColumnType("decimal(18, 0)");
                 entity.Property(e => e.Week).HasColumnType("nchar(10)");
 
+            });
+
+            modelBuilder.Entity<ThumbsUp>(entity =>
+            {
+                entity.Property(e => e.MilestoneId)
+                .IsRequired()
+                .HasColumnType("int");
+
+                entity.Property(e => e.UserId)
+                .IsRequired()
+                .HasColumnType("int");
+
+                entity.Property(e => e.Seen)
+                .IsRequired()
+                .HasColumnType("bit");
+
+                entity.Property(e=> e.Username)
+                .IsRequired()
+                .HasMaxLength(50);
+
+                entity.Property(e => e.MilestoneName)
+                .IsRequired()
+                .HasMaxLength(50);
             });
 
             modelBuilder.Entity<Project>(entity =>

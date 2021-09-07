@@ -112,7 +112,7 @@ namespace TIPP.Server.Repositories
             {
                 dto.Completed = false;
                 dto.Type = MilestoneType.Time;
-                dto.Name = "Niet gespecificeerd aantal uren";
+                dto.Name = "Extra Gewerkte Uren";
                 MilestoneDTO newMilestoneDTO = CreateMilestone(dto);
                 progressionDTO.MilestoneId = newMilestoneDTO.Id;
                 progressionRepository.CreateMilestoneProgession(progressionDTO);
@@ -121,7 +121,7 @@ namespace TIPP.Server.Repositories
             {
                 dto.Completed = false;
                 dto.Type = MilestoneType.Amount;
-                dto.Name = "Niet gespecificeerd keren gewerkt";
+                dto.Name = "Extra Keren gewerkt";
                 MilestoneDTO newMilestoneDTO = CreateMilestone(dto);
                 progressionDTO.MilestoneId = newMilestoneDTO.Id;
                 progressionDTO.Value = 1;

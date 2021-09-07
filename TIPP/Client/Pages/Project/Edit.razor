@@ -134,7 +134,7 @@
                 <h1>Milestones of @activityToEdit.Name</h1>
             </div>
             <div class="form-group col">
-                <button class="btn btn-primary" @onclick="AddingMilestone">Add new Activity</button>
+                <button class="btn btn-primary" @onclick="AddingMilestone">Add new Milestone</button>
                 <EditForm Model="@modelMilestone" OnValidSubmit="OnValidSubmitAddMilestone">
                     <DataAnnotationsValidator />
 
@@ -148,7 +148,13 @@
                         </div>
                         <div class="form-group col"> @*FIGURE OUT HOW TO TURN THIS INTO NAME*@
                             <label>User</label>
-                            <select class="form-control" id="UserId" name="UserId" asp-for="Id" asp-items="@UsersInProject"></select>
+                            <select class="form-control" @bind="selectedUser.Username" >
+                                @foreach(TIPP.Shared.User user in UsersInProject)
+                                {
+                                    <option value="@user.Id">@user.Username</option>
+                                }
+
+                            </select>
                         </div>
                         <div class="form-group">
                             <button disabled="@loading" class="btn btn-primary">
@@ -211,6 +217,7 @@ else
     private UserDTO userDTO;
     private TIPP.Client.Models.User modelUser;
     private IList<TIPP.Shared.User> UsersInProject;
+    private TIPP.Shared.User selectedUser = new TIPP.Shared.User();
 
     private ActivityDTO activityDTO;
     private Models.Activity modelActivity;
@@ -397,11 +404,6 @@ else
         milestoneDTO.ActivityId = activity.Id;
         Milestones = await milestoneDataService.GetMilestonesByActivityId(milestoneDTO);
         activityToEdit = activity;
-
-
-
-        //TODO: FOUND OUT WHICH USER HAS WHICH MILESTONE AND FIGURE OUT HOW TO DISPALY THEIR NAME ALONG SIDE THE RIGHT MILESTONE
-
         loading = false;
         StateHasChanged();
     }

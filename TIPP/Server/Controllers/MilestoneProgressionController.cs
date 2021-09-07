@@ -48,7 +48,7 @@ namespace TIPP.Server.Controllers
         }
 
         // POST api/<project>
-        [HttpPost]
+        [HttpPost()]
         public ObjectResult Post([FromBody] MilestoneProgressionDTO value)
         {
             try
@@ -75,12 +75,12 @@ namespace TIPP.Server.Controllers
 
         // PUT api/<project>/5
         [HttpPut("{id}")]
-        public ObjectResult Put(int id, [FromBody] MilestoneProgressionDTO dto)
+        public ObjectResult Put([FromBody] MilestoneProgressionDTO dto)
         {
             try
             {
                 //ProjectDTO dto = JsonConvert.DeserializeObject<ProjectDTO>(value);
-                if (repository.UpdateMilestoneProgression(dto))
+                if (repository.UpdateMilestoneProgression( dto))
                 {
                     return new AcceptedResult("Project", dto);
                 }
@@ -132,6 +132,24 @@ namespace TIPP.Server.Controllers
             try
             {
                 return JsonConvert.SerializeObject(repository.GetProjectProgressionWithUserId(dto));
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpGet("getcolleagueprogressionwithuser/{id}/{projectid}")]
+        public string GetColleagueProjectProgressionWithUserId(int id, int projectid)
+        {
+            Console.WriteLine("getprogressionwithuser");
+            UserDTO dto = new UserDTO();
+            dto.Id = id;
+            dto.ProjectID = projectid;
+            try
+            {
+                return JsonConvert.SerializeObject(repository.GetColleagueProjectProgressionWithUserId(dto));
             }
             catch (Exception ex)
             {

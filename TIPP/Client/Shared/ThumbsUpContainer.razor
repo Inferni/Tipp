@@ -1,0 +1,50 @@
+﻿@inject IThumbsUpDataService thumbsUpDataService
+@inject IUserDataService userDataService
+@inject IProjectDataService projectDataService
+@if (!loading)
+{
+    foreach(ThumbsUp thumbsUp in thumbsUps)
+                {
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@thumbsUp.MilestoneName</h5>
+                        <p class="card-text">@thumbsUp.Username heeft je een duim gegeven!</p>
+                        <button class="btn btn-primary" @onclick="@(() => SetSeen(thumbsUp))"><Icon Name="IconName.Check" /></button>
+                    </div>
+                </div>
+                }
+}
+else
+{
+    <div class="text-center p-3">
+        <span class="spinner-border spinner-border-lg align-center"></span>
+    </div>
+}
+
+@code {
+    private bool loading;
+    IList<ThumbsUp> thumbsUps;
+
+    protected override async Task OnInitializedAsync()
+    {
+        loading = true;
+
+        thumbsUps = await thumbsUpDataService.GetThumbsUpsByProjectAndUserId(projectDataService.Project.Id, userDataService.User.Id);
+
+        foreach(var thumpUp in thumbsUps)
+        {
+            Console.WriteLine(thumpUp.Username);
+        }
+
+        loading = false;
+    }
+
+    private async void SetSeen(ThumbsUp thumbsUp)
+        {
+        thumbsUps.Remove(thumbsUp);
+        thumbsUp.Seen = true;
+        ThumbsUpDTO dto = new ThumbsUpDTO(thumbsUp);
+        await thumbsUpDataService.UpdateThumbsUp(dto);
+        StateHasChanged();
+        }
+}

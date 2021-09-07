@@ -2,6 +2,7 @@
 @inject IMilestoneDataService milestoneDataService;
 @inject IUserDataService userDataService;
 @inject IProjectDataService projectDataService; 
+@inject IThumbsUpDataService thumbsUpDataService
 @if (!loading)
 {
     @foreach (var colleague in dtos)
@@ -10,7 +11,7 @@
             <div class="card-body">
                 <h5 class="card-title">@colleague.UserName</h5>
                 <p class="card-text">@colleague.MilestoneName</p>
-                <button class="btn btn-outline-danger" @onclick="@(() => RemoveFromList(colleague))"><Icon Name="IconName.Remove" /></button><button class="btn btn-primary" @onclick="@(() => UpvoteColleague(colleague))"><Icon Name="IconName.ThumbsUp" /></button>
+                <button class="btn btn-primary" @onclick="@(() => UpvoteColleague(colleague))"><Icon Name="IconName.ThumbsUp" /></button>
             </div>
         </div>
     }
@@ -67,10 +68,19 @@ else
         new ColleagueCard("Jane Doe", "20x gevuld!"),
     };
 
-    private void UpvoteColleague(ColleagueMilestoneDTO card)
+    private async void UpvoteColleague(ColleagueMilestoneDTO card)
     {
-        //UPVOTE HERE
+        ThumbsUpDTO thumbsUpDTO = new ThumbsUpDTO();
+        thumbsUpDTO.MilestoneId = card.MilestoneId;
+        thumbsUpDTO.UserId = userDataService.User.Id;
+
+        await thumbsUpDataService.CreateThumbsUp(thumbsUpDTO);
         RemoveFromList(card);
+
+        int userid = userDataService.User.Id;
+        int projectid = projectDataService.Project.Id;
+        dtos = await milestoneDataService.GetColleagueMilestonesByProjectID(userid, projectid);
+        StateHasChanged();
     }
 
     private void RemoveFromList(ColleagueMilestoneDTO card)

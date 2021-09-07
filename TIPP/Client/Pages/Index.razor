@@ -5,17 +5,17 @@
 
 <div class="p-4">
     <div class="container">
-        <h1>Hi @UserService.User.Username!</h1>
-        <p>You're logged in with Blazor WebAssembly!!</p>
+        <h1>Welkom @UserService.User.Username!</h1>
+
         @*<p><NavLink href="users">Manage Users</NavLink></p>*@
 
         @switch (UserService.User.Role)
         {
             case TIPP.Shared.Role.User:
-                <p><NavLink href="/user/{UserService.User.Id}">Your projects</NavLink></p>
+                <p><NavLink href="/user/{UserService.User.Id}">Ga naar jouw projecten</NavLink></p>
                 break;
             case TIPP.Shared.Role.Admin:
-                <p><NavLink href="/admin/{UserService.User.Id}">Manage Your Projects</NavLink></p>
+                <p><NavLink href="/admin/{UserService.User.Id}">Ga naar de projecten</NavLink></p>
                 break;
             default:
                 break;

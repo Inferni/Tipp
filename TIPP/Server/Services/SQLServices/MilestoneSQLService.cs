@@ -57,6 +57,7 @@ namespace TIPP.Server.Services.SQLServices
         {
             List<Activity> activities = context.Activities.Where(x => x.ProjectId.Equals(dto.Id)).ToList();
             List < Milestone >  milestones= new List<Milestone>();
+            List<Milestone> milestonesNoThumbs = new List<Milestone>();
             List<Milestone> milestonesInActivity;
             foreach (var activity in activities)
             {
@@ -65,12 +66,25 @@ namespace TIPP.Server.Services.SQLServices
                 milestones.AddRange(milestonesInActivity);
             }
 
+            foreach(var milestone in milestones)
+            {
+                Console.WriteLine(milestone.Name);
+                ThumbsUp thumbsup = context.ThumbsUp.Where(x => x.MilestoneId.Equals(milestone.Id) && x.UserId.Equals(UserId)).FirstOrDefault();
+                if(thumbsup == null)
+                {
+                    Console.WriteLine($"No thumbs for: {milestone.Name}");
+                    milestonesNoThumbs.Add(milestone);
+                }
+            }
+            milestones = milestonesNoThumbs;
+            
+
             List<ColleagueMilestoneDTO> dtos = new List<ColleagueMilestoneDTO>();
             //For every milestone find the username that accompanies it, create DTOs from the informati
             foreach(var milestone in milestones)
             {
                 string username = context.Users.Where(x => x.Id.Equals(milestone.UserId)).FirstOrDefault().Username;
-                ColleagueMilestoneDTO colleagueMilestone = new ColleagueMilestoneDTO(milestone.Id, milestone.Name, username);
+                ColleagueMilestoneDTO colleagueMilestone = new ColleagueMilestoneDTO(milestone.Id, milestone.UserId, milestone.Name, username);
                 dtos.Add(colleagueMilestone);
             }
             return dtos;

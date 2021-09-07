@@ -78,7 +78,6 @@ namespace TIPP.Server.Services.SQLServices
             List<Project> projects = new List<Project>();
             foreach (ProjectUser projectid in projectIds)
             {
-                Console.WriteLine(projectid.Project);
                 foreach (Project project in projectsfromdb)
                 {
                     if (projectid.Project.Equals(project.Id))

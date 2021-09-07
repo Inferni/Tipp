@@ -10,6 +10,7 @@ namespace TIPP.Shared
     {
         public int Id { get; set; }
         public int MilestoneId { get; set; }
+        public int ActivityID { get; set; }
         public decimal? Value { get; set; }
         public int Week { get; set; }
 

@@ -39,7 +39,6 @@ namespace TIPP.Server.Controllers
             dto.ActivityId = id;
             dto.UserId = userid;
             string result = JsonConvert.SerializeObject(repository.GetMilestonesByActivityId(dto));
-            Console.WriteLine(result);
             return result;
         }
 
@@ -71,11 +70,10 @@ namespace TIPP.Server.Controllers
 
         // POST api/<milestone>
         [HttpPost]
-        public ObjectResult Post([FromBody] string value)
+        public ObjectResult Post([FromBody] MilestoneDTO dto)
         {
             try
             {
-                MilestoneDTO dto = JsonConvert.DeserializeObject<MilestoneDTO>(value);
                 if(repository.CreateMilestone(dto)!=null)
                 {
                     return new AcceptedResult("Milestone", dto.Name);

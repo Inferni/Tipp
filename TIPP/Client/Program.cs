@@ -7,9 +7,6 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using Blazorise;
-using Blazorise.Bootstrap;
-using Blazorise.Icons.FontAwesome;
 using TIPP.Client.Service;
 
 namespace TIPP.Client
@@ -28,6 +25,7 @@ namespace TIPP.Client
                 .AddScoped<IActivityDataService, ActivityDataService>()
                 .AddScoped<IMilestoneDataService, MilestoneDataService>()
                 .AddScoped<IMilestoneProgressionService, MilestoneProgressionService>()
+                .AddScoped<IThumbsUpDataService, ThumbsUpDataService>()
                 .AddScoped<IHttpService, HttpService>()
                 .AddScoped<ILocalStorageService, LocalStorageService>();
 

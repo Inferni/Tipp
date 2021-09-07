@@ -41,8 +41,9 @@ namespace TIPP.Server.Repositories
             throw new NotImplementedException();
         }
 
-        public bool UpdateMilestoneProgression(MilestoneProgressionDTO milestone)
+        public bool UpdateMilestoneProgression( MilestoneProgressionDTO milestone)
         {
+
             try
             {
                 service.UpdateMilestoneProgression(new MilestoneProgression(milestone));
@@ -54,7 +55,7 @@ namespace TIPP.Server.Repositories
 
                 return false;
             }
-            
+
         }
 
         public List<MilestoneProgression> GetProjectProgressionWithUserId(UserDTO dto)
@@ -64,7 +65,6 @@ namespace TIPP.Server.Repositories
 
         public List<MilestoneProgressionDTO> GetProgressionWithMilestoneId(MilestoneProgressionDTO dto)
         {
-            Console.WriteLine(dto.MilestoneId);
             completionHelper.IsMilestoneComplete(dto.MilestoneId);
             List<MilestoneProgression> progressions = service.GetProgressionWithMilestoneId(dto);
             List<MilestoneProgressionDTO> dtos = new List<MilestoneProgressionDTO>();
@@ -78,6 +78,11 @@ namespace TIPP.Server.Repositories
                 }
             }
             return dtos;
+        }
+
+        public List<ColleagueProgressionsDTO> GetColleagueProjectProgressionWithUserId(UserDTO dto)
+        {
+            return service.GetColleagueProjectProgressionWithUserId(dto);
         }
     }
 }

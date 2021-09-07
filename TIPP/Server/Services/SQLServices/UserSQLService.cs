@@ -18,7 +18,6 @@ namespace TIPP.Server.Services.SQLServices
 
         public object GetUsers()
         {
-            Console.WriteLine("Getting Users");
             return context.Users;
         }
 
@@ -26,14 +25,12 @@ namespace TIPP.Server.Services.SQLServices
 
         public User Authenticate(User user)
         {
-            User authenticatedUser = context.Users.FirstOrDefault(x => x.Username == user.Username && x.Password == user.Password);
-            Console.WriteLine($"Role:{authenticatedUser.Role}");
+            UserDTO authenticatedUser = context.Users.FirstOrDefault(x => x.Username == user.Username && x.Password == user.Password);
             return authenticatedUser;
         }
 
         public bool CreateUser(User user)
         {
-            Console.WriteLine("Creating user: " + user.Username);
             try
             {
                 context.Users.Add(user);
@@ -42,7 +39,6 @@ namespace TIPP.Server.Services.SQLServices
             catch (Exception ex)
             {
 
-                Console.WriteLine(ex);
                 return false;
             }
 
@@ -55,11 +51,9 @@ namespace TIPP.Server.Services.SQLServices
             {
                 User userInDB;
                 ProjectUser projectUser = new ProjectUser();
-                Console.WriteLine("Searching for user");
                 if (context.Users.Where(x => x.Username == user.Username).Any())
                 {
                     userInDB = context.Users.Where(x => x.Username == user.Username).FirstOrDefault();
-                    Console.WriteLine("User found: " + userInDB.Username);
                 }
                 else
                 {
@@ -79,7 +73,6 @@ namespace TIPP.Server.Services.SQLServices
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
                 throw;
             }
         }
@@ -166,7 +159,6 @@ namespace TIPP.Server.Services.SQLServices
             catch (Exception ex)
             {
 
-                Console.WriteLine(ex);
                 return false;
             }
 

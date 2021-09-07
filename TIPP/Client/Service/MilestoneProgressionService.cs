@@ -43,20 +43,26 @@ namespace TIPP.Client.Service
             throw new NotImplementedException();
         }
 
-        public Task UpdateMilestoneProgression(MilestoneProgressionDTO dto)
+        public async Task<object> UpdateMilestoneProgression(MilestoneProgressionDTO dto, int userId, int activityid)
         {
-            throw new NotImplementedException();
+             return await _httpService.Put<object>($"api/milestone/updatemilestonewithactivity/{userId}/{activityid}", dto);
         }
 
         public async Task<IList<MilestoneProgression>> GetProgressionWithUser(UserDTO dto)
         {
-            Console.WriteLine($"d{dto.Id} {dto.ProjectID}");
             return await _httpService.Get<IList<MilestoneProgression>>($"api/milestone/progression/getprogressionwithuser/{dto.Id}/{dto.ProjectID}");
+        }
+
+        public async Task<IList<ColleagueProgressionsDTO>> GetColleagueProgressionWithUser(UserDTO dto)
+        {
+            return await _httpService.Get<IList<ColleagueProgressionsDTO>>($"api/milestone/progression/getcolleagueprogressionwithuser/{dto.Id}/{dto.ProjectID}");
         }
 
         public async Task<IList<MilestoneProgression>> GetProgressionWithMilestoneId(int milestoneid)
         {
             return await _httpService.Get<IList<MilestoneProgression>>($"api/milestone/progression/GetByMilestoneId/{milestoneid}");
         }
+
+
     }
 }

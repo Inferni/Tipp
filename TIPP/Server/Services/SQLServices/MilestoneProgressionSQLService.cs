@@ -107,12 +107,21 @@ namespace TIPP.Server.Services.SQLServices
             foreach (Milestone milestone in milestones)
             {
                 Console.WriteLine($"Milestone id: {milestone.Id}");
-                List<MilestoneProgression> progressions = context.MilestoneProgressions.Where(x => x.MilestoneId.Equals(milestone.Id)).ToList();
-
+                List<MilestoneProgression> progressions = context.MilestoneProgressions.Where(x => x.MilestoneId.Equals(milestone.Id)).ToList();              
                 milestoneProgressions.AddRange(progressions);
             }
 
-
+            Console.WriteLine($"Getting Baselines");
+            for (int i = 0; i < milestoneProgressions.Count(); i++)
+            {
+                Baseline baseline = context.Baseline.Where(x => x.UserId.Equals(dto.Id) && x.ProjectId.Equals(dto.ProjectID) && x.WeekNumber.Equals(milestoneProgressions[i].Week)).FirstOrDefault();
+                milestoneProgressions[i].Baseline = baseline;
+            }
+            //foreach (MilestoneProgression progression in milestoneProgressions)
+            //{
+            //    Baseline baseline = context.Baseline.Where(x => x.UserId.Equals(dto.Id) && x.ProjectId.Equals(dto.ProjectID) && x.WeekNumber.Equals(progression.Week)).FirstOrDefault();
+                
+            //}
 
             return milestoneProgressions;
         }
@@ -154,6 +163,16 @@ namespace TIPP.Server.Services.SQLServices
 
                     milestoneProgressions.AddRange(progressions);
                 }
+
+                for (int i = 0; i < milestoneProgressions.Count(); i++)
+                {
+                    Baseline baseline = context.Baseline.Where(x => x.UserId.Equals(dto.Id) && x.ProjectId.Equals(dto.ProjectID) && x.WeekNumber.Equals(milestoneProgressions[i].Week)).FirstOrDefault();
+                    milestoneProgressions[i].Baseline = baseline;
+                }
+                //foreach (MilestoneProgression progression in milestoneProgressions)
+                //{
+                //    Baseline baseline = context.Baseline.Where(x => x.UserId.Equals(colleague.Id) && x.ProjectId.Equals(dto.ProjectID) && x.WeekNumber.Equals(progression.Week)).FirstOrDefault();
+                //}
                 ColleagueProgressionsDTO colleagueProgressionsDTO = new ColleagueProgressionsDTO(colleague, milestoneProgressions);
                 colleagueProgressions.Add(colleagueProgressionsDTO);
             }

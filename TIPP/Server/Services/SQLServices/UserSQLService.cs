@@ -25,8 +25,7 @@ namespace TIPP.Server.Services.SQLServices
 
         public User Authenticate(User user)
         {
-            UserDTO authenticatedUser = context.Users.FirstOrDefault(x => x.Username == user.Username && x.Password == user.Password);
-            return authenticatedUser;
+            return context.Users.Where(x => x.Username == user.Username && x.Password == user.Password).FirstOrDefault();
         }
 
         public bool CreateUser(User user)

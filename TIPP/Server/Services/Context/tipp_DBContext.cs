@@ -26,6 +26,7 @@ namespace TIPP.Server.Domain
         public virtual DbSet<ProjectUser> ProjectUsers { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<ThumbsUp> ThumbsUp { get; set; }
+        public virtual DbSet<Baseline> Baseline { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -75,7 +76,16 @@ namespace TIPP.Server.Domain
 
                 entity.Property(e => e.Value).HasColumnType("decimal(18, 0)");
                 entity.Property(e => e.Week).HasColumnType("nchar(10)");
+                entity.Ignore(e => e.Baseline);
 
+            });
+
+            modelBuilder.Entity<Baseline>(entity =>
+            {
+                entity.Property(e => e.UserId).IsRequired().HasColumnType("int");
+                entity.Property(e => e.ProjectId).IsRequired().HasColumnType("int");
+                entity.Property(e => e.WeekNumber).IsRequired().HasColumnType("int");
+                entity.Property(e => e.BaselineValue).IsRequired().HasColumnType("float");
             });
 
             modelBuilder.Entity<ThumbsUp>(entity =>

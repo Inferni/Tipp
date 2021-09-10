@@ -13,6 +13,7 @@ namespace TIPP.Shared
         public int ActivityID { get; set; }
         public decimal? Value { get; set; }
         public int Week { get; set; }
+        public Baseline Baseline { get; set; }
 
         public MilestoneProgressionDTO()
         {
@@ -29,6 +30,7 @@ namespace TIPP.Shared
             MilestoneId = milestoneProgression.MilestoneId;
             Value = milestoneProgression.Value;
             Week = milestoneProgression.Week;
+            Baseline = milestoneProgression.Baseline;
         }
 
         public MilestoneProgressionDTO(int id, int milestoneId, decimal? value, int week)

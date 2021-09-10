@@ -8,14 +8,12 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            @*<Button Clicked="@(async () => await HandleRedraw())">Redraw</Button>*@
-
             <LineChart @ref="lineChart" TItem="double" OptionsObject="new { animation = new { duration = 0 }, hover = new { animationDuration = 0 }, responsiveAnimationDuration = 0 }" />
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <button class="btn btn-primary float-right" @onclick="ShowModal">Werk aan project</button>
+            <button class="btn btn-primary float-right" @onclick="ShowModal">Werk aan ISI Steps</button>
         </div>
 
     </div>
@@ -24,10 +22,6 @@
 
 @if (loading == false)
 {
-
-
-    @*<Button Clicked="@ShowModal">Show Modal</Button>*@
-
     <Modal @ref="modalRef">
         <ModalContent Centered="true">
             <ModalHeader>
@@ -49,7 +43,6 @@
 
             </ModalBody>
             <ModalFooter>
-                @*<Button class="close" Color="Color.Secondary" Clicked="@HideModal" aria-label="Close"></Button>*@
             </ModalFooter>
         </ModalContent>
     </Modal>
@@ -57,11 +50,10 @@
     <Modal @ref="modalFill">
         <ModalContent Centered="true">
             <ModalHeader>
-                <ModalTitle>Vul gewerkte tijd in</ModalTitle>
+                <ModalTitle>Gewerkte tijd aan de ISI Step?</ModalTitle>
                 <CloseButton />
             </ModalHeader>
             <ModalBody>
-               @*FILLABLE FORM DING HIER*@
                 <Field>
                     <TextEdit Placeholder="Gewerkte tijd in uren" type="number" TextChanged="@OnNameChanged"/>
                     <TextEdit Placeholder="Week?" type="number" TextChanged="@OnWeekChanged"/>
@@ -85,8 +77,6 @@ else
 }
 
 @code {
-
-    //UREN OMZETTEN NAAR PERCENTAGE TENOPZICHTE VAN BASELINE IN DATABASE
 
     private bool loading;
     // reference to the modal component
@@ -117,7 +107,6 @@ else
     }
 
     //https://blazorise.com/docs/extensions/chart/
-
     LineChart<double> lineChart;
 
 
@@ -144,14 +133,6 @@ else
 
     }
 
-    //protected override async Task OnAfterRenderAsync(bool firstRender)
-    //{
-    //    if (firstRender)
-    //    {
-    //        await HandleRedraw();
-    //    }
-    //}
-
     private async Task GetMilestoneProgression()
     {
         UserDTO dto = new UserDTO();
@@ -174,7 +155,6 @@ else
         chosenActivity = activity;
         ShowFillableModal();
         HideModal();
-        //SHOWFIELD FOR PROGRESSION
         Console.WriteLine(activity);
     }
 
@@ -208,18 +188,7 @@ else
         StateHasChanged();
     }
 
-    //Loop through all colleagues
-    //For each colleague, add a dataset
-    // -Each colleague should have a dataset
 
-    // Each colleauge should have a different colour
-    // - Library with all colours, depending on how many colleagues there are
-
-    //Each Colleague should be dashed
-    // - FIGURE THIS OUT
-
-    // Labels should be made depending how many weeks the project has been gone on for
-    // Figure this out later
 
     public class User
     {
@@ -245,21 +214,13 @@ else
         }
     }
 
-    //TODO Create list of colleagues and the current user (steal from other page?)
     User user = new User("John Doe", null);
     List<Colleauge> colleagues = new List<Colleauge>();
-    //{
-    //        new Colleauge(new ColleagueMilestones.ColleagueCard ("Baseline"), null),
-    //        new Colleauge(new ColleagueMilestones.ColleagueCard ("Jane Doe"), null),
-    //        new Colleauge(new ColleagueMilestones.ColleagueCard ("Richard Doe"), null),
-    //    };
 
-    //TODO Give all a dataset
     public void SetUserData()
     {
 
         // Each Linedata value corresponds to a week
-
         List<double> linedata = new List<double>();
         linedata.Add(0); //Start the list
         foreach (var progression in progressions)
@@ -269,18 +230,29 @@ else
                 linedata.Add(0);
             }
             linedata[progression.Week - 1] += Convert.ToDouble(progression.Value);
+        }
+
+
+        for (int i = 0; i < linedata.Count(); i++)
+        {
+            Baseline baseline = null;
+            foreach (var progression in progressions)
+            {
+                if (progression.Week == i+1) //+1 because the weeks starts at 1 not 0
+                {
+                    baseline = progression.Baseline;
+                    break;
+                }
+            }
+
+            linedata[i] = CalculateLinedataPercentage(linedata[i], baseline);
 
         }
 
         user.LineData = linedata;
 
-        //foreach (var colleague in colleagues)
-        //{
-        //    colleague.LineData = RandomizeData();
-        //}
     }
 
-    //TODO: LINEDATA BREAKS IF THERE IS NO DATA, USE TRY CATCH
     private void SetColleagueData()
     {
         foreach (var colleaugeProgressionDTO in colleagueProgressions)
@@ -296,23 +268,44 @@ else
                 linedata[progression.Week - 1] += Convert.ToDouble(progression.Value);
 
             }
+
+            for (int i = 0; i < linedata.Count(); i++)
+            {
+                Baseline baseline = null;
+                foreach (var progression in colleaugeProgressionDTO.Progressions)
+                {
+                    if (progression.Week == i + 1) //+1 because the weeks starts at 1 not 0
+                    {
+                        baseline = progression.Baseline;
+                        break;
+                    }
+                }
+
+                linedata[i] = CalculateLinedataPercentage(linedata[i], baseline);
+
+            }
             Colleauge colleauge = new Colleauge(new ColleagueMilestones.ColleagueCard(colleaugeProgressionDTO.Colleague.Username), linedata);
             colleagues.Add(colleauge);
         }
     }
 
-    //TODO loop through colleagues in HandleRedraw
-    //TODO AddDataSet for each colleague
+    private double CalculateLinedataPercentage(double linedata, Baseline baseline)
+    {
+        return (100 * linedata) / baseline.BaselineValue;
+    }
 
     async Task HandleRedraw()
     {
+        await lineChart.Clear();
+
         SetUserData();
         SetColleagueData();
 
-        await lineChart.Clear();
+
         await lineChart.AddLabels(Labels);
 
-        //await lineChart.AddDataSet(GetLineChartDataset("Baseline", new List<double> { 0 }));
+        await lineChart.AddDataSet(GetLineChartDataset("zero", new List<double> { 0 }, false));
+        await lineChart.AddDataSet(GetLineChartDataset("zero", new List<double> { 120 }, false));
         await lineChart.AddDataSet(GetLineChartDataset(user.Name, user.LineData, false));
 
         foreach (var colleague in colleagues)
@@ -326,6 +319,22 @@ else
     {
         if(!colleague)
         {
+            if(name == "zero")
+            {
+                return new LineChartDataset<double>
+                {
+                    //Label = "Baseline",
+                    BackgroundColor = new List<string> { ChartColor.FromRgba(255, 255, 255, 0f) },
+
+                    Data = lineData,
+                    BorderColor = new List<string> { ChartColor.FromRgba(0, 204, 0, 0f) }, //Color of the Line
+                    Fill = false,
+                    ShowLine = false,
+                    PointRadius = 0,
+                    PointBorderColor = new List<string> { ChartColor.FromRgba(102, 204, 0, 0f) }, //Color of the Line,
+                    BorderDash = new List<int> { 5, 2 }
+                };
+            }
             return new LineChartDataset<double>
             {
                 Label = userService.User.Username,
@@ -352,46 +361,11 @@ else
 
             };
         }
-        //if (user)
-        //{
-
-
-        //}
-        //else
-        //{
-        //    if (name == "Baseline")
-        //    {
-        //        return new LineChartDataset<double>
-        //        {
-        //            //Label = "Baseline",
-        //            BackgroundColor = new List<string> { ChartColor.FromRgba(255, 255, 255, 0f) },
-
-        //            Data = lineData,
-        //            BorderColor = new List<string> { ChartColor.FromRgba(0, 204, 0, 0f) }, //Color of the Line
-        //            Fill = false,
-        //            PointRadius = 0,
-        //            PointBorderColor = new List<string> { ChartColor.FromRgba(102, 204, 0, 0f) }, //Color of the Line,
-        //            BorderDash = new List<int> { 5, 2 }
-        //        };
-        //    }
-
-
-        //}
-        //return new LineChartDataset<double>
-        //{
-        //    Label = name,
-        //    Data = lineData,
-        //    //BackgroundColor = new List<string> { ChartColor.FromRgba(255, 99, 132, 0.2f) },
-        //    BorderColor = new List<string> { ChartColor.FromRgba(153, 204, 255, 1f) }, //Color of the Line
-        //    Fill = false,
-        //    PointRadius = 2,
-        //    BorderDash = new List<int> { 5, 5 }
-        //};
     }
 
 
 
-    string[] Labels = { "Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6" };
+    string[] Labels = { "Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6", "Week 7", "Week 8", "Week 9", "Week 10", };
     List<string> backgroundColors = new List<string> { ChartColor.FromRgba(255, 99, 132, 0.2f), ChartColor.FromRgba(54, 162, 235, 0.2f), ChartColor.FromRgba(255, 206, 86, 0.2f), ChartColor.FromRgba(75, 192, 192, 0.2f), ChartColor.FromRgba(153, 102, 255, 0.2f), ChartColor.FromRgba(255, 159, 64, 0.2f) };
     List<string> borderColors = new List<string> { ChartColor.FromRgba(255, 99, 132, 1f), ChartColor.FromRgba(54, 162, 235, 1f), ChartColor.FromRgba(255, 206, 86, 1f), ChartColor.FromRgba(75, 192, 192, 1f), ChartColor.FromRgba(153, 102, 255, 1f), ChartColor.FromRgba(255, 159, 64, 1f) };
 

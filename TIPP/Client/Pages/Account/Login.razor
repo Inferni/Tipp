@@ -1,7 +1,7 @@
 ﻿@page "/account/login"
 @using TIPP.Shared
 @inject Service.IUserDataServiceLogin UserService
-@inject Service.IUserDataService UserDataService 
+@inject Service.IUserDataService UserDataService
 
 @inject NavigationManager NavigationManager
 
@@ -42,13 +42,26 @@
         try
         {
             TIPP.Shared.User user = await UserService.Login(model);
-            if(user!=null)
+            if (user != null)
             {
                 StateHasChanged();
                 await UserDataService.Initialize();
 
             }
-            NavigationManager.NavigateTo("");
+
+            switch (user.Role)
+            {
+                case TIPP.Shared.Role.User:
+                    NavigationManager.NavigateTo("/user/{user.Id}");
+                    @*<p><NavLink href="/user/{UserService.User.Id}">Ga naar jouw projecten</NavLink></p>*@
+                    break;
+                case TIPP.Shared.Role.Admin:
+                    @*<p><NavLink href="/admin/{UserService.User.Id}">Ga naar de projecten</NavLink></p>*@
+                    break;
+                default:
+                    break;
+            }
+            
 
         }
         catch (Exception ex)

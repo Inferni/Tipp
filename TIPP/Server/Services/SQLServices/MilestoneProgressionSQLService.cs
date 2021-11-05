@@ -128,8 +128,6 @@ namespace TIPP.Server.Services.SQLServices
 
         public List<ColleagueProgressionsDTO> GetColleagueProjectProgressionWithUserId(UserDTO dto)
         {
-            //TODO OMZETTEN NAAR NIEUWE DTO (COLLEGAS OPHALEN UIT PROJECT, DOE ONDERSTAANDE VOOR ELKE COLLEAGUE, STEL DTO OP)
-
             //Retrieve all project users relative to the project and who are not the current user, in other words the colleagues
             List<ProjectUser> projectUsers = context.ProjectUsers.Where(x => x.Project.Equals(dto.ProjectID)&& !x.User.Equals(dto.Id)).ToList();
             List<Activity> activities = context.Activities.Where(x => x.ProjectId.Equals(dto.ProjectID)).ToList();
@@ -166,7 +164,7 @@ namespace TIPP.Server.Services.SQLServices
 
                 for (int i = 0; i < milestoneProgressions.Count(); i++)
                 {
-                    Baseline baseline = context.Baseline.Where(x => x.UserId.Equals(dto.Id) && x.ProjectId.Equals(dto.ProjectID) && x.WeekNumber.Equals(milestoneProgressions[i].Week)).FirstOrDefault();
+                    Baseline baseline = context.Baseline.Where(x => x.UserId.Equals(colleague.Id) && x.ProjectId.Equals(dto.ProjectID) && x.WeekNumber.Equals(milestoneProgressions[i].Week)).FirstOrDefault();
                     milestoneProgressions[i].Baseline = baseline;
                 }
                 //foreach (MilestoneProgression progression in milestoneProgressions)

@@ -2,7 +2,7 @@
 @attribute [Authorize]
 @inject Service.IUserDataService UserService
 
-
+@inject NavigationManager NavigationManager
 <div class="p-4">
     <div class="container">
         <h1>Welkom @UserService.User.Username!</h1>
@@ -25,6 +25,12 @@
 
 @code
 {
-    
+    protected override async Task OnInitializedAsync()
+    {
+        if (UserService.User != null)
+        {
+            NavigationManager.NavigateTo("/user/{user.Id}");
+        }
+    }
 }
 @*<Dashboard></Dashboard>*@

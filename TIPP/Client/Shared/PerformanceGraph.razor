@@ -1,4 +1,4 @@
-﻿ @inject NavigationManager NavigationManager
+﻿@inject NavigationManager NavigationManager
 @attribute [Authorize]
 @inject Service.IUserDataService userService
 @inject Service.IProjectDataService projectDataService
@@ -13,7 +13,7 @@
     </div>
     <div class="row">
         <div class="col">
-            <button class="btn btn-primary float-right" @onclick="ShowModal">Werk aan ISI Steps</button>
+            <button class="btn btn-primary float-right" @onclick="ShowModal">Maak een Stap</button>
         </div>
 
     </div>
@@ -38,9 +38,6 @@
                         </Field>
                     }
                 }
-
-
-
             </ModalBody>
             <ModalFooter>
             </ModalFooter>
@@ -55,9 +52,28 @@
             </ModalHeader>
             <ModalBody>
                 <Field>
-                    <TextEdit Placeholder="Gewerkte tijd in uren" type="number" TextChanged="@OnNameChanged"/>
-                    <TextEdit Placeholder="Week?" type="number" TextChanged="@OnWeekChanged"/>
+                    <TextEdit Placeholder="Gewerkte tijd in uren" type="number" TextChanged="@OnNameChanged" />
+                    <TextEdit Placeholder="Week?" type="number" TextChanged="@OnWeekChanged" />
                     <Button Color="Color.Primary" Clicked="SendData">Ok</Button>
+                </Field>
+
+
+            </ModalBody>
+            <ModalFooter>
+                @*<Button class="close" Color="Color.Secondary" Clicked="@HideModal" aria-label="Close"></Button>*@
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+
+    <Modal @ref="modalGood">
+        <ModalContent Centered="true">
+            <ModalHeader>
+                <ModalTitle>Gewerkte tijd aan de ISI Step?</ModalTitle>
+                <CloseButton />
+            </ModalHeader>
+            <ModalBody>
+                <Field>
+                    <Text>Goed Bezig!</Text>
                 </Field>
 
 
@@ -83,6 +99,7 @@ else
     private Modal modalRef;
 
     private Modal modalFill;
+    private Modal modalGood;
 
     private void ShowModal()
     {
@@ -104,6 +121,17 @@ else
     private void HideFillableModal()
     {
         modalFill.Hide();
+    }
+
+    private void ShowGoodModal()
+    {
+        modalFill.Hide();
+        modalGood.Show();
+    }
+
+    private void HideGoodModal()
+    {
+        modalGood.Hide();
     }
 
     //https://blazorise.com/docs/extensions/chart/
@@ -147,6 +175,11 @@ else
         dto.Id = userService.User.Id;
         dto.ProjectID = projectDataService.Project.Id;
         colleagueProgressions = await milestoneProgressionService.GetColleagueProgressionWithUser(dto);
+        foreach (var colleaugeProgressionDTO in colleagueProgressions)
+        {
+            Console.WriteLine(colleaugeProgressionDTO.Colleague.Username);
+            Console.WriteLine(colleaugeProgressionDTO.Progressions[0].Baseline.BaselineValue);
+        }
     }
 
     void SetActivity(TIPP.Shared.Activity activity)
@@ -173,6 +206,7 @@ else
     private async void SendData()
     {
         HideFillableModal();
+        ShowGoodModal();
         int userid = userService.User.Id;
         MilestoneProgressionDTO dto = new MilestoneProgressionDTO();
         dto.Week = weekNumber;
@@ -238,7 +272,7 @@ else
             Baseline baseline = null;
             foreach (var progression in progressions)
             {
-                if (progression.Week == i+1) //+1 because the weeks starts at 1 not 0
+                if (progression.Week == i + 1) //+1 because the weeks starts at 1 not 0
                 {
                     baseline = progression.Baseline;
                     break;
@@ -277,6 +311,7 @@ else
                     if (progression.Week == i + 1) //+1 because the weeks starts at 1 not 0
                     {
                         baseline = progression.Baseline;
+                        Console.WriteLine(baseline.BaselineValue);
                         break;
                     }
                 }
@@ -291,6 +326,8 @@ else
 
     private double CalculateLinedataPercentage(double linedata, Baseline baseline)
     {
+        Console.WriteLine("Calculating Percentages");
+
         return (100 * linedata) / baseline.BaselineValue;
     }
 
@@ -305,6 +342,7 @@ else
         await lineChart.AddLabels(Labels);
 
         await lineChart.AddDataSet(GetLineChartDataset("zero", new List<double> { 0 }, false));
+        await lineChart.AddDataSet(GetLineChartDataset("middle", new List<double> { 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 }, false));
         await lineChart.AddDataSet(GetLineChartDataset("zero", new List<double> { 120 }, false));
         await lineChart.AddDataSet(GetLineChartDataset(user.Name, user.LineData, false));
 
@@ -317,9 +355,9 @@ else
 
     LineChartDataset<double> GetLineChartDataset(string name, List<double> lineData, bool colleague)
     {
-        if(!colleague)
+        if (!colleague)
         {
-            if(name == "zero")
+            if (name == "zero")
             {
                 return new LineChartDataset<double>
                 {
@@ -335,6 +373,24 @@ else
                     BorderDash = new List<int> { 5, 2 }
                 };
             }
+            if (name == "middle")
+            {
+                return new LineChartDataset<double>
+                {
+                    Label = "100%",
+                    SteppedLine = true,
+                    //BackgroundColor = new List<string> { ChartColor.FromRgba(255, 255, 255, 0f) },
+
+                    Data = lineData,
+                    //BackgroundColor = new List<string> { ChartColor.FromRgba(255, 99, 132, 0.2f) },
+                    BorderColor = new List<string> { ChartColor.FromRgba(102, 204, 0, 0.3f) }, //Color of the Line
+                    Fill = false,
+                    PointRadius = 1,
+                    BorderDash = new List<int> { 1, 1 }
+
+                };
+            }
+
             return new LineChartDataset<double>
             {
                 Label = userService.User.Username,
@@ -349,17 +405,61 @@ else
         }
         else
         {
-            return new LineChartDataset<double>
+            switch (name)
             {
-                Label = name,
-                Data = lineData,
-                //BackgroundColor = new List<string> { ChartColor.FromRgba(255, 99, 132, 0.2f) },
-                BorderColor = new List<string> { ChartColor.FromRgba(76, 0, 153, 0.5f) }, //Color of the Line
-                Fill = false,
-                PointRadius = 5,
-                BorderDash = new List<int> { }
+                case ("j.barendrecht"):
+                    return new LineChartDataset<double>
+                    {
+                        Label = name,
+                        Data = lineData,
+                        //BackgroundColor = new List<string> { ChartColor.FromRgba(255, 99, 132, 0.2f) },
+                        BorderColor = new List<string> { ChartColor.FromRgba(75, 60, 150, 1f) }, //Color of the Line
+                        Fill = false,
+                        PointRadius = 5,
+                        BorderDash = new List<int> { }
 
-            };
+                    };
+                    break;
+                case ("t.rechter"):
+                    return new LineChartDataset<double>
+                    {
+                        Label = name,
+                        Data = lineData,
+                        //BackgroundColor = new List<string> { ChartColor.FromRgba(255, 99, 132, 0.2f) },
+                        BorderColor = new List<string> { ChartColor.FromRgba(20, 100, 99, 1f) }, //Color of the Line
+                        Fill = false,
+                        PointRadius = 5,
+                        BorderDash = new List<int> { }
+
+                    };
+                    break;
+                case ("s.lacker"):
+                    return new LineChartDataset<double>
+                    {
+                        Label = name,
+                        Data = lineData,
+                        //BackgroundColor = new List<string> { ChartColor.FromRgba(255, 99, 132, 0.2f) },
+                        BorderColor = new List<string> { ChartColor.FromRgba(150, 99, 20, 1f) }, //Color of the Line
+                        Fill = false,
+                        PointRadius = 5,
+                        BorderDash = new List<int> { }
+
+                    };
+                    break;
+                default:
+                    return new LineChartDataset<double>
+                    {
+                        Label = name,
+                        Data = lineData,
+                        //BackgroundColor = new List<string> { ChartColor.FromRgba(255, 99, 132, 0.2f) },
+                        BorderColor = new List<string> { ChartColor.FromRgba(20, 99, 255, 0f) }, //Color of the Line
+                        Fill = false,
+                        PointRadius = 5,
+                        BorderDash = new List<int> { }
+
+                    };
+                    break;
+            }
         }
     }
 
